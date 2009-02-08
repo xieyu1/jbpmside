@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jbpmside" default="build">
+
+    <property name="webRoot" location="../examples/web"/>
+    <property name="jarFileName" value="jbpmside"/>
+    <property name="build.dir" location="build"/>
+    <property name="src.dir" location="src/main/java"/>
+    <property name="doc.dir" location="../docs/javadocs/jbpmside"/>
+    <path id="projectLib">
+        <fileset dir="../lib/jbpm3" includes="**/*.jar"/>
+    </path>
+
+    <target name="build" depends="clean,jar,javadoc,copyDestFile">
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="create">
+        <mkdir dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${build.dir}"/>
+        <javac destdir="build" target="1.5">
+            <src path="${src.dir}"/>
+            <classpath refid="projectLib"/>
+        </javac>
+
+        <copy todir="${build.dir}">
+            <fileset dir="${src.dir}">
+                <include name="**/*.*"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${build.dir}">
+            <fileset dir="conf">
+                <include name="**/*.*"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+
+    </target>
+
+    <target name="jar" depends="native, compile">
+        <delete file="${build.dir}/${jarFileName}.jar"/>
+
+        <jar jarfile="${build.dir}/${jarFileName}.jar">
+            <fileset dir="${build.dir}">
+                <include name="**/*.*"/>
+                <!--<exclude name="*.xml" />-->
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="native" depends="compile">
+        <delete>
+            <fileset dir="${build.dir}" includes="**/*.properties"/>
+        </delete>
+        <native2ascii src="${src.dir}" dest="build"
+                      includes="**/*.properties"/>
+    </target>
+
+    <target name="javadoc" depends="compile">
+        <javadoc packagenames="cn.org.jbpmside.*"
+                 sourcepath="${src.dir}"
+                 defaultexcludes="yes"
+                 destdir="${doc.dir}"
+                 author="true"
+                 version="true"
+                 use="true"
+                 encoding="UTF-8"
+                 docencoding="UTF-8"
+                 windowtitle="jBPMSIDE API规范">
+            <doctitle><![CDATA[<h1>jbpmside1.0 Java API规范</h1>]]></doctitle>
+            <bottom><![CDATA[<i>Copyright &#169; 2008 jbpmside Org. All Rights Reserved.</i>]]></bottom>
+            <group title="Group 1 Packages" packages="com.dummy.test.a*"/>
+            <group title="Group 2 Packages" packages="com.dummy.test.b*:com.dummy.test.c*"/>
+            <classpath refid="projectLib"/>
+        </javadoc>
+    </target>
+
+    <target name="addXworkConfig">
+    </target>
+    <target name="copyDestFile">
+        <copy file="build/${jarFileName}.jar" todir="${webRoot}/WEB-INF/lib"/>
+        <copy todir="${doc.dir}">
+            <fileset dir="${build.dir}/doc">
+            </fileset>
+        </copy>
+    </target>
+
+</project>
