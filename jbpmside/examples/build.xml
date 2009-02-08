@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jbpmside_examples" default="build">
+
+    <property name="webRoot" location="web"/>
+    <property name="jarFileName" value="jbpmside_examples"/>
+    <property name="build.dir" location="build"/>
+    <property name="src.dir" location="src/main/java"/>
+    <path id="projectLib">
+        <fileset dir="../lib/jbpm3" includes="**/*.jar"/>
+    </path>
+
+    <target name="build" depends="clean,jar, copyDestFile">
+    </target>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="create">
+        <mkdir dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${build.dir}"/>
+        <javac destdir="build" target="1.5">
+            <src path="${src.dir}"/>
+            <classpath refid="projectLib"/>
+        </javac>
+
+        <copy todir="${build.dir}">
+            <fileset dir="${src.dir}">
+                <!--<exclude name="**/*.java"/>-->
+                <!--<exclude name="**/*.properties"/>-->
+                <!--<exclude name="**/*.hbm.xml"/>-->
+                <include name="**/*.*"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${build.dir}">
+            <fileset dir="conf">
+                <include name="**/*.*"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+
+    </target>
+
+    <target name="jar" depends="native, compile">
+        <delete file="${build.dir}/${jarFileName}.jar"/>
+
+        <jar jarfile="${build.dir}/${jarFileName}.jar">
+            <fileset dir="${build.dir}">
+                <include name="**/*.*"/>
+                <!--<exclude name="*.xml" />-->
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="native" depends="compile">
+        <delete>
+            <fileset dir="${build.dir}" includes="**/*.properties"/>
+        </delete>
+        <native2ascii src="${src.dir}" dest="build"
+                      includes="**/*.properties"/>
+    </target>
+
+    <target name="addXworkConfig">
+    </target>
+    <target name="copyDestFile">
+        <copy file="build/${jarFileName}.jar" todir="${webRoot}/WEB-INF/lib"/>
+    </target>
+</project>
