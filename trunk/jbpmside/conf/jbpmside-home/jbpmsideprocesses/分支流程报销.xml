@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process-definition name="分支流程报销" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./jpdl-3.1.xsd">
+
+
+    <start-state name="开始">
+        <transition name="to_department" to="填单子"></transition>
+        <task name="填写报销单" >
+            <assignment class="cn.org.jbpmside.demo.assignment.DirectAssignment"></assignment>
+            <controller>
+                <variable name="expense_money" access="read,write,required" mapped-name="expense_money"></variable>
+            </controller>
+        </task>
+    </start-state>
+
+     <task-node name="填单子">
+        <task name="填单子" >
+            <assignment class="cn.org.jbpmside.demo.assignment.DirectAssignment"></assignment>
+        </task>
+        <transition name="department_to_finance" to="判断走向"></transition>
+    </task-node>
+
+    <decision name="判断走向">
+        <handler class="cn.org.jbpmside.demo.decision.BaoxiaoDecisionByMoney"/>
+        <transition name="小于等于1000" to="直接领导"></transition>
+        <transition name="大于1000" to="所有领导会签"></transition>
+    </decision>
+
+    <task-node name="直接领导">
+        <task name="直接领导" >
+          <assignment class="cn.org.jbpmside.demo.assignment.DirectAssignment"></assignment>  
+        </task>
+        <transition name="department_to_finance" to="财务"></transition>
+    </task-node>
+
+    <task-node name="所有领导会签" create-tasks="false">
+        <task name="所有领导会签">
+        </task>
+        <event type="node-enter">
+            <action name="createInstance"
+                    class="cn.org.jbpmside.demo.event.CreateTaskInstanceAction">
+            </action>
+        </event>
+        <transition name="superdepartment_to_finance" to="财务"></transition>
+    </task-node>
+
+    <task-node name="财务">
+        <task name="财务" >
+             <assignment class="cn.org.jbpmside.demo.assignment.FinanceSignAssignment"></assignment>
+        </task>
+        <transition name="to结束" to="结束"></transition>
+    </task-node>
+
+    <end-state name="结束"></end-state>
+</process-definition>
