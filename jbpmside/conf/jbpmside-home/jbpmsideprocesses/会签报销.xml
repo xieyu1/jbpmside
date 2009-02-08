@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+
+<process-definition name="会签报销"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./jpdl-3.1.xsd">
+
+    <start-state name="启动">
+        <transition name="" to="制单"></transition>
+    </start-state>
+
+    <task-node name="制单">
+        <task name="制单">
+            <assignment class="cn.org.jbpmside.demo.assignment.DirectAssignment"></assignment>
+        </task>
+        <transition name="所有上级领导会签" to="所有上级领导会签"></transition>
+    </task-node>
+
+    <task-node name="所有上级领导会签" create-tasks="false">
+        <event type="node-enter">
+            <action name="createInstance"
+                    class="cn.org.jbpmside.demo.event.CreateTaskInstanceAction">
+            </action>
+        </event>
+        <task name="所有上级领导会签">
+        </task>
+        <transition name="同意" to="财务"></transition>
+    </task-node>
+
+    <task-node name="财务">
+        <task name="财务">
+            <assignment class="cn.org.jbpmside.demo.assignment.FinanceSignAssignment"></assignment>
+        </task>
+        <transition name="to结束" to="结束"></transition>
+    </task-node>
+
+    <end-state name="结束"></end-state>
+</process-definition> 
