@@ -1,0 +1,14 @@
+cn.org.jbpmside.core.exception.unchecked
+cn.org.jbpmside.core.listener
+cn.org.jbpmside.core.services.assign
+cn.org.jbpmside.core.services.assign.po
+cn.org.jbpmside.core.services.decision
+cn.org.jbpmside.core.services.identity
+cn.org.jbpmside.core.services.process
+cn.org.jbpmside.core.services.process.impl
+cn.org.jbpmside.core.services.task
+cn.org.jbpmside.core.services.task.dto
+cn.org.jbpmside.core.services.task.impl
+cn.org.jbpmside.core.util
+cn.org.jbpmside.core.util.db
+cn.org.jbpmside.core.util.page
