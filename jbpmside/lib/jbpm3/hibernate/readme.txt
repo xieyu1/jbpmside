@@ -1,0 +1,1 @@
+the libs in this dir come from the hibernate 3.0.5 download.
