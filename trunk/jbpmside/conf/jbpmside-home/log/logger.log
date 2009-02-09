@@ -1,29 +1,13 @@
-2009-02-08 07:46:19 INFO  org.jbpm.JbpmConfiguration  - using jbpm configuration resource 'jbpm.cfg.xml'
-2009-02-08 07:46:19 INFO  org.jbpm.persistence.db.StaleObjectLogConfigurer  - stale object exceptions will be hidden from logging
-2009-02-08 07:46:23 INFO  cn.org.jbpmside.core.listener.XworkXmlConfigurationProviderListener  - beginning to load xwork config file......
-2009-02-08 07:46:23 INFO  com.opensymphony.xwork.config.providers.ResourceFinder  - realPath = file:/D:/jbpmside/examples/web/WEB-INF/lib/jbpmside_examples.jar!/xwork/jbpmside.example.xwork.xml
-2009-02-08 07:46:23 INFO  cn.org.jbpmside.core.listener.XworkXmlConfigurationProviderListener  - all the xwork config file has been loaded successfully!
-2009-02-08 07:46:47 INFO  com.opensymphony.webwork.spring.WebWorkSpringObjectFactory  - Initializing WebWork-Spring integration...
-2009-02-08 07:46:47 INFO  com.opensymphony.xwork.spring.SpringObjectFactory  - Setting autowire strategy to name
-2009-02-08 07:46:47 INFO  com.opensymphony.webwork.spring.WebWorkSpringObjectFactory  - ... initialized WebWork-Spring integration successfully
-2009-02-08 08:25:20 INFO  org.jbpm.JbpmConfiguration  - using jbpm configuration resource 'jbpm.cfg.xml'
-2009-02-08 08:25:20 INFO  org.jbpm.persistence.db.StaleObjectLogConfigurer  - stale object exceptions will be hidden from logging
-2009-02-08 08:25:24 INFO  cn.org.jbpmside.core.listener.XworkXmlConfigurationProviderListener  - beginning to load xwork config file......
-2009-02-08 08:25:24 INFO  com.opensymphony.xwork.config.providers.ResourceFinder  - realPath = file:/D:/jbpmside/examples/web/WEB-INF/lib/jbpmside_examples.jar!/xwork/jbpmside.example.xwork.xml
-2009-02-08 08:25:24 INFO  cn.org.jbpmside.core.listener.XworkXmlConfigurationProviderListener  - all the xwork config file has been loaded successfully!
-2009-02-08 08:28:37 INFO  org.jbpm.JbpmConfiguration  - using jbpm configuration resource 'jbpm.cfg.xml'
-2009-02-08 08:28:37 INFO  org.jbpm.persistence.db.StaleObjectLogConfigurer  - stale object exceptions will be hidden from logging
-2009-02-08 08:28:41 INFO  cn.org.jbpmside.core.listener.XworkXmlConfigurationProviderListener  - beginning to load xwork config file......
-2009-02-08 08:28:41 INFO  com.opensymphony.xwork.config.providers.ResourceFinder  - realPath = file:/D:/jbpmside/examples/web/WEB-INF/lib/jbpmside_examples.jar!/xwork/jbpmside.example.xwork.xml
-2009-02-08 08:28:41 INFO  cn.org.jbpmside.core.listener.XworkXmlConfigurationProviderListener  - all the xwork config file has been loaded successfully!
-2009-02-08 08:29:48 INFO  com.opensymphony.webwork.spring.WebWorkSpringObjectFactory  - Initializing WebWork-Spring integration...
-2009-02-08 08:29:48 INFO  com.opensymphony.xwork.spring.SpringObjectFactory  - Setting autowire strategy to name
-2009-02-08 08:29:48 INFO  com.opensymphony.webwork.spring.WebWorkSpringObjectFactory  - ... initialized WebWork-Spring integration successfully
-2009-02-08 08:30:49 INFO  org.jbpm.JbpmConfiguration  - using jbpm configuration resource 'jbpm.cfg.xml'
-2009-02-08 08:30:50 INFO  org.jbpm.persistence.db.StaleObjectLogConfigurer  - stale object exceptions will be hidden from logging
-2009-02-08 08:30:54 INFO  cn.org.jbpmside.core.listener.XworkXmlConfigurationProviderListener  - beginning to load xwork config file......
-2009-02-08 08:30:54 INFO  com.opensymphony.xwork.config.providers.ResourceFinder  - realPath = file:/D:/jbpmside/examples/web/WEB-INF/lib/jbpmside_examples.jar!/xwork/jbpmside.example.xwork.xml
-2009-02-08 08:30:54 INFO  cn.org.jbpmside.core.listener.XworkXmlConfigurationProviderListener  - all the xwork config file has been loaded successfully!
-2009-02-08 08:31:12 INFO  com.opensymphony.webwork.spring.WebWorkSpringObjectFactory  - Initializing WebWork-Spring integration...
-2009-02-08 08:31:12 INFO  com.opensymphony.xwork.spring.SpringObjectFactory  - Setting autowire strategy to name
-2009-02-08 08:31:12 INFO  com.opensymphony.webwork.spring.WebWorkSpringObjectFactory  - ... initialized WebWork-Spring integration successfully
+2009-02-09 01:26:59 INFO  org.jbpm.JbpmConfiguration  - using jbpm configuration resource 'jbpm.cfg.xml'
+2009-02-09 01:26:59 INFO  org.jbpm.persistence.db.StaleObjectLogConfigurer  - stale object exceptions will be hidden from logging
+2009-02-09 01:27:03 INFO  cn.org.jbpmside.core.listener.XworkXmlConfigurationProviderListener  - beginning to load xwork config file......
+2009-02-09 01:27:03 INFO  com.opensymphony.xwork.config.providers.ResourceFinder  - realPath = file:/D:/jbpmside/examples/web/WEB-INF/lib/jbpmside_examples.jar!/xwork/jbpmside.example.xwork.xml
+2009-02-09 01:27:03 INFO  cn.org.jbpmside.core.listener.XworkXmlConfigurationProviderListener  - all the xwork config file has been loaded successfully!
+2009-02-09 09:04:44 INFO  org.jbpm.JbpmConfiguration  - using jbpm configuration resource 'jbpm.cfg.xml'
+2009-02-09 09:04:47 INFO  org.jbpm.persistence.db.StaleObjectLogConfigurer  - stale object exceptions will be hidden from logging
+2009-02-09 09:04:51 INFO  cn.org.jbpmside.core.listener.XworkXmlConfigurationProviderListener  - beginning to load xwork config file......
+2009-02-09 09:04:51 INFO  com.opensymphony.xwork.config.providers.ResourceFinder  - realPath = file:/D:/jbpmside/examples/web/WEB-INF/lib/jbpmside_examples.jar!/xwork/jbpmside.example.xwork.xml
+2009-02-09 09:04:51 INFO  cn.org.jbpmside.core.listener.XworkXmlConfigurationProviderListener  - all the xwork config file has been loaded successfully!
+2009-02-09 09:06:06 INFO  com.opensymphony.webwork.spring.WebWorkSpringObjectFactory  - Initializing WebWork-Spring integration...
+2009-02-09 09:06:06 INFO  com.opensymphony.xwork.spring.SpringObjectFactory  - Setting autowire strategy to name
+2009-02-09 09:06:06 INFO  com.opensymphony.webwork.spring.WebWorkSpringObjectFactory  - ... initialized WebWork-Spring integration successfully
