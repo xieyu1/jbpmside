@@ -9,7 +9,6 @@
         <title>jbpmside</title>
         
 
-        <link href="./INDEX.css" rel="stylesheet" type="text/css">
         <script type="text/javascript">
 		//待办列表
         function gotoList(obj) {
