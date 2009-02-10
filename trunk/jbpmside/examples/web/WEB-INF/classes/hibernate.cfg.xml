@@ -8,12 +8,12 @@
   <session-factory>
 
     <!-- hibernate dialect -->
-   <!-- <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>-->
-	 <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
-    <property name="hibernate.connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:jtds:sqlserver://localhost:1433/jbpmside;user=sa;password=sa</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
+	 <!--<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>-->
+    <property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
+    <property name="hibernate.connection.url">jdbc:hsqldb:hsql://localhost/jbpmsidedb;user=sa;password=</property>
     <property name="hibernate.connection.username">sa</property>
-    <property name="hibernate.connection.password">sa</property>
+    <property name="hibernate.connection.password"></property>
 
     <property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
     

@@ -21,7 +21,9 @@ rem
 rem $Id: startup.bat 562770 2007-08-04 22:13:58Z markt $
 rem ---------------------------------------------------------------------------
 
+if exist "%JAVA_HOME%" goto setVariables
 set JAVA_HOME=D:\jdk\jdk1.5.0_16
+:setVariables
 set JBPMSIDE_HOME=../../../../conf/jbpmside-home
 set APP_HOME=../../../../examples/web
 set JAVA_OPTS=-DJBPMSIDE_HOME=%JBPMSIDE_HOME%  -DAPP_HOME=%APP_HOME% -Xms256m -Xmx512m
