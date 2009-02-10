@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%
+    String name = (String) request.getSession().getAttribute("loginName");
+    name = name.equals("null") ? "无" : name;
+%>
 <html>
     <head>
 
@@ -7,8 +10,43 @@
         
 
         <link href="./INDEX.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript">
+		//待办列表
+        function gotoList(obj) {
+            var name = obj.value
+            var url = "/jbpmside/todoList.action?name=" + name;
+            window.location.href = url;
+        }
+		//所有流程定义列表
+		 function gotoAllList(obj) {
+            var name = obj.value
+            var url = "/jbpmside/findAllProcessDefination.action?name=" + name;
+            window.location.href = url;
+        }
+		//所有已办列表
+		function gotoCompletedList(obj) {
+            var name = obj.value
+            var url = "/jbpmside/completedList.action?name=" + name;
+            window.location.href = url;
+        }
+    		//所有办结列表
+		function gotoProcessCompletedList(obj) {
+            var name = obj.value
+            var url = "/jbpmside/processCompletedList.action?name=" + name;
+            window.location.href = url;
+        }    
+		//初始化用户
+        function initUser() {
+ 
+            var name = "<%=name%>";
+            var chooseUser	=	document.getElementById("chooseUser");
+            if(chooseUser!=null){
+            	chooseUser.value = name;
+            }
+        }
+    </script>
     </head>
-    <body>
+<body onload="initUser()">
 
         <table>
             <tr>
