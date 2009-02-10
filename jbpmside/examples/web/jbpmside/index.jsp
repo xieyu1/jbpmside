@@ -17,7 +17,6 @@
         <script type="text/javascript" src="./js/SpryCollapsiblePanel.js"></script>
         <script type="text/javascript" src="./js/js4cnltreemenu.js"></script>
 
-
         <script type="text/javascript">
             function MM_swapImgRestore() { //v3.0
                 var i,x,a = document.MM_sr;
@@ -81,7 +80,7 @@
                     <td background="images/banner_bg.gif" width="100%"></td>
                     <td><img src="images/banner_right.gif"/>
 
-                        
+
                     </td>
                 </tr>
             </table>
@@ -130,8 +129,6 @@
                         </div>
                     </td>
                 </tr>
-
-                
                 <tr>
                     <td>
                         <div id="CollapsiblePanel2">
@@ -165,7 +162,6 @@
                                                             <!--Sub Node 2-->
                                                         </ul>
                                                     </li>
-                                                    
                                                     <!--Sub Node 1 -->
                                                 </ul>
                                             </div>
