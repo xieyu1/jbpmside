@@ -3,10 +3,10 @@
 <%@include file="/jbpmside/common/header.jsp" %>
 
 <html>
-<head>
-    <title>已办列表</title>
-    <script type="text/javascript">
-             function gotoList(obj) {
+    <head>
+        <title>已办列表</title>
+        <script type="text/javascript">
+            function gotoList(obj) {
                 var name = obj.value
                 var url = "/jbpmside/completedList.action?name=" + name;
                 window.location.href = url;
@@ -15,11 +15,11 @@
             }
 
         </script>
-</head>
+    </head>
 
-<body>
+    <body>
 
-    <table width="100%" height="10"  border="0" cellpadding="0" cellspacing="0">
+        <table width="100%" height="10"  border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td> </td>
             </tr>
@@ -44,59 +44,58 @@
                 <td width="15" background="/jbpmside/images/red_BODY_leftbg.gif">&nbsp;</td>
                 <td>
                     <select id="chooseUser" name="chooseUser" onchange="gotoCompletedList(this)">
-                <option value="null">切换用户</option>
-                <option value="proposer">申请人</option>
-                <option value="leader1">会签领导1</option>
-                <option value="leader2">会签领导2</option>
-                <option value="leader3">直接领导3</option>
-                <option value="caiwu">财务</option>
-</select><br>
+                        <option value="null">切换用户</option>
+                        <option value="proposer">申请人</option>
+                        <option value="leader1">会签领导1</option>
+                        <option value="leader2">会签领导2</option>
+                        <option value="leader3">直接领导3</option>
+                        <option value="caiwu">财务</option>
+                    </select><br>
 
                     <table width="100%" height="15"  border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <td>
 
-                               <table border="1"  width="100%">
-    <tr>
-       <td width="15%">流程名称</td>
-        <td width="15%">版本号</td>
-        <td width="15%">参与者</td>
-        <td width="15%">任务名称</td>
-        <td width="15%">任务号</td>
-        <td width="15%">流程跟踪</td>
-    </tr>
-    <ww:iterator value="jbpmTaskInstanceList">
-        <tr>
-            <td>
-                <ww:property value="processDefinitionName"/>
-            </td>
-            <td>
-                <ww:property value="processDefinitionVersion"/>
-            </td>
-            <td>
-                <ww:property value="actorId"/>
-            </td>
-            <td>
-                <ww:property value="name"/>
-            </td>
-            <td>
-                <ww:property value="id"/>
-            </td>
-            <td>
-                <a href="/jbpmside/processDetailList.action?tokenid=<ww:property value="tokenId"/>&img=<ww:property value="processDefinitionName"/>"> 详细 </a>
-            </td>
-        </tr>
-    </ww:iterator>
-</table>
-总共数量： <ww:property value="{page.recordCount}"/>
-每页显示：<ww:property value="{page.pageSize}"/>
-当前页： <ww:property value="{page.currentPage}"/> <br/>
-<a href="/jbpmside/completedList.action?currentpagenum=1"> 第1页 </a>
-<a href="/jbpmside/completedList.action?currentpagenum=2"> 第2页 </a>
-<a href="/jbpmside/completedList.action?currentpagenum=3"> 第3页 </a>
-<a href="/jbpmside/completedList.action?currentpagenum=4"> 第4页 </a>
-<a href="/jbpmside/completedList.action?currentpagenum=5"> 第5页 </a>
-
+                                <table border="1"  width="100%">
+                                    <tr>
+                                        <td width="15%">流程名称</td>
+                                        <td width="15%">版本号</td>
+                                        <td width="15%">参与者</td>
+                                        <td width="15%">任务名称</td>
+                                        <td width="15%">任务号</td>
+                                        <td width="15%">流程跟踪</td>
+                                    </tr>
+                                    <ww:iterator value="jbpmTaskInstanceList">
+                                        <tr>
+                                            <td>
+                                                <ww:property value="processDefinitionName"/>
+                                            </td>
+                                            <td>
+                                                <ww:property value="processDefinitionVersion"/>
+                                            </td>
+                                            <td>
+                                                <ww:property value="actorId"/>
+                                            </td>
+                                            <td>
+                                                <ww:property value="name"/>
+                                            </td>
+                                            <td>
+                                                <ww:property value="id"/>
+                                            </td>
+                                            <td>
+                                                <a href="/jbpmside/processDetailList.action?tokenid=<ww:property value="tokenId"/>&img=<ww:property value="processDefinitionName"/>"> 详细 </a>
+                                            </td>
+                                        </tr>
+                                    </ww:iterator>
+                                </table>
+                                总共数量： <ww:property value="{page.recordCount}"/>
+                                每页显示：<ww:property value="{page.pageSize}"/>
+                                当前页： <ww:property value="{page.currentPage}"/> <br/>
+                                <a href="/jbpmside/completedList.action?currentpagenum=1"> 第1页 </a>
+                                <a href="/jbpmside/completedList.action?currentpagenum=2"> 第2页 </a>
+                                <a href="/jbpmside/completedList.action?currentpagenum=3"> 第3页 </a>
+                                <a href="/jbpmside/completedList.action?currentpagenum=4"> 第4页 </a>
+                                <a href="/jbpmside/completedList.action?currentpagenum=5"> 第5页 </a>
                             </td>
                         </tr>
                     </table>
@@ -112,7 +111,7 @@
             </tr>
         </table>
 
-</body>
+    </body>
 </html>
 <%@include file="/jbpmside/common/footer.jsp" %>
 
