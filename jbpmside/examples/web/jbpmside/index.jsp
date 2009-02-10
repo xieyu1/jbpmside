@@ -101,7 +101,7 @@
                                     <tr>
                                         <td style="background:url('./images/menu/XPbanner4a.gif') no-repeat 0px -1px;width:28px;height:28px;">
                                         &nbsp;</td>
-                                        <td style="background:url('./images/menu/XPbannerb.gif') no-repeat 0px -1px;width:164px;height:28px;">
+                                        <td class="navi_td" style="background:url('./images/menu/XPbannerb.gif') no-repeat 0px -1px;width:164px;height:28px;">
                                         &nbsp;开发示例</td>
                                         <td style="background:url('./images/menu/XPbannerc.gif') repeat-x 0px -1px;">
                                         &nbsp;</td>
@@ -114,7 +114,7 @@
                                 <table class="CollapsiblePanelTableContent">
                                     <tr>
                                         <td height="60" class="CollapsiblePanelTableTdContent">
-                                            <div class="CNLTreeMenu" id="CNLTreeMenu4">
+                                            <div class="CNLTreeMenu" id="CNLTreeMenu1">
                                                 <ul>
                                                     <li class="Opened"><a href="/jbpmside/findAllProcessDefination.action">流程定义</a></li>
                                                     <li class="Opened"><a href="/jbpmside/todoList.action">待办列表</a></li>
@@ -140,7 +140,7 @@
                                     <tr>
                                         <td style="background:url('./images/menu/XPbanner2a.gif') no-repeat 0px -1px;width:28px;height:28px;">
                                         &nbsp;</td>
-                                        <td style="background:url('./images/menu/XPbannerb.gif') no-repeat 0px -1px;width:164px;height:28px;">
+                                        <td class="navi_td" style="background:url('./images/menu/XPbannerb.gif') no-repeat 0px -1px;width:164px;height:28px;">
                                         &nbsp;管理控制台</td>
                                         <td style="background:url('./images/menu/XPbannerc.gif') repeat-x 0px -1px;">
                                         &nbsp;</td>
