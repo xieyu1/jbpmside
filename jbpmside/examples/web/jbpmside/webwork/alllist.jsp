@@ -43,8 +43,9 @@
         <table width="94%"  border="0" align="center" cellpadding="0" cellspacing="0">
             <tr>
                 <td width="15" background="/jbpmside/images/red_BODY_leftbg.gif">&nbsp;</td>
+                
                 <td><table width="100%" height="15"  border="0" cellpadding="0" cellspacing="0">
-                        <tr>
+                	                        <tr>
                             <td>
 
 <table border="1" width="100%">
@@ -55,6 +56,16 @@
         <td width="20%">流程图</td>
         <td width="20%"><a href="/jbpmside/deployAll.action"><img src="/jbpmside/images/box_download_48.png"  border="0" alt="重新发布所有流程"/></a></td>
     </tr>
+    
+    	<select id="chooseUser" name="chooseUser" onchange="gotoAllList(this)">
+                <option value="null">切换用户</option>
+                <option value="proposer">申请人</option>
+                <option value="leader1">会签领导1</option>
+                <option value="leader2">会签领导2</option>
+                <option value="leader3">直接领导3</option>
+                <option value="caiwu">财务</option>
+</select>
+&nbsp;&nbsp;&nbsp;&nbsp;
     申请金额： <input type="text" id="expense_money" name="expense_money" value="1500"/>
 
     <ww:iterator value="jbpmProcessDefinitionList">
