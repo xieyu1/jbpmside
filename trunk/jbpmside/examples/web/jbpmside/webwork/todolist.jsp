@@ -1,11 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="/webwork" prefix="ww" %>
 <%@include file="/jbpmside/common/header.jsp"%>
-
-<%
-       String name = (String)request.getSession().getAttribute("loginName");
-%>
-
 <html>
 <head>
     <title>待办列表</title>

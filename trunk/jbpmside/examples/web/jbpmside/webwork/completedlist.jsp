@@ -43,7 +43,7 @@
             <tr>
                 <td width="15" background="/jbpmside/images/red_BODY_leftbg.gif">&nbsp;</td>
                 <td>
-                    <select id="chooseUser" name="chooseUser" onchange="gotoList(this)">
+                    <select id="chooseUser" name="chooseUser" onchange="gotoCompletedList(this)">
                 <option value="null">切换用户</option>
                 <option value="proposer">申请人</option>
                 <option value="leader1">会签领导1</option>
