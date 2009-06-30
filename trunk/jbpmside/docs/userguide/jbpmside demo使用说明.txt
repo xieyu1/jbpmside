@@ -1,9 +1,0 @@
-进入%jbpmside%/bin/appserver/apache-tomcat-5.5.20/bin
-
-修改set JAVA_HOME=（你的jdk的路径）例如：D:\jdk\jdk1.5.0_08（绝对路径），或者../jdk/jdk1.5.0_08(相对路径)
-
-建立数据库sqlserver2000（注意：安装jdbc驱动和补丁3）并建立数据库，数据库名：jbpmside
-进入%jbpmside%/db/mssql   拷贝sql.txt中到sqlserver的查询分析器中，选择jbpmside以后，然后执行语句。
-
-在浏览器中输入
-http://localhost:8080
