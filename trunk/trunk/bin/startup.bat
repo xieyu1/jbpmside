@@ -63,8 +63,6 @@ shift
 goto setArgs
 :doneSetArgs
 
-call deploy.bat
-
 call "%EXECUTABLE%" start %CMD_LINE_ARGS%
 
 :end
