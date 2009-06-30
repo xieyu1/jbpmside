@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProcessEditor 
+	xmlns="*"
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:ui="org.jbpmside.view.*"  
+	xmlns:component="org.jbpmside.view.component.*"  
+	layout="absolute"
+	applicationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import org.jbpmside.event.CustomEvent;
+			import org.jbpmside.model.TheModel;
+   	
+   			[Bindable]
+   			public var model:TheModel = TheModel.getInstance();
+   			
+   			public function init():void{
+   				addListeners();
+   			}
+   			
+   			public function addListeners():void{
+				this.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDowHandler);	
+			}
+			
+			public function keyDowHandler(event:KeyboardEvent):void{
+				var customEvent:CustomEvent=new CustomEvent(TheModel.KEYBOARD_EVENT,event);
+				model.dispatchEvent(customEvent);
+			}
+			
+			private function updatePageSize():void{
+				
+			}
+		]]>
+	</mx:Script>
+	<mx:HBox id="preview" left="0" right="0" top="35" bottom="0" horizontalScrollPolicy="off" verticalScrollPolicy="off" 
+		horizontalGap="0" backgroundColor="#676767">
+		<mx:Canvas id="scroller" width="100%" height="100%">
+			<mx:VBox>
+				<component:SurfaceComponent id="surface" />
+			</mx:VBox>			
+		</mx:Canvas>
+	</mx:HBox>
+	<ui:ProcessToolBar id="toolbar"
+		left="0" right="0" top="0"/>
+</ProcessEditor>
