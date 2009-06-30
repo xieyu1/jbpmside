@@ -1,0 +1,42 @@
+
+.processManagement,
+.x-tree-node-leaf .processManagement{
+    background: url(jbpm/41.png) no-repeat;
+}
+.taskManagement,
+.x-tree-node-leaf .taskManagement {
+    background: url(jbpm/29.png) no-repeat;
+}
+.metricsAndStats,
+.x-tree-node-leaf .metricsAndStats {
+    background: url(jbpm/31.png) no-repeat;
+}
+.setting,
+.x-tree-node-leaf .setting {
+    background: url(jbpm/36.png) no-repeat;
+}
+.aboutProcessDefinition,
+.x-tree-node-leaf .aboutProcessDefinition {
+    background: url(jbpm/14.png) no-repeat;
+}
+.processInstance,
+.x-tree-node-leaf .processInstance {
+    background: url(jbpm/05_1.png) no-repeat;
+}
+.comment,
+.x-tree-node-leaf .comment {
+    background: url(jbpm/27.png) no-repeat;
+}
+.users,
+.x-tree-node-leaf .users,
+.x-panel-tl .users {
+    background: url(jbpm/05.png) no-repeat;
+}
+.group,
+.x-tree-node-leaf .group {
+    background: url(jbpm/05_1.png) no-repeat;
+}
+.welcome {
+    background: url(login/home16.png) no-repeat;
+}
+

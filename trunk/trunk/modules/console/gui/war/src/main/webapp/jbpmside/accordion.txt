@@ -1,0 +1,123 @@
+{
+    root: [{
+        title: App.locale['processManagement.title'],
+        iconCls: 'processManagement',
+        layout: 'fit',
+        items: [{
+            xtype: 'treepanel',
+            rootVisible: false,
+            root: new Ext.tree.AsyncTreeNode({
+                expanded: true,
+                children: [{
+                    id: 'ViewProcessDefinition',
+                    text: App.locale['viewDefinitions.title'],
+                    iconCls: 'processManagement',
+                    leaf: true
+                }, {
+                    id: 'UploadNewProcessDefinition',
+                    text: App.locale['uploadNewDefinition.title'],
+                    iconCls: 'processManagement',
+                    leaf: true
+                }]
+            }),
+            loader: new Ext.tree.TreeLoader(),
+            listeners: {
+                'click': App.clickNode
+            }
+        }]
+    }, {
+        title: App.locale['taskManagement.title'],
+        iconCls: 'taskManagement',
+        layout: 'fit',
+        items: [{
+            xtype: 'treepanel',
+            rootVisible: false,
+            root: new Ext.tree.AsyncTreeNode({
+                expanded: true,
+                children: [{
+                    id: 'ViewTaskManagement',
+                    text: App.locale['viewTaskManagement.title'],
+                    iconCls: 'taskManagement',
+                    leaf: true
+                }]
+            }),
+            loader: new Ext.tree.TreeLoader(),
+            listeners: {
+                'click': App.clickNode
+            }
+        }]
+    }, {
+        title: App.locale['metricsAndStats.title'],
+        iconCls: 'metricsAndStats',
+        layout: 'fit',
+        items: [{
+            xtype: 'treepanel',
+            rootVisible: false,
+            root: new Ext.tree.AsyncTreeNode({
+                expanded: true,
+                children: [{
+                    id: 'ProcessWorkLoad',
+                    text: App.locale['processWorkLoad.title'],
+                    iconCls: 'metricsAndStats',
+                    leaf: true
+                }, {
+                    id: 'ExportStats',
+                    text: App.locale['exportStats.title'],
+                    iconCls: 'metricsAndStats',
+                    leaf: true
+                }]
+            }),
+            loader: new Ext.tree.TreeLoader(),
+            listeners: {
+                'click': App.clickNode
+            }
+        }]
+    }, {
+        title: App.locale['setting.title'],
+        iconCls: 'setting',
+        layout: 'fit',
+        items: [{
+            xtype: 'treepanel',
+            rootVisible: false,
+            root: new Ext.tree.AsyncTreeNode({
+                expanded: true,
+                children: [{
+                    id: 'User',
+                    text: App.locale['user.title'],
+                    iconCls: 'users',
+                    leaf: true
+                }, {
+                    id: 'Group',
+                    text: App.locale['group.title'],
+                    iconCls: 'group',
+                    leaf: true
+                }]
+            }),
+            loader: new Ext.tree.TreeLoader(),
+            listeners: {
+                'click': App.clickNode
+            }
+        }]
+    }, {
+        title: App.locale['logout.title'],
+        iconCls: 'group',
+        layout: 'fit',
+        items: [{
+            xtype: 'treepanel',
+            rootVisible: false,
+            root: new Ext.tree.AsyncTreeNode({
+                expanded: true,
+                children: [{
+                    id: 'Logout',
+                    text: App.locale['logout.title'],
+                    iconCls: 'group',
+                    leaf: true
+                }]
+            }),
+            loader: new Ext.tree.TreeLoader(),
+            listeners: {
+                'click': App.clickNode
+            }
+        }]
+    }]
+}
