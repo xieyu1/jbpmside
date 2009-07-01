@@ -78,10 +78,15 @@ App.locale = {
     'groupDetail.title': '组信息',
     'group.parent': '组',
     'group.title': '组管理',
+    'variable.name': '变量名',
+    'variable.value': '变量值',
+    'add': '添加',
+    'default': '默认',
+    'variable.transition': '输入变量选择流向',
     'jpdl.open': '打开',
     'jpdl.save': '保存',
     'jpdl.menu': '菜单',
     'jpdl.elements': '元素',
     'jpdl.forms': '表单',
     'jpdl.attributes': '属性'
-}
+};

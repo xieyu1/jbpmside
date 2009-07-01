@@ -25,6 +25,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jbpmside.console.gui.bean.NodeBean;
+import org.jbpmside.console.gui.bean.TransitionBean;
+import org.jbpmside.console.gui.geom.Line;
+import org.jbpmside.console.gui.geom.LineDrawer;
+import org.jbpmside.console.gui.geom.Rect;
+import org.jbpmside.console.gui.support.JbpmTemplate;
+
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -36,13 +43,6 @@ import org.jbpm.api.ProcessEngine;
 import org.jbpm.api.ProcessInstanceQuery;
 import org.jbpm.api.RepositoryService;
 import org.jbpm.api.model.OpenExecution;
-
-import org.jbpmside.console.gui.bean.NodeBean;
-import org.jbpmside.console.gui.bean.TransitionBean;
-import org.jbpmside.console.gui.geom.Line;
-import org.jbpmside.console.gui.geom.LineDrawer;
-import org.jbpmside.console.gui.geom.Rect;
-import org.jbpmside.console.gui.template.JbpmTemplate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,8 +94,6 @@ public class JpdlImageServlet extends HttpServlet {
         if (jbpmTemplate == null) {
             ApplicationContext ctx = WebApplicationContextUtils
                 .getWebApplicationContext(this.getServletContext());
-
-            logger.info("jbpmTemplate: " + ctx.getBean("jbpmTemplate"));
             jbpmTemplate = (JbpmTemplate) ctx.getBean("jbpmTemplate");
         }
 
@@ -153,7 +151,6 @@ public class JpdlImageServlet extends HttpServlet {
      */
     public InputStream getXmlByProcessInstance(HttpServletRequest request) {
         String id = getProcessInstanceId(request);
-        logger.info("id: " + id);
 
         if (id != null) {
             return this.getJbpmTemplate()
@@ -241,9 +238,15 @@ public class JpdlImageServlet extends HttpServlet {
 
             if (type.equals("start") || type.equals("decision")
                     || type.equals("end") || type.equals("end-cancel")
-                    || type.equals("end-error")) {
+                    || type.equals("end-error") || type.equals("fork")
+                    || type.equals("join")) {
                 w = DEFAULT_PIC_SIZE;
                 h = DEFAULT_PIC_SIZE;
+            } else {
+                x -= RECT_OFFSET;
+                y -= RECT_OFFSET;
+                w += (RECT_OFFSET * 2);
+                h += (RECT_OFFSET * 2);
             }
 
             NodeBean node = new NodeBean();
@@ -370,6 +373,11 @@ public class JpdlImageServlet extends HttpServlet {
                         LineDrawer drawer = new LineDrawer(line.getX1(),
                                 line.getY1(), line.getX2(), line.getY2());
                         drawer.draw(g2, 1F);
+
+                        int cx = ((line.getX1() + line.getX2()) / 2)
+                            - (transitionName.length() * 4);
+                        int cy = ((line.getY1() + line.getY2()) / 2) - 10;
+                        g2.drawString(transitionName, cx, cy);
                     }
                 }
             }

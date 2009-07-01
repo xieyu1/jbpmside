@@ -31,16 +31,16 @@ App.showTransitionForm = function(type, id, fn) {
             fields: ['name', 'value']
         }),
         columns: [{
-            header: 'name',
+            header: App.locale['variable.name'],
             dataIndex: 'name',
             editor: new Ext.grid.GridEditor(new Ext.form.TextField())
         }, {
-            header: 'value',
+            header: App.locale['variable.value'],
             dataIndex: 'value',
             editor: new Ext.grid.GridEditor(new Ext.form.TextField())
         }],
         tbar: new Ext.Toolbar([{
-            text: 'add',
+            text: App.locale['add'],
             handler: function() {
                 var Record = Ext.data.Record.create([
                     'name', 'value'
@@ -53,7 +53,7 @@ App.showTransitionForm = function(type, id, fn) {
                 App.variableGrid.startEditing(0, 0);
             }
         }, '-', {
-            text: 'remove',
+            text: App.locale['delete'],
             handler: function() {
                 var sm = App.variableGrid.getSelectionModel();
                 var cell = sm.getSelectedCell();
@@ -103,7 +103,7 @@ App.showTransitionForm = function(type, id, fn) {
             var buttons = [];
             for (var i = 0; i < array.length; i++) {
                 var url = 'jbpm.do?action=selectTransition';
-                var text = array[i] == null ? 'Default' : array[i];
+                var text = array[i] == null ? App.locale['default'] : array[i];
                 var transition = array[i];
                 buttons.push({
                     text: text,
@@ -116,7 +116,7 @@ App.showTransitionForm = function(type, id, fn) {
             }
 
             App.transitionForm = new Ext.Window({
-                title: '输入变量选择流向',
+                title: App.locale['variable.transition'],
                 width: 400,
                 height: 300,
                 closeAction: 'hide',
