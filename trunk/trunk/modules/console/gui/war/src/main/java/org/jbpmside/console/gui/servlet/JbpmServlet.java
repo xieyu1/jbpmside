@@ -25,7 +25,7 @@ import org.jbpm.api.model.ActivityCoordinates;
 import org.jbpm.api.model.Transition;
 import org.jbpm.api.task.Task;
 
-import org.jbpmside.console.gui.template.JbpmTemplate;
+import org.jbpmside.console.gui.support.JbpmTemplate;
 
 import org.springframework.context.ApplicationContext;
 
@@ -113,12 +113,14 @@ public class JbpmServlet extends HttpServlet {
             this.login(request, response);
         } else if ("logout".equals(action)) {
             this.logout(request, response);
+        } else if ("processDetail".equals(action)) {
+            this.processDetail(request, response);
         } else if ("reportOverallActivity".equals(action)) {
             this.reportOverallActivity(request, response);
         } else if ("reportProcessSummary".equals(action)) {
             this.reportProcessSummary(request, response);
-        } else if ("processDetail".equals(action)) {
-            this.processDetail(request, response);
+        } else if ("reportMostActiveProcess".equals(action)) {
+            this.reportMostActiveProcess(request, response);
         } else {
             System.out.println("Unkown Action: " + action);
         }
@@ -525,20 +527,6 @@ public class JbpmServlet extends HttpServlet {
         response.getWriter().print("{success:true}");
     }
 
-    public void reportOverallActivity(HttpServletRequest request,
-        HttpServletResponse response) throws Exception {
-        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
-        String result = jbpmTemplate.reportOverallActivity();
-        response.getWriter().print(result);
-    }
-
-    public void reportProcessSummary(HttpServletRequest request,
-        HttpServletResponse response) throws Exception {
-        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
-        String result = jbpmTemplate.reportOverallActivity();
-        response.getWriter().print(result);
-    }
-
     public void processDetail(HttpServletRequest request,
         HttpServletResponse response) throws Exception {
         JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
@@ -555,5 +543,26 @@ public class JbpmServlet extends HttpServlet {
             .append(ac.getHeight())
             .append("px;border:1px solid red;'></div>");
         response.getWriter().print(buff.toString());
+    }
+
+    public void reportOverallActivity(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        String result = jbpmTemplate.reportOverallActivity();
+        response.getWriter().print(result);
+    }
+
+    public void reportProcessSummary(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        String result = jbpmTemplate.reportOverallActivity();
+        response.getWriter().print(result);
+    }
+
+    public void reportMostActiveProcess(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        String result = jbpmTemplate.reportMostActiveProcess();
+        response.getWriter().print(result);
     }
 }

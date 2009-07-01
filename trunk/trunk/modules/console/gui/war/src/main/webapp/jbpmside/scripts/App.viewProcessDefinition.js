@@ -124,7 +124,7 @@ App.createViewProcessDefinition = function() {
             y: 250,
             width: 250,
             height: 200,
-            html: '<embed type="application/x-shockwave-flash" src="scripts/FusionCharts/FCF_Pie3D.swf" width="200" height="150"   id="mostActiveProcess" name="mostActiveProcess" quality="high" allowScriptAccess="always" flashvars="chartWidth=200&chartHeight=150&debugMode=0&DOMId=mostActiveProcess&registerWithJS=0&scaleMode=noScale&lang=EN&dataURL=mostActiveProcess.xml"/>',
+            html: '<embed type="application/x-shockwave-flash" src="scripts/FusionCharts/FCF_Pie3D.swf" width="200" height="150" id="mostActiveProcess" name="mostActiveProcess" quality="high" allowScriptAccess="always" flashvars="chartWidth=200&chartHeight=150&debugMode=0&DOMId=mostActiveProcess&registerWithJS=0&scaleMode=noScale&lang=EN&dataURL=jbpm.do?action=reportMostActiveProcess"/>',
             bbar: new Ext.Toolbar([
                 '->',
                 App.locale['moreMetrics']

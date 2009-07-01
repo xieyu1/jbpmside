@@ -25,7 +25,7 @@
     <aop:aspectj-autoproxy/>
 
     <aop:config proxy-target-class="true">
-        <aop:advisor pointcut="execution(* org.jbpmside.console.gui.template.JbpmTemplate.*(..))" advice-ref="txAdvice"/>
+        <aop:advisor pointcut="execution(* org.jbpmside.console.gui.support.JbpmTemplate.*(..))" advice-ref="txAdvice"/>
         <aop:advisor pointcut="execution(* org.jbpm..*.*(..))" advice-ref="txAdvice"/>
     </aop:config>
 

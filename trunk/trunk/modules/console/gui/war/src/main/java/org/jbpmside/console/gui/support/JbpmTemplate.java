@@ -1,4 +1,4 @@
-package org.jbpmside.console.gui.template;
+package org.jbpmside.console.gui.support;
 
 import java.io.InputStream;
 
@@ -316,6 +316,21 @@ public class JbpmTemplate {
         return (user != null) && password.equals(user.getPassword());
     }
 
+    public ProcessDefinition getProcessDefinitionByProcessInstanceId(
+        String processInstanceId) {
+        ExecutionService executionService = processEngine
+            .getExecutionService();
+        ProcessInstance pi = executionService.findProcessInstanceById(processInstanceId);
+        EnvironmentFactory environmentFactory = (EnvironmentFactory) processEngine;
+        Environment env = environmentFactory.openEnvironment();
+
+        try {
+            return ((OpenProcessInstance) pi).getProcessDefinition();
+        } finally {
+            env.close();
+        }
+    }
+
     public String reportOverallActivity() {
         StringBuffer buff = new StringBuffer(
                 "<graph showNames='Overall Activity' decimalPrecision='2'>");
@@ -354,18 +369,41 @@ public class JbpmTemplate {
         return buff.toString();
     }
 
-    public ProcessDefinition getProcessDefinitionByProcessInstanceId(
-        String processInstanceId) {
-        ExecutionService executionService = processEngine
-            .getExecutionService();
-        ProcessInstance pi = executionService.findProcessInstanceById(processInstanceId);
-        EnvironmentFactory environmentFactory = (EnvironmentFactory) processEngine;
-        Environment env = environmentFactory.openEnvironment();
+    public String reportMostActiveProcess() {
+        StringBuffer buff = new StringBuffer(
+                "<graph showNames='Most Active Process' decimalPrecision='2'>");
+        Connection conn = null;
 
         try {
-            return ((OpenProcessInstance) pi).getProcessDefinition();
+            conn = dataSource.getConnection();
+
+            Statement state = conn.createStatement();
+
+            String sql = "  select d.STRINGVAL_ as id, count(p.ID_) as num"
+                + "    from JBPM4_DEPLOYPROP d left join JBPM4_HIST_PROCINST p"
+                + "      on d.STRINGVAL_=p.PROCDEFID_"
+                + "   where d.KEY_='pdid' group by d.STRINGVAL_";
+            ResultSet rs = state.executeQuery(sql);
+
+            while (rs.next()) {
+                buff.append("<set name='").append(rs.getString("id"))
+                    .append("' value='").append(rs.getString("num"))
+                    .append("'/>");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
         } finally {
-            env.close();
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    System.out.println(ex);
+                }
+            }
         }
+
+        buff.append("</graph>");
+
+        return buff.toString();
     }
 }
