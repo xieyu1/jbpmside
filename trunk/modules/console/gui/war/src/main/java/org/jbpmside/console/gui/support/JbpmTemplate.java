@@ -38,12 +38,18 @@ import org.jbpm.api.model.Transition;
 import org.jbpm.api.task.OpenTask;
 import org.jbpm.api.task.Task;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.jbpm.pvm.internal.identity.impl.IdentitySessionImpl;
 import org.jbpm.pvm.internal.identity.impl.UserImpl;
 import org.jbpm.pvm.internal.identity.spi.IdentitySession;
 
 
 public class JbpmTemplate {
+	/** logger. */
+    private static Logger logger = LoggerFactory.getLogger(JbpmTemplate.class);
+
     private ProcessEngine processEngine;
     private DataSource dataSource;
 
@@ -88,7 +94,7 @@ public class JbpmTemplate {
     public void deployXml(String xml) {
         RepositoryService repositoryService = processEngine
             .getRepositoryService();
-
+		logger.info("template xml: " + xml);
         repositoryService.createDeployment()
                          .addResourceFromString("process.jpdl.xml", xml)
                          .deploy();
