@@ -24,14 +24,14 @@
     <script type="text/javascript">
 Ext.BLANK_IMAGE_URL = '${ext}/resources/images/default/s.gif';
     </script>
-    <title>jBPM 4.0.CR1</title>
+    <title>jBPM-Side控制台 0.1</title>
   </head>
   <body>
     <div id="loading-mask" style=""></div>
     <div id="loading">
       <div class="loading-indicator"><img src="styles/login/extanim32.gif" width="32" height="32" style="margin-right:8px;" align="absmiddle"/>正在加载数据...</div>
     </div>
-    <div id="nav_area">jBPM 4.0.CR1</div>
+    <div id="nav_area">jBPM-Side控制台 0.1</div>
     <div id="state_area" style="color:white;font-size:12px;font-weight:bold;text-align:right;">
         <script type="text/javascript">
             document.write(new Date());
