@@ -21,17 +21,18 @@
     <link rel="stylesheet" type="text/css" href="./styles/jpdl/styles/jpdl.css" />
     <script type="text/javascript" src="./scripts/ux/Ext.ux.LoginWindow.js"></script>
     <script type="text/javascript" src="./scripts/FusionCharts/FusionCharts.js"></script>
+    <script type="text/javascript" src="./scripts/miframe/miframe-min.js"></script>
     <script type="text/javascript">
 Ext.BLANK_IMAGE_URL = '${ext}/resources/images/default/s.gif';
     </script>
-    <title>jBPM-Side控制台 0.1</title>
+    <title>jBPM-Side控制台</title>
   </head>
   <body>
     <div id="loading-mask" style=""></div>
     <div id="loading">
       <div class="loading-indicator"><img src="styles/login/extanim32.gif" width="32" height="32" style="margin-right:8px;" align="absmiddle"/>正在加载数据...</div>
     </div>
-    <div id="nav_area">jBPM-Side控制台 0.1</div>
+    <div id="nav_area">jBPM-Side控制台</div>
     <div id="state_area" style="color:white;font-size:12px;font-weight:bold;text-align:right;">
         <script type="text/javascript">
             document.write(new Date());
@@ -39,10 +40,13 @@ Ext.BLANK_IMAGE_URL = '${ext}/resources/images/default/s.gif';
     </div>
     <script type="text/javascript" src="./scripts/App.accordion.js"></script>
     <script type="text/javascript" src="./scripts/App.viewProcessDefinition.js"></script>
+    <script type="text/javascript" src="./scripts/App.viewSuspendedProcessDefinition.js"></script>
     <script type="text/javascript" src="./scripts/App.uploadNewProcessDefinition.js"></script>
+    <script type="text/javascript" src="./scripts/App.viewSuspendedProcessInstance.js"></script>
     <script type="text/javascript" src="./scripts/App.viewProcessInstance.js"></script>
     <script type="text/javascript" src="./scripts/App.detailProcessInstance.js"></script>
     <script type="text/javascript" src="./scripts/App.viewTask.js"></script>
+    <script type="text/javascript" src="./scripts/App.viewPersonalTask.js"></script>
     <script type="text/javascript" src="./scripts/App.chart.js"></script>
     <script type="text/javascript" src="./scripts/App.transitionForm.js"></script>
     <script type="text/javascript" src="./scripts/App.user.js"></script>

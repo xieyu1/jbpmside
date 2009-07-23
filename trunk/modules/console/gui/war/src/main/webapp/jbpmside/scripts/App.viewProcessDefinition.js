@@ -16,15 +16,7 @@ App.createViewProcessDefinition = function() {
         store: new Ext.data.JsonStore({
             url: 'jbpm.do?action=processDefinitions',
             root: 'result',
-            fields: [{
-                name: 'id'
-            }, {
-                name: 'name'
-            }, {
-                name: 'version'
-            }, {
-                name: 'dbid'
-            }]
+            fields: ['id', 'name', 'version', 'dbid']
         }),
         columns: [{
             header: App.locale['viewDefinitions.id'],
@@ -82,7 +74,26 @@ App.createViewProcessDefinition = function() {
                     });
                 }
             }
-        },{
+        }, {
+            text: App.locale['suspend'],
+            handler: function() {
+                var selections = App.processDefinitions.getSelectionModel().getSelections();
+                if (selections.length == 1 ) {
+                    var record = selections[0];
+                    Ext.Ajax.request({
+                        url: 'jbpm.do?action=suspendProcessDefinition',
+                        params: {
+                            id: record.get('id')
+                        },
+                        success: function() {
+                            Ext.Msg.alert(App.locale['info'], App.locale['success']);
+                            App.processDefinitions.getStore().reload();
+                        }
+                    });
+                }
+
+            }
+        }, {
             text: App.locale['delete'],
             handler: function() {
                 var selections = App.processDefinitions.getSelectionModel().getSelections();
@@ -116,6 +127,7 @@ App.createViewProcessDefinition = function() {
             y: 20,
             width: 250,
             height: 200,
+            bodyStyle: 'padding:5px;font-size:12px;',
             html: App.locale['aboutProcessDefinition.content']
         }, {
             title: App.locale['mostActiveProcess.title'],
@@ -124,7 +136,7 @@ App.createViewProcessDefinition = function() {
             y: 250,
             width: 250,
             height: 200,
-            html: '<embed type="application/x-shockwave-flash" src="scripts/FusionCharts/FCF_Pie3D.swf" width="200" height="150" id="mostActiveProcess" name="mostActiveProcess" quality="high" allowScriptAccess="always" flashvars="chartWidth=200&chartHeight=150&debugMode=0&DOMId=mostActiveProcess&registerWithJS=0&scaleMode=noScale&lang=EN&dataURL=jbpm.do?action=reportMostActiveProcess"/>',
+            html: '<embed type="application/x-shockwave-flash" src="scripts/FusionCharts/FCF_Pie3D.swf" width="200" height="150" id="mostActiveProcess" name="mostActiveProcess" quality="high" allowScriptAccess="always" wmode="transparent" flashvars="chartWidth=200&chartHeight=150&debugMode=0&DOMId=mostActiveProcess&registerWithJS=0&scaleMode=noScale&lang=EN&dataURL=jbpm.do?action=reportMostActiveProcess"/>',
             bbar: new Ext.Toolbar([
                 '->',
                 App.locale['moreMetrics']

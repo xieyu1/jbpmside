@@ -7,8 +7,8 @@ App.createJpdl = function() {
         title: 'JPDL',
         iconCls: 'setting',
         tbar: new Ext.Toolbar([
-            App.locale['jpdl.open'], '-', {
-                text: App.locale['jpdl.save'],
+            'Open', '-', {
+                text: 'Save',
                 handler: function() {
                     var xml = Jpdl.model.serial();
                     Ext.Ajax.request({
@@ -36,15 +36,15 @@ App.createJpdl = function() {
         layout: 'border',
         items: [/*{
             region: 'west',
-            title:App.locale['jpdl.menu'],
+            title: 'menu',
             width: 150,
             layout: 'accordion',
             items: [{
-                title: App.locale['jpdl.attributes']
+                title: 'attributes'
             }, {
-                title: App.locale['jpdl.elements']
+                title: 'elements'
             }, {
-                title: App.locale['jpdl.forms']
+                title: 'forms'
             }]
         }, */{
             region: 'center',

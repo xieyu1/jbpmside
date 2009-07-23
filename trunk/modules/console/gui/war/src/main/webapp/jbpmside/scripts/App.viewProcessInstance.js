@@ -17,15 +17,7 @@ App.createViewProcessInstance = function(pdId, pdDbid) {
         store: new Ext.data.JsonStore({
             url: 'jbpm.do?action=processInstances',
             root: 'result',
-            fields: [{
-                name: 'id'
-            }, {
-                name: 'name'
-            }, {
-                name: 'key'
-            }, {
-                name: 'state'
-            }],
+            fields: ['id', 'name', 'key', 'state'],
             baseParams: {
                 pdId: pdId
             }
@@ -65,6 +57,27 @@ App.createViewProcessInstance = function(pdId, pdDbid) {
                 }
             }
         }, {
+            text: App.locale['history'],
+            handler: function() {
+                var selections = processInstances.getSelectionModel().getSelections();
+                if (selections.length == 1) {
+                    var record = selections[0];
+                    var id = record.get('id');
+                    var key = record.get('key');
+                    var dbid = record.get('dbid');
+                    //
+
+                    var tabs = Ext.getCmp('centerTabPanel');
+                    var tabItem = tabs.getItem('ViewHistoryActivities-' + id);
+                    if (tabItem == null) {
+                        var viewHistoryActivities = App.createViewHistoryActivities(id);
+                        tabItem = tabs.add(viewHistoryActivities);
+                        tabItem.setTitle('ViewHistoryActivities-' + id);
+                    }
+                    tabs.activate(tabItem);
+                }
+            }
+        }, {
             text: App.locale['signal'],
             handler: function() {
                 var selections = processInstances.getSelectionModel().getSelections();
@@ -73,6 +86,42 @@ App.createViewProcessInstance = function(pdId, pdDbid) {
                     App.showTransitionForm('processSignal', record.get('id'), function() {
                         Ext.Msg.alert(App.locale['info'], App.locale['success']);
                         processInstances.getStore().reload();
+                    });
+                }
+            }
+        }, {
+            text: App.locale['suspend'],
+            handler: function() {
+                var selections = processInstances.getSelectionModel().getSelections();
+                if (selections.length == 1) {
+                    var record = selections[0];
+                    Ext.Ajax.request({
+                        url: 'jbpm.do?action=suspendProcessInstance',
+                        params: {
+                            id: record.get('id')
+                        },
+                        success: function() {
+                            Ext.Msg.alert(App.locale['info'], App.locale['success']);
+                            processInstances.getStore().reload();
+                        }
+                    });
+                }
+            }
+        }, {
+            text: App.locale['end'],
+            handler: function() {
+                var selections = processInstances.getSelectionModel().getSelections();
+                if (selections.length == 1) {
+                    var record = selections[0];
+                    Ext.Ajax.request({
+                        url: 'jbpm.do?action=endProcessInstance',
+                        params: {
+                            id: record.get('id')
+                        },
+                        success: function() {
+                            Ext.Msg.alert(App.locale['info'], App.locale['success']);
+                            processInstances.getStore().reload();
+                        }
                     });
                 }
             }

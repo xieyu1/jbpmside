@@ -55,7 +55,6 @@
                 <value>classpath*:jbpm.execution.hbm.xml</value>
                 <value>classpath*:jbpm.history.hbm.xml</value>
                 <value>classpath*:jbpm.task.hbm.xml</value>
-                <value>classpath*:jbpm.jpdl.hbm.xml</value>
                 <value>classpath*:jbpm.identity.hbm.xml</value>
             </list>
         </property>
@@ -64,6 +63,9 @@
             <props>
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.use_sql_comments">${hibernate.use_sql_comments}</prop>
             </props>
         </property>
     </bean>

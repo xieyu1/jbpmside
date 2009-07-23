@@ -17,7 +17,10 @@ import javax.sql.DataSource;
 
 import org.jbpm.api.Execution;
 import org.jbpm.api.ExecutionService;
+import org.jbpm.api.HistoryService;
 import org.jbpm.api.IdentityService;
+import org.jbpm.api.JobQuery;
+import org.jbpm.api.ManagementService;
 import org.jbpm.api.ProcessDefinition;
 import org.jbpm.api.ProcessDefinitionQuery;
 import org.jbpm.api.ProcessEngine;
@@ -26,30 +29,31 @@ import org.jbpm.api.ProcessInstanceQuery;
 import org.jbpm.api.RepositoryService;
 import org.jbpm.api.TaskService;
 import org.jbpm.api.activity.ActivityExecution;
-import org.jbpm.api.env.Environment;
-import org.jbpm.api.env.EnvironmentFactory;
+import org.jbpm.api.history.HistoryActivityInstance;
+import org.jbpm.api.history.HistoryActivityInstanceQuery;
 import org.jbpm.api.identity.Group;
 import org.jbpm.api.identity.User;
-import org.jbpm.api.model.Activity;
+import org.jbpm.api.job.Job;
 import org.jbpm.api.model.ActivityCoordinates;
 import org.jbpm.api.model.OpenExecution;
 import org.jbpm.api.model.OpenProcessInstance;
-import org.jbpm.api.model.Transition;
-import org.jbpm.api.task.OpenTask;
 import org.jbpm.api.task.Task;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.jbpm.pvm.internal.env.Environment;
+import org.jbpm.pvm.internal.env.EnvironmentFactory;
 import org.jbpm.pvm.internal.identity.impl.IdentitySessionImpl;
 import org.jbpm.pvm.internal.identity.impl.UserImpl;
 import org.jbpm.pvm.internal.identity.spi.IdentitySession;
+import org.jbpm.pvm.internal.model.Activity;
+import org.jbpm.pvm.internal.model.ActivityCoordinatesImpl;
+import org.jbpm.pvm.internal.model.ActivityImpl;
+import org.jbpm.pvm.internal.model.ExecutionImpl;
+import org.jbpm.pvm.internal.model.ProcessDefinitionImpl;
+import org.jbpm.pvm.internal.model.Transition;
+import org.jbpm.pvm.internal.task.OpenTask;
 
 
 public class JbpmTemplate {
-	/** logger. */
-    private static Logger logger = LoggerFactory.getLogger(JbpmTemplate.class);
-
     private ProcessEngine processEngine;
     private DataSource dataSource;
 
@@ -82,6 +86,15 @@ public class JbpmTemplate {
         return new ArrayList(map.values());
     }
 
+    public List<ProcessDefinition> getSuspendedProcessDefinitions() {
+        RepositoryService repositoryService = processEngine
+            .getRepositoryService();
+
+        return repositoryService.createProcessDefinitionQuery().suspended()
+                                .orderAsc(ProcessDefinitionQuery.PROPERTY_NAME)
+                                .list();
+    }
+
     public void deploy(String name, InputStream inputStream) {
         RepositoryService repositoryService = processEngine
             .getRepositoryService();
@@ -94,10 +107,28 @@ public class JbpmTemplate {
     public void deployXml(String xml) {
         RepositoryService repositoryService = processEngine
             .getRepositoryService();
-		logger.info("template xml: " + xml);
+
         repositoryService.createDeployment()
                          .addResourceFromString("process.jpdl.xml", xml)
                          .deploy();
+    }
+
+    public void suspendProcessDefinitionById(String id) {
+        RepositoryService repositoryService = processEngine
+            .getRepositoryService();
+        ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
+                                                .processDefinitionId(id)
+                                                .uniqueResult();
+        repositoryService.suspendDeployment(pd.getDeploymentId());
+    }
+
+    public void resumeProcessDefinitionById(String id) {
+        RepositoryService repositoryService = processEngine
+            .getRepositoryService();
+        ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
+                                                .processDefinitionId(id)
+                                                .uniqueResult();
+        repositoryService.resumeDeployment(pd.getDeploymentId());
     }
 
     public void removeProcessDefinitionById(String id) {
@@ -106,25 +137,13 @@ public class JbpmTemplate {
         ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
                                                 .processDefinitionId(id)
                                                 .uniqueResult();
-        repositoryService.deleteDeploymentCascade(pd.getDeploymentDbid());
+        repositoryService.deleteDeploymentCascade(pd.getDeploymentId());
     }
 
-    public List<Transition> getTransitionsForTask(long id) {
+    public Set<String> getTransitionsForTask(String id) {
         TaskService taskService = processEngine.getTaskService();
-        Task task = taskService.getTask(id);
-        EnvironmentFactory environmentFactory = (EnvironmentFactory) processEngine;
-        Environment env = environmentFactory.openEnvironment();
 
-        try {
-            OpenTask openTask = (OpenTask) task;
-            ActivityExecution activityExecution = (ActivityExecution) openTask
-                .getExecution();
-            Activity activity = activityExecution.getActivity();
-
-            return activity.getOutgoingTransitions();
-        } finally {
-            env.close();
-        }
+        return taskService.getOutcomes(id);
     }
 
     public List<Transition> getTransitionsForSignalProcess(String id) {
@@ -135,8 +154,8 @@ public class JbpmTemplate {
         Environment env = environmentFactory.openEnvironment();
 
         try {
-            ActivityExecution activityExecution = (ActivityExecution) pi;
-            Activity activity = activityExecution.getActivity();
+            ExecutionImpl executionImpl = (ExecutionImpl) pi;
+            Activity activity = executionImpl.getActivity();
 
             return activity.getOutgoingTransitions();
         } finally {
@@ -144,7 +163,7 @@ public class JbpmTemplate {
         }
     }
 
-    public void completeTask(long dbid, String transitionName,
+    public void completeTask(String dbid, String transitionName,
         Map<String, Object> variables) {
         TaskService taskService = processEngine.getTaskService();
         taskService.setVariables(dbid, variables);
@@ -185,6 +204,14 @@ public class JbpmTemplate {
                                .processDefinitionId(pdId).list();
     }
 
+    public List<ProcessInstance> getSuspendedProcessInstances() {
+        ExecutionService executionService = processEngine
+            .getExecutionService();
+
+        return executionService.createProcessInstanceQuery().suspended()
+                               .list();
+    }
+
     public ActivityCoordinates getActivityCoordinates(String id) {
         RepositoryService repositoryService = processEngine
             .getRepositoryService();
@@ -192,20 +219,46 @@ public class JbpmTemplate {
             .getExecutionService();
 
         ProcessInstance pi = executionService.findProcessInstanceById(id);
-        EnvironmentFactory environmentFactory = (EnvironmentFactory) processEngine;
 
-        Environment env = environmentFactory.openEnvironment();
+        return repositoryService.getActivityCoordinates(pi
+            .getProcessDefinitionId(),
+            ((ActivityExecution) pi).getActivityName());
+    }
 
-        try {
-            ProcessDefinition pd = ((OpenProcessInstance) pi)
-                .getProcessDefinition();
-            String activityName = ((ActivityExecution) pi).getActivityName();
+    public void suspendProcessInstance(String id) {
+        ExecutionService executionService = processEngine
+            .getExecutionService();
 
-            return repositoryService.getActivityCoordinates(pd.getId(),
-                activityName);
-        } finally {
-            env.close();
-        }
+        ProcessInstance pi = executionService.findProcessInstanceById(id);
+
+        /**
+         * FIXME: 这个部分肯定是jBPM的bug，
+         * api里的Execution接口和ExecutionService接口竟然都没有suspend和resume方法。
+         */
+        ((ExecutionImpl) pi).suspend();
+    }
+
+    public void resumeProcessInstance(String id) {
+        ExecutionService executionService = processEngine
+            .getExecutionService();
+
+        ProcessInstance pi = executionService.createProcessInstanceQuery()
+                                             .suspended()
+                                             .processInstanceId(id)
+                                             .uniqueResult();
+
+        /**
+         * FIXME: 这个部分肯定是jBPM的bug，
+         * api里的Execution接口和ExecutionService接口竟然都没有suspend和resume方法。
+         */
+        ((ExecutionImpl) pi).resume();
+    }
+
+    public void endProcessInstance(String id) {
+        ExecutionService executionService = processEngine
+            .getExecutionService();
+
+        executionService.endProcessInstance(id, Execution.STATE_ENDED);
     }
 
     public void removeProcessInstance(String id) {
@@ -215,7 +268,7 @@ public class JbpmTemplate {
         executionService.deleteProcessInstance(id);
     }
 
-    public Map<String, Object> getVariablesForTask(long id) {
+    public Map<String, Object> getVariablesForTask(String id) {
         TaskService taskService = processEngine.getTaskService();
         Set<String> names = taskService.getVariableNames(id);
 
@@ -236,7 +289,46 @@ public class JbpmTemplate {
         return taskService.createTaskQuery().list();
     }
 
-    public InputStream getResourceFromProcessDefinition(long id,
+    public List<Task> getPersonalTasks(String username) {
+        TaskService taskService = processEngine.getTaskService();
+
+        return taskService.findPersonalTasks(username);
+    }
+
+    public List<Task> getGroupTasks(String username) {
+        TaskService taskService = processEngine.getTaskService();
+
+        return taskService.findGroupTasks(username);
+    }
+
+    public void takeTask(String dbid, String username) {
+        TaskService taskService = processEngine.getTaskService();
+        taskService.takeTask(dbid, username);
+    }
+
+    public void cancelTask(String dbid) {
+        TaskService taskService = processEngine.getTaskService();
+        Task task = taskService.getTask(dbid);
+
+        EnvironmentFactory environmentFactory = (EnvironmentFactory) processEngine;
+
+        Environment env = environmentFactory.openEnvironment();
+
+        try {
+            OpenTask openTask = (OpenTask) task;
+            // FIXME: jbpm-4.0.CR1 is cancel, now jbpm-4.0.GA is delete
+            openTask.delete("no reason");
+        } finally {
+            env.close();
+        }
+    }
+
+    public void releaseTask(String dbid) {
+        TaskService taskService = processEngine.getTaskService();
+        taskService.assignTask(dbid, null);
+    }
+
+    public InputStream getResourceFromProcessDefinition(String id,
         String name) {
         RepositoryService repositoryService = processEngine
             .getRepositoryService();
@@ -256,10 +348,10 @@ public class JbpmTemplate {
         query.processInstanceId(id);
 
         Execution processInstance = (Execution) query.uniqueResult();
-        ProcessDefinition pd = ((OpenExecution) processInstance)
+        ProcessDefinition pd = ((ExecutionImpl) processInstance)
             .getProcessDefinition();
 
-        return repositoryService.getResourceAsStream(pd.getDeploymentDbid(),
+        return repositoryService.getResourceAsStream(pd.getDeploymentId(),
             name);
     }
 
@@ -331,7 +423,7 @@ public class JbpmTemplate {
         Environment env = environmentFactory.openEnvironment();
 
         try {
-            return ((OpenProcessInstance) pi).getProcessDefinition();
+            return ((ExecutionImpl) pi).getProcessDefinition();
         } finally {
             env.close();
         }
@@ -411,5 +503,59 @@ public class JbpmTemplate {
         buff.append("</graph>");
 
         return buff.toString();
+    }
+
+    public List<ActivityCoordinates> getHistoryActivities(
+        String processInstanceId) {
+        HistoryService historyService = processEngine.getHistoryService();
+        HistoryActivityInstanceQuery query = historyService
+            .createHistoryActivityInstanceQuery();
+        List<HistoryActivityInstance> activities = query.executionId(processInstanceId)
+                                                        .list();
+
+        ProcessDefinitionImpl processDefinition = (ProcessDefinitionImpl) this
+            .getProcessDefinitionByProcessInstanceId(processInstanceId);
+        List<ActivityCoordinates> list = new ArrayList<ActivityCoordinates>();
+        ActivityImpl start = processDefinition.getInitial();
+        ActivityCoordinates startAc = start.getCoordinates();
+        startAc = new ActivityCoordinatesImpl(startAc.getX(),
+                startAc.getY(), 48, 48);
+        list.add(startAc);
+
+        for (HistoryActivityInstance activity : activities) {
+            String activityName = activity.getActivityName();
+            ActivityImpl activityImpl = processDefinition.findActivity(activityName);
+            ActivityCoordinates ac = activityImpl.getCoordinates();
+
+            if (activityImpl.getType().equals("decision")
+                    || activityImpl.getType().equals("fork")
+                    || activityImpl.getType().equals("join")
+                    || activityImpl.getType().equals("end")
+                    || activityImpl.getType().equals("end-cancel")
+                    || activityImpl.getType().equals("end-error")) {
+                ac = new ActivityCoordinatesImpl(ac.getX(), ac.getY(), 48,
+                        48);
+            }
+
+            list.add(ac);
+        }
+
+        return list;
+    }
+
+    public List<HistoryActivityInstance> getHistoryActivitiesByProcessInstanceId(
+        String processInstanceId) {
+        HistoryService historyService = processEngine.getHistoryService();
+        HistoryActivityInstanceQuery query = historyService
+            .createHistoryActivityInstanceQuery();
+
+        return query.executionId(processInstanceId).list();
+    }
+
+    public List<Job> getJobs() {
+        ManagementService managementService = processEngine
+            .getManagementService();
+
+        return managementService.createJobQuery().list();
     }
 }
