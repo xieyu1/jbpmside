@@ -7,11 +7,7 @@
   <import resource="jbpm.jpdl.cfg.xml" />
   <import resource="jbpm.identity.cfg.xml" />
 
-  <!-- Job executor is excluded for running the example test cases. -->
-  <!-- To enable timers and messages in production use, this should be included. -->
-  <!--
   <import resource="jbpm.jobexecutor.cfg.xml" />
-  -->
 
   <import resource="jbpm/jbpm.mail.templates.examples.xml" />
 

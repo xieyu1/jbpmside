@@ -17,21 +17,7 @@ App.createViewTaskManagement = function() {
         store: new Ext.data.JsonStore({
             url: 'jbpm.do?action=tasks',
             root: 'result',
-            fields: [{
-                name: 'name'
-            }, {
-                name: 'assignee'
-            }, {
-                name: 'create'
-            }, {
-                name: 'dueDate'
-            }, {
-                name: 'priority'
-            }, {
-                name: 'description'
-            }, {
-                name: 'dbid'
-            }]
+            fields: ['name', 'assignee', 'createTime', 'duedate', 'priority', 'description', 'dbid']
         }),
         columns: [{
             header: App.locale['viewTaskManagement.name'],
@@ -40,11 +26,11 @@ App.createViewTaskManagement = function() {
             header: App.locale['viewTaskManagement.assignTo'],
             dataIndex: 'assignee'
         }, {
-            header: App.locale['viewTaskManagement.create'],
-            dataIndex: 'create'
+            header: App.locale['viewTaskManagement.createTime'],
+            dataIndex: 'createTime'
         }, {
-            header: App.locale['viewTaskManagement.dueDate'],
-            dataIndex: 'dueDate'
+            header: App.locale['viewTaskManagement.duedate'],
+            dataIndex: 'duedate'
         }, {
             header: App.locale['viewTaskManagement.priority'],
             dataIndex: 'priority'
@@ -71,15 +57,15 @@ App.createViewTaskManagement = function() {
         Ext.getCmp('taskDetail').add({
             html: '<p>' + App.locale['viewTaskManagement.name'] + ':' + r.get('name') + '</p>'
                 + '<p>' + App.locale['viewTaskManagement.assignTo'] + ':' + r.get('assignee') + '</p>'
-                + '<p>' + App.locale['viewTaskManagement.create'] + ':' + r.get('create') + '</p>'
-                + '<p>' + App.locale['viewTaskManagement.dueDate'] + ':' + r.get('dueDate') + '</p>'
+                + '<p>' + App.locale['viewTaskManagement.createTime'] + ':' + r.get('createTime') + '</p>'
+                + '<p>' + App.locale['viewTaskManagement.duedate'] + ':' + r.get('duedate') + '</p>'
                 + '<p>' + App.locale['viewTaskManagement.priority'] + ':' + r.get('priority') + '</p>'
                 + '<p>' + App.locale['viewTaskManagement.description'] + ':' + r.get('description') + '</p>'
         });
         Ext.getCmp('taskDetail').doLayout();
     });
     tasks.getStore().load();
-    var treePanel = new Ext.Panel({
+    var panel = new Ext.Panel({
         id: 'ViewTaskManagement',
         title: App.locale['viewTaskManagement.title'],
         iconCls: 'taskManagement',
@@ -99,5 +85,5 @@ App.createViewTaskManagement = function() {
             }]
         }]
     });
-    return treePanel;
+    return panel;
 };

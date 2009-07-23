@@ -2,10 +2,13 @@ package org.jbpmside.console.gui.servlet;
 
 import java.io.IOException;
 
+import java.lang.reflect.Method;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,17 +18,19 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
+import org.jbpmside.console.gui.support.JbpmTemplate;
 
 import org.jbpm.api.ProcessDefinition;
 import org.jbpm.api.ProcessEngine;
 import org.jbpm.api.ProcessInstance;
+import org.jbpm.api.history.HistoryActivityInstance;
 import org.jbpm.api.identity.Group;
 import org.jbpm.api.identity.User;
+import org.jbpm.api.job.Job;
 import org.jbpm.api.model.ActivityCoordinates;
-import org.jbpm.api.model.Transition;
 import org.jbpm.api.task.Task;
 
-import org.jbpmside.console.gui.support.JbpmTemplate;
+import org.jbpm.pvm.internal.model.Transition;
 
 import org.springframework.context.ApplicationContext;
 
@@ -67,62 +72,13 @@ public class JbpmServlet extends HttpServlet {
         HttpServletResponse response) throws Exception {
         String action = request.getParameter("action");
 
-        if ("processDefinitions".equals(action)) {
-            this.processDefinitions(request, response);
-        } else if ("deploy".equals(action)) {
-            this.deploy(request, response);
-        } else if ("deployXml".equals(action)) {
-            this.deployXml(request, response);
-        } else if ("removeProcessDefinition".equals(action)) {
-            this.removeProcessDefinition(request, response);
-        } else if ("transitions".equals(action)) {
-            this.transitions(request, response);
-        } else if ("selectTransition".equals(action)) {
-            this.selectTransition(request, response);
-        } else if ("processInstances".equals(action)) {
-            this.processInstances(request, response);
-        } else if ("activity".equals(action)) {
-            this.activity(request, response);
-        } else if ("removeProcessInstance".equals(action)) {
-            this.removeProcessInstance(request, response);
-        } else if ("variables".equals(action)) {
-            this.variables(request, response);
-        } else if ("tasks".equals(action)) {
-            this.tasks(request, response);
-        } else if ("users".equals(action)) {
-            this.users(request, response);
-        } else if ("addUser".equals(action)) {
-            this.addUser(request, response);
-        } else if ("removeUser".equals(action)) {
-            this.removeUser(request, response);
-        } else if ("members".equals(action)) {
-            this.members(request, response);
-        } else if ("addMember".equals(action)) {
-            this.addMember(request, response);
-        } else if ("removeMember".equals(action)) {
-            this.removeMember(request, response);
-        } else if ("groups".equals(action)) {
-            this.groups(request, response);
-        } else if ("addGroup".equals(action)) {
-            this.addGroup(request, response);
-        } else if ("removeGroup".equals(action)) {
-            this.removeGroup(request, response);
-        } else if ("isLogin".equals(action)) {
-            this.isLogin(request, response);
-        } else if ("login".equals(action)) {
-            this.login(request, response);
-        } else if ("logout".equals(action)) {
-            this.logout(request, response);
-        } else if ("processDetail".equals(action)) {
-            this.processDetail(request, response);
-        } else if ("reportOverallActivity".equals(action)) {
-            this.reportOverallActivity(request, response);
-        } else if ("reportProcessSummary".equals(action)) {
-            this.reportProcessSummary(request, response);
-        } else if ("reportMostActiveProcess".equals(action)) {
-            this.reportMostActiveProcess(request, response);
-        } else {
-            System.out.println("Unkown Action: " + action);
+        try {
+            Class clz = this.getClass();
+            Method method = clz.getDeclaredMethod(action,
+                    HttpServletRequest.class, HttpServletResponse.class);
+            method.invoke(this, request, response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -137,7 +93,29 @@ public class JbpmServlet extends HttpServlet {
             buff.append("{id:'").append(pd.getId()).append("',name:'")
                 .append(pd.getName()).append("',version:'")
                 .append(pd.getVersion()).append("',dbid:'")
-                .append(pd.getDeploymentDbid()).append("'},");
+                .append(pd.getDeploymentId()).append("'},");
+        }
+
+        if (!processDefinitions.isEmpty()) {
+            buff.deleteCharAt(buff.length() - 1);
+        }
+
+        buff.append("]}");
+        response.getWriter().print(buff.toString());
+    }
+
+    public void suspendedProcessDefinitions(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        List<ProcessDefinition> processDefinitions = jbpmTemplate
+            .getSuspendedProcessDefinitions();
+        StringBuffer buff = new StringBuffer("{result:[");
+
+        for (ProcessDefinition pd : processDefinitions) {
+            buff.append("{id:'").append(pd.getId()).append("',name:'")
+                .append(pd.getName()).append("',version:'")
+                .append(pd.getVersion()).append("',dbid:'")
+                .append(pd.getDeploymentId()).append("'},");
         }
 
         if (!processDefinitions.isEmpty()) {
@@ -178,6 +156,7 @@ public class JbpmServlet extends HttpServlet {
             }
         }
 
+        response.setContentType("text/html");
         response.getWriter().print("{success:true}");
     }
 
@@ -185,8 +164,25 @@ public class JbpmServlet extends HttpServlet {
         HttpServletResponse response) throws Exception {
         JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
         String xml = request.getParameter("xml");
+
         jbpmTemplate.deployXml(xml);
 
+        response.getWriter().print("{success:true}");
+    }
+
+    public void suspendProcessDefinition(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        String id = request.getParameter("id");
+        jbpmTemplate.suspendProcessDefinitionById(id);
+        response.getWriter().print("{success:true}");
+    }
+
+    public void resumeProcessDefinition(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        String id = request.getParameter("id");
+        jbpmTemplate.resumeProcessDefinitionById(id);
         response.getWriter().print("{success:true}");
     }
 
@@ -206,8 +202,23 @@ public class JbpmServlet extends HttpServlet {
         List<Transition> transitions = null;
 
         if ("taskComplete".equals(type)) {
-            long id = Long.parseLong(request.getParameter("dbid"));
-            transitions = jbpmTemplate.getTransitionsForTask(id);
+            String id = request.getParameter("dbid");
+            Set<String> outgoes = jbpmTemplate.getTransitionsForTask(id);
+            StringBuffer buff = new StringBuffer();
+            buff.append("[");
+
+            for (String str : outgoes) {
+                buff.append("'").append(str).append("',");
+            }
+
+            if (!outgoes.isEmpty()) {
+                buff.deleteCharAt(buff.length() - 1);
+            }
+
+            buff.append("]");
+            response.getWriter().print(buff.toString());
+
+            return;
         } else if ("processStart".equals(type)) {
             response.getWriter().print("[null]");
 
@@ -249,7 +260,7 @@ public class JbpmServlet extends HttpServlet {
         String type = request.getParameter("type");
 
         if ("taskComplete".equals(type)) {
-            int dbid = Integer.parseInt(request.getParameter("dbid"));
+            String dbid = request.getParameter("dbid");
             String t = request.getParameter("transition");
             jbpmTemplate.completeTask(dbid, t, variables);
         } else if ("processStart".equals(type)) {
@@ -286,6 +297,28 @@ public class JbpmServlet extends HttpServlet {
         response.getWriter().print(buff.toString());
     }
 
+    public void suspendedProcessInstances(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+
+        List<ProcessInstance> pis = jbpmTemplate
+            .getSuspendedProcessInstances();
+        StringBuffer buff = new StringBuffer("{result:[");
+
+        for (ProcessInstance pi : pis) {
+            buff.append("{id:'").append(pi.getId()).append("',name:'")
+                .append(pi.getName()).append("',key:'").append(pi.getKey())
+                .append("',state:'").append(pi.getState()).append("'},");
+        }
+
+        if (!pis.isEmpty()) {
+            buff.deleteCharAt(buff.length() - 1);
+        }
+
+        buff.append("]}");
+        response.getWriter().print(buff.toString());
+    }
+
     public void activity(HttpServletRequest request,
         HttpServletResponse response) throws Exception {
         JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
@@ -297,11 +330,36 @@ public class JbpmServlet extends HttpServlet {
             + ac.getWidth() + ",h:" + ac.getHeight() + "}");
     }
 
+    public void suspendProcessInstance(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        String id = request.getParameter("id");
+        jbpmTemplate.suspendProcessInstance(id);
+        response.getWriter().print("{success:true}");
+    }
+
+    public void resumeProcessInstance(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        String id = request.getParameter("id");
+        jbpmTemplate.resumeProcessInstance(id);
+        response.getWriter().print("{success:true}");
+    }
+
+    public void endProcessInstance(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        String id = request.getParameter("id");
+        jbpmTemplate.endProcessInstance(id);
+        response.getWriter().print("{success:true}");
+    }
+
     public void removeProcessInstance(HttpServletRequest request,
         HttpServletResponse response) throws Exception {
         JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
         String id = request.getParameter("id");
         jbpmTemplate.removeProcessInstance(id);
+        response.getWriter().print("{success:true}");
     }
 
     public void variables(HttpServletRequest request,
@@ -311,7 +369,7 @@ public class JbpmServlet extends HttpServlet {
         Map<String, Object> variables = null;
 
         if ("taskComplete".equals(type)) {
-            long id = Long.parseLong(request.getParameter("dbid"));
+            String id = request.getParameter("dbid");
             variables = jbpmTemplate.getVariablesForTask(id);
         } else if ("processStart".equals(type)) {
             variables = new HashMap<String, Object>();
@@ -344,11 +402,11 @@ public class JbpmServlet extends HttpServlet {
         for (Task task : tasks) {
             buff.append("{name:'").append(task.getName())
                 .append("',assignee:'").append(task.getAssignee())
-                .append("',create:'").append(task.getCreate())
-                .append("',dueDate:'").append(task.getDueDate())
+                .append("',createTime:'").append(task.getCreateTime())
+                .append("',duedate:'").append(task.getDuedate())
                 .append("',priority:'").append(task.getPriority())
                 .append("',description:'").append(task.getDescription())
-                .append("',dbid:'").append(task.getDbid()).append("'},");
+                .append("',dbid:'").append(task.getId()).append("'},");
         }
 
         if (!tasks.isEmpty()) {
@@ -358,6 +416,83 @@ public class JbpmServlet extends HttpServlet {
         buff.append("]}");
 
         response.getWriter().print(buff.toString());
+    }
+
+    public void personalTasks(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        String username = (String) request.getSession()
+                                          .getAttribute("currentUsername");
+        List<Task> tasks = jbpmTemplate.getPersonalTasks(username);
+        StringBuffer buff = new StringBuffer("{result:[");
+
+        for (Task task : tasks) {
+            buff.append("{name:'").append(task.getName())
+                .append("',assignee:'").append(task.getAssignee())
+                .append("',createTime:'").append(task.getCreateTime())
+                .append("',duedate:'").append(task.getDuedate())
+                .append("',priority:'").append(task.getPriority())
+                .append("',description:'").append(task.getDescription())
+                .append("',dbid:'").append(task.getId()).append("'},");
+        }
+
+        if (!tasks.isEmpty()) {
+            buff.deleteCharAt(buff.length() - 1);
+        }
+
+        buff.append("]}");
+
+        response.getWriter().print(buff.toString());
+    }
+
+    public void groupTasks(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        String username = (String) request.getSession()
+                                          .getAttribute("currentUsername");
+        List<Task> tasks = jbpmTemplate.getGroupTasks(username);
+        StringBuffer buff = new StringBuffer("{result:[");
+
+        for (Task task : tasks) {
+            buff.append("{name:'").append(task.getName())
+                .append("',assignee:'").append(task.getAssignee())
+                .append("',createTime:'").append(task.getCreateTime())
+                .append("',duedate:'").append(task.getDuedate())
+                .append("',priority:'").append(task.getPriority())
+                .append("',description:'").append(task.getDescription())
+                .append("',dbid:'").append(task.getId()).append("'},");
+        }
+
+        if (!tasks.isEmpty()) {
+            buff.deleteCharAt(buff.length() - 1);
+        }
+
+        buff.append("]}");
+
+        response.getWriter().print(buff.toString());
+    }
+
+    public void takeTask(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        String dbid = request.getParameter("id");
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        String username = (String) request.getSession()
+                                          .getAttribute("currentUsername");
+        jbpmTemplate.takeTask(dbid, username);
+    }
+
+    public void cancelTask(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        String dbid = request.getParameter("id");
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        jbpmTemplate.cancelTask(dbid);
+    }
+
+    public void releaseTask(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        String dbid = request.getParameter("id");
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        jbpmTemplate.releaseTask(dbid);
     }
 
     public void users(HttpServletRequest request,
@@ -535,13 +670,29 @@ public class JbpmServlet extends HttpServlet {
             .getProcessDefinitionByProcessInstanceId(id);
         ActivityCoordinates ac = jbpmTemplate.getActivityCoordinates(id);
         StringBuffer buff = new StringBuffer(
-                "<img style='position:absolute;left:0px;top:0px;' src='JpdlImage?id=");
-        buff.append(processDefinition.getDeploymentDbid())
+                "<script type='text/javascript' src='scripts/replay.js'></script>"
+                + "<img style='position:absolute;left:0px;top:0px;' src='JpdlImage?id=");
+        buff.append(processDefinition.getDeploymentId())
             .append("'><div style='position:absolute;left:")
             .append(ac.getX()).append("px;top:").append(ac.getY())
             .append("px;width:").append(ac.getWidth()).append("px;height:")
             .append(ac.getHeight())
             .append("px;border:1px solid red;'></div>");
+        buff.append("<script type='text/javascript'>")
+            .append("var array = [");
+
+        for (ActivityCoordinates acs : jbpmTemplate.getHistoryActivities(
+                id)) {
+            buff.append("{x:").append(acs.getX()).append(",y:")
+                .append(acs.getY()).append(",w:").append(acs.getWidth())
+                .append(",h:").append(acs.getHeight()).append("},");
+        }
+
+        if (buff.charAt(buff.length() - 1) == ',') {
+            buff.deleteCharAt(buff.length() - 1);
+        }
+
+        buff.append("];").append("</script>");
         response.getWriter().print(buff.toString());
     }
 
@@ -564,5 +715,58 @@ public class JbpmServlet extends HttpServlet {
         JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
         String result = jbpmTemplate.reportMostActiveProcess();
         response.getWriter().print(result);
+    }
+
+    public void historyActivities(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        String id = request.getParameter("id");
+        List<HistoryActivityInstance> list = jbpmTemplate
+            .getHistoryActivitiesByProcessInstanceId(id);
+
+        StringBuffer buff = new StringBuffer();
+        buff.append("{result:[");
+
+        for (HistoryActivityInstance hai : list) {
+            buff.append("{activityName:'").append(hai.getActivityName())
+                .append("',startTime:'").append(hai.getStartTime())
+                .append("',endTime:'").append(hai.getEndTime())
+                .append("',duration:'").append(hai.getDuration())
+                .append("'},");
+        }
+
+        if (!list.isEmpty()) {
+            buff.deleteCharAt(buff.length() - 1);
+        }
+
+        buff.append("]}");
+        response.getWriter().print(buff.toString());
+    }
+
+    public void jobs(HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        JbpmTemplate jbpmTemplate = this.getJbpmTemplate();
+        List<Job> list = jbpmTemplate.getJobs();
+
+        StringBuffer buff = new StringBuffer();
+        buff.append("{result:[");
+
+        for (Job job : list) {
+            buff.append("{dbid:'").append(job.getId())
+                .append("',lockOwner:'").append(job.getLockOwner())
+                .append("',dueDate:'").append(job.getDueDate())
+                .append("',exception:'").append(job.getException())
+                .append("',retries:'").append(job.getRetries())
+                .append("',exclusive:'").append(job.isExclusive())
+                .append("',lockExpirationTime:'")
+                .append(job.getLockExpirationTime()).append("'},");
+        }
+
+        if (!list.isEmpty()) {
+            buff.deleteCharAt(buff.length() - 1);
+        }
+
+        buff.append("]}");
+        response.getWriter().print(buff.toString());
     }
 }

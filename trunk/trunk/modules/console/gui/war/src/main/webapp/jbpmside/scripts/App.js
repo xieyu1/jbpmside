@@ -19,6 +19,8 @@ App.init = function() {
         activeTab: 0,
         region: 'center',
         xtype: 'tabpanel',
+        layoutOnTabChange: true,
+        enableTabScroll: true,
         items: [{
             title: App.locale['welcome.title'],
             iconCls: 'welcome',
@@ -27,12 +29,7 @@ App.init = function() {
             App.viewProcessDefinition,
             App.uploadNewProcessDefinition,
             App.jpdl
-        ],
-        listeners: {
-            'tabChange': function(tab) {
-                tab.doLayout();
-            }
-        }
+        ]
     };
 
     var viewPort = new Ext.Viewport({

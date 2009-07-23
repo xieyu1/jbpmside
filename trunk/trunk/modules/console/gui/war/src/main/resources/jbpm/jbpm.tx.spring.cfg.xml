@@ -9,7 +9,7 @@
 <!--
       <standard-transaction-interceptor/>
 -->
-      <spring-transaction-interceptor current="true" />
+      <spring-transaction-interceptor />
     </command-service>
   </process-engine-context>
 
@@ -17,6 +17,7 @@
 <!--
     <transaction/>
 -->
+    <spring-transaction />
     <hibernate-session current="true"/>
   </transaction-context>
 

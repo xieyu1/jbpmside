@@ -1,30 +1,37 @@
 
 .processManagement,
-.x-tree-node-leaf .processManagement{
+.x-tree-node-leaf .processManagement,
+.x-panel-tl .processManagement {
     background: url(jbpm/41.png) no-repeat;
 }
 .taskManagement,
-.x-tree-node-leaf .taskManagement {
+.x-tree-node-leaf .taskManagement,
+.x-panel-tl .taskManagement {
     background: url(jbpm/29.png) no-repeat;
 }
 .metricsAndStats,
-.x-tree-node-leaf .metricsAndStats {
+.x-tree-node-leaf .metricsAndStats,
+.x-panel-tl .metricsAndStats {
     background: url(jbpm/31.png) no-repeat;
 }
 .setting,
-.x-tree-node-leaf .setting {
+.x-tree-node-leaf .setting,
+.x-panel-tl .setting {
     background: url(jbpm/36.png) no-repeat;
 }
 .aboutProcessDefinition,
-.x-tree-node-leaf .aboutProcessDefinition {
+.x-tree-node-leaf .aboutProcessDefinition,
+.x-panel-tl .aboutProcessDefinition {
     background: url(jbpm/14.png) no-repeat;
 }
 .processInstance,
-.x-tree-node-leaf .processInstance {
+.x-tree-node-leaf .processInstance,
+.x-panel-tl .processInstance {
     background: url(jbpm/05_1.png) no-repeat;
 }
 .comment,
-.x-tree-node-leaf .comment {
+.x-tree-node-leaf .comment,
+.x-panel-tl .comment {
     background: url(jbpm/27.png) no-repeat;
 }
 .users,
@@ -33,7 +40,8 @@
     background: url(jbpm/05.png) no-repeat;
 }
 .group,
-.x-tree-node-leaf .group {
+.x-tree-node-leaf .group,
+.x-panel-tl .group {
     background: url(jbpm/05_1.png) no-repeat;
 }
 .welcome {

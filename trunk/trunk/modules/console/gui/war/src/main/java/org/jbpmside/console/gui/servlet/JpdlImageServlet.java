@@ -25,12 +25,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jbpmside.console.gui.bean.NodeBean;
-import org.jbpmside.console.gui.bean.TransitionBean;
 import org.jbpmside.console.gui.geom.Line;
 import org.jbpmside.console.gui.geom.LineDrawer;
 import org.jbpmside.console.gui.geom.Rect;
-import org.jbpmside.console.gui.support.JbpmTemplate;
 
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -43,6 +40,9 @@ import org.jbpm.api.ProcessEngine;
 import org.jbpm.api.ProcessInstanceQuery;
 import org.jbpm.api.RepositoryService;
 import org.jbpm.api.model.OpenExecution;
+import org.jbpmside.console.gui.bean.NodeBean;
+import org.jbpmside.console.gui.bean.TransitionBean;
+import org.jbpmside.console.gui.support.JbpmTemplate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 /**
  * 解析xml生成流程图.
  *
- * @author Lingo
+ * @author Lingo,Kayzhan
  */
 public class JpdlImageServlet extends HttpServlet {
     /** logger. */
@@ -104,14 +104,10 @@ public class JpdlImageServlet extends HttpServlet {
      * 获得流程定义id.
      *
      * @param request request
-     * @return Long
+     * @return String
      */
-    public Long getProcessDefinitionId(HttpServletRequest request) {
-        try {
-            return Long.valueOf(request.getParameter("id"));
-        } catch (Exception ex) {
-            return null;
-        }
+    public String getProcessDefinitionId(HttpServletRequest request) {
+        return request.getParameter("id");
     }
 
     /**
@@ -132,7 +128,7 @@ public class JpdlImageServlet extends HttpServlet {
      */
     public InputStream getXmlByProcessDefinition(
         HttpServletRequest request) {
-        Long id = getProcessDefinitionId(request);
+        String id = getProcessDefinitionId(request);
 
         if (id != null) {
             return this.getJbpmTemplate()
@@ -374,10 +370,13 @@ public class JpdlImageServlet extends HttpServlet {
                                 line.getY1(), line.getX2(), line.getY2());
                         drawer.draw(g2, 1F);
 
-                        int cx = ((line.getX1() + line.getX2()) / 2)
-                            - (transitionName.length() * 4);
-                        int cy = ((line.getY1() + line.getY2()) / 2) - 10;
-                        g2.drawString(transitionName, cx, cy);
+                        if (transitionName != null) {
+                            int cx = ((line.getX1() + line.getX2()) / 2)
+                                - (transitionName.length() * 4);
+                            int cy = ((line.getY1() + line.getY2()) / 2)
+                                - 10;
+                            g2.drawString(transitionName, cx, cy);
+                        }
                     }
                 }
             }

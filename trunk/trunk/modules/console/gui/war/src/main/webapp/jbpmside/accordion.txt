@@ -14,8 +14,18 @@
                     iconCls: 'processManagement',
                     leaf: true
                 }, {
+                    id: 'ViewSuspendedProcessDefinition',
+                    text: App.locale['viewSuspendedDefinitions.title'],
+                    iconCls: 'processManagement',
+                    leaf: true
+                }, {
                     id: 'UploadNewProcessDefinition',
                     text: App.locale['uploadNewDefinition.title'],
+                    iconCls: 'processManagement',
+                    leaf: true
+                }, {
+                    id: 'ViewSuspendedProcessInstance',
+                    text: App.locale['viewSuspendedProcessInstances.title'],
                     iconCls: 'processManagement',
                     leaf: true
                 }]
@@ -35,6 +45,11 @@
             root: new Ext.tree.AsyncTreeNode({
                 expanded: true,
                 children: [{
+                    id: 'ViewPersonalTasks',
+                    text: App.locale['viewPersonalTasks.title'],
+                    iconCls: 'taskManagement',
+                    leaf: true
+                }, {
                     id: 'ViewTaskManagement',
                     text: App.locale['viewTaskManagement.title'],
                     iconCls: 'taskManagement',
@@ -100,7 +115,7 @@
         }]
     }, {
         title: App.locale['logout.title'],
-        iconCls: 'group',
+        iconCls: 'setting',
         layout: 'fit',
         items: [{
             xtype: 'treepanel',
