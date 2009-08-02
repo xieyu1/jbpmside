@@ -10,6 +10,7 @@ package org.jbpmside.view.component.role.manager
 	import org.jbpmside.view.component.role.AbstractTool;
 	import org.jbpmside.view.component.role.ConnectionTool;
 	import org.jbpmside.view.component.role.CreationTool;
+	import org.jbpmside.view.component.role.NodeMoveTool;
 	import org.jbpmside.view.component.role.SelectionTool;
 	
 	public class AbstractToolsManager extends ToolsManager
@@ -18,6 +19,7 @@ package org.jbpmside.view.component.role.manager
 		
 		public var createTool:Tool;//处理创建节点组件的事件
 		public var selectTool:Tool;//处理点击选中事件
+		public var nodeMoveTool:Tool;//处理节点移动和选中事件
 		public var connectionTool:Tool;//处理创建连接线的事件
 		private var emptyTool:Tool=new AbstractTool();
 		
@@ -33,6 +35,8 @@ package org.jbpmside.view.component.role.manager
 				createTool=new CreationTool();
 			}else if(toolKey==ToolsManager.CREATE_CONNECTION){
 				connectionTool=new ConnectionTool();
+			}else if(toolKey==ToolsManager.MOVE_NODE){
+				nodeMoveTool=new NodeMoveTool();
 			}
 		}
 		

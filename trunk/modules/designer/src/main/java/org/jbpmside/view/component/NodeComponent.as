@@ -108,20 +108,16 @@ package org.jbpmside.view.component
 		}
 		
 		private function mouseDownHandler(event:MouseEvent):void{
-			this.startDrag();
-			addEventListener(MouseEvent.MOUSE_MOVE, nodeMoveHandler);
+			event.stopPropagation();
+			this.tool.mouseDown(event,0,0);
 		}
 		
 		private function mouseUpHandler(event:MouseEvent):void{
-			this.stopDrag();
-			removeEventListener(MouseEvent.MOUSE_MOVE, nodeMoveHandler);
+			event.stopPropagation();
+			this.tool.mouseUp(event,0,0);
 		}
 		
-		private function nodeMoveHandler(event:MouseEvent):void{
-			updateConnectionPositions();
-		}
-		
-		private function updateDragPosition(event:MouseEvent):void{
+		public function updateDragPosition(event:MouseEvent):void{
 			if(theModel.alignToGrid){
 				var test:Number = ((event.stageY/this.scaleY)-(this.y/this.scaleY)) - int(((event.stageY/this.scaleY)-(this.y/this.scaleY))/20)*20;
         		if(test < 0){
@@ -144,22 +140,6 @@ package org.jbpmside.view.component
 		public override function mouseClickHandler(event:MouseEvent):void{
 			event.stopPropagation();
 			this.tool.mouseClick(event,0,0);
-//			if(isConnectSelect()){
-//				var connectEvent:CustomEvent=new CustomEvent(TheModel.ADD_CONNECTION,this);
-//				theModel.dispatchEvent(connectEvent);
-//			}else{
-//				selected();
-//			}
-		}
-		
-		private function isConnectSelect():Boolean{
-			if(theModel.selectedMode==TheModel.SELECTED_TRANSITION){
-				var selectedComponent:ShapeComponent=canvas.selectedComponent;
-				if(selectedComponent!=null&&(selectedComponent is NodeComponent)&&!isSelected){
-					return true;
-				}
-			}
-			return false;
 		}
 		
 		public  function getNodeIconUrl():String{

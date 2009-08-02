@@ -18,7 +18,7 @@ package org.jbpmside.view.component.role.manager
 			if(barSelectedMode== TheModel.SELECTED_TRANSITION){
 				return connectionTool;
 			}
-			return selectTool;
+			return nodeMoveTool;
 		}
 		
 		//####################################################
