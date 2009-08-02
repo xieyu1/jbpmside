@@ -4,21 +4,23 @@ package org.jbpmside.view.component.gef
  */
 {
 	import com.degrafa.Surface;
-
+	
 	import mx.collections.ArrayCollection;
-
+	
 	import org.jbpmside.view.component.role.SelectionTool;
+	import org.jbpmside.view.component.role.manager.SurfaceToolsManager;
 
 	public class GraphicViewer extends Surface implements IEditPart
 	{
 		protected var _model:Object;
-
-		private var currentTool:Tool;
-		private var defaultTool:Tool=new SelectionTool();
+		
+		private var toolsManager:ToolsManager=SurfaceToolsManager.getInstance();
 
 		public function GraphicViewer()
 		{
 			super();
+			toolsManager.registerTool(ToolsManager.CREATE_NODE);
+			toolsManager.registerTool(ToolsManager.SELECT_COMPONENT);
 		}
 
 		public function createControl():void
@@ -38,20 +40,7 @@ package org.jbpmside.view.component.gef
 
 		public function get tool():Tool
 		{
-			if(!currentTool){
-				currentTool = defaultTool;
-			}
-			return currentTool;
-		}
-
-		public function set tool(currentTool:Tool):void
-		{
-			this.currentTool=currentTool;
-		}
-
-		public function toolDone():void
-		{
-			this.tool=defaultTool;
+			return toolsManager.getCurrentTool();
 		}
 
 		public function getModelChildren():ArrayCollection

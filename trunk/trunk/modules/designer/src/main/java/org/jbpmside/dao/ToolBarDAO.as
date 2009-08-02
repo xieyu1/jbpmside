@@ -1,4 +1,7 @@
 package org.jbpmside.dao
+/**
+ * @author ronghao 
+ */
 {
 	import org.jbpmside.event.CustomEvent;
 	import org.jbpmside.model.TheModel;

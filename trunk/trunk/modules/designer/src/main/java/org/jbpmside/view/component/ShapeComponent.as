@@ -41,12 +41,18 @@ package org.jbpmside.view.component
 			addEventListeners();
 		}
 		
+		/**
+		 * 创建图形
+		 */
 		override public function createFigure():void{
 			init();
 			initLabelField();
 			this.addChild(labelField);
 		}
 		
+		/**
+		 * 注册原生事件处理器
+		 */
 		public function addEventListeners():void{
             addEventListener(MouseEvent.CLICK, mouseClickHandler);
             addEventListener(MouseEvent.MOUSE_OVER, mouseOverHandler);
@@ -54,9 +60,10 @@ package org.jbpmside.view.component
             labelField.addEventListener(MouseEvent.CLICK, mouseDbClickHandler);
 		}
 		
-		public function init():void{
-			
-		}
+		/**
+		 * 子类创建图形
+		 */
+		public function init():void{}
 		
 		public function mouseClickHandler(event:MouseEvent):void{
 			event.stopPropagation();

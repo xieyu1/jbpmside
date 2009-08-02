@@ -1,6 +1,7 @@
 package org.jbpmside.model
 /**
  * @author liuch 2009-6-1
+ * ronghao modified
  */
 {
 	import mx.collections.ArrayCollection;
@@ -13,7 +14,9 @@ package org.jbpmside.model
 		private var _x:Number;
 		private var _y:Number;
 
+		//到达该节点的转移线
 		private var _targetTransitions:ArrayCollection;
+		//从该节点发出的转移线
 		private var _sourceTransitions:ArrayCollection;
 
 
@@ -24,6 +27,21 @@ package org.jbpmside.model
 			_sourceTransitions.addEventListener(CollectionEvent.COLLECTION_CHANGE, onNodeCollectionChange);
 		}
 
+		//被删除时做一些清理工作
+		public function destory():void{
+			for(var i:int=0;i<_sourceTransitions.length;i++){
+				var connection:ConnectionModel=_sourceTransitions[i] as ConnectionModel;
+				connection.destory();
+			}
+			for(var i:int=0;i<_targetTransitions.length;i++){
+				var connection:ConnectionModel=_targetTransitions[i] as ConnectionModel;
+				connection.destory();
+			}
+		} 
+
+		//####################################################
+		//	getter/setter
+		//####################################################	
 		public function get x():Number
 		{
 			return _x;
@@ -67,6 +85,7 @@ package org.jbpmside.model
 		public function addTargetTransition(transition:ConnectionModel):void
 		{
 			_targetTransitions.addItem(transition);
+			transition.toNode=this;
 		}
 
 		public function removeTargetTransition(transition:ConnectionModel):void
@@ -77,6 +96,7 @@ package org.jbpmside.model
 		public function addSourceTransition(transition:ConnectionModel):void
 		{
 			_sourceTransitions.addItem(transition);
+			transition.fromNode=this;
 		}
 
 		public function removeSourceTransition(transition:ConnectionModel):void

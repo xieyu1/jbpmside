@@ -85,9 +85,6 @@
 			public function init():void
 			{
 				addListeners();
-				createTool=new CreationTool();
-				selectTool=new SelectionTool();
-				connectionTool=new ConnectionTool();
 			}
 
 			public function addListeners():void
@@ -111,6 +108,14 @@
 				else if (selectedMode == TheModel.SELECTED_TASK_NODE)
 				{
 					taskButton.styleName="buttonSelected";
+				}
+				else if (selectedMode == TheModel.SELECTED_FORK_NODE)
+				{
+					forkButton.styleName="buttonSelected";
+				}
+				else if (selectedMode == TheModel.SELECTED_JOIN_NODE)
+				{
+					joinButton.styleName="buttonSelected";
 				}
 				else if (selectedMode == TheModel.SELECTED_END_NODE)
 				{
@@ -182,44 +187,42 @@
 
 			private function clickArrow():void
 			{
-				ProcessEditor.getEditor().graphicViewer.tool=selectTool;
-//				daoFactory.toolBarDAO.changeSelectedMode(TheModel.SELECTED_NONE);
+				daoFactory.toolBarDAO.changeSelectedMode(TheModel.SELECTED_NONE);
 			}
 
 			private function clickStart():void
 			{
-				ProcessEditor.getEditor().graphicViewer.tool=createTool;
-				createTool.type=TheModel.SELECTED_START_NODE;
+				clickNode(TheModel.SELECTED_START_NODE);
 			}
 
 			private function clickTask():void
 			{
-				ProcessEditor.getEditor().graphicViewer.tool=createTool;
-				createTool.type=TheModel.SELECTED_TASK_NODE;
+				clickNode(TheModel.SELECTED_TASK_NODE);
 			}
 
 			private function clickFork():void
 			{
-				ProcessEditor.getEditor().graphicViewer.tool=createTool;
-				createTool.type=TheModel.SELECTED_FORK_NODE;
+				clickNode(TheModel.SELECTED_FORK_NODE);
 			}
 
 			private function clickJoin():void
 			{
-				ProcessEditor.getEditor().graphicViewer.tool=createTool;
-				createTool.type=TheModel.SELECTED_JOIN_NODE;
+				clickNode(TheModel.SELECTED_JOIN_NODE);
 			}
 
 			private function clickEnd():void
 			{
-				ProcessEditor.getEditor().graphicViewer.tool=createTool;
-				createTool.type=TheModel.SELECTED_END_NODE;
+				clickNode(TheModel.SELECTED_END_NODE);
+			}
+			
+			private function clickNode(mode:int):void
+			{
+				daoFactory.toolBarDAO.changeSelectedMode(mode);
 			}
 
 			private function clickTransition():void
 			{
-//				daoFactory.toolBarDAO.changeSelectedMode(TheModel.SELECTED_TRANSITION);
-				ProcessEditor.getEditor().graphicViewer.tool=connectionTool;
+				daoFactory.toolBarDAO.changeSelectedMode(TheModel.SELECTED_TRANSITION);
 			}
 
 			private function cleanSelectedState():void
@@ -227,6 +230,8 @@
 				arrowButton.styleName="buttonUnSelected";
 				startButton.styleName="buttonUnSelected";
 				taskButton.styleName="buttonUnSelected";
+				forkButton.styleName="buttonUnSelected";
+				joinButton.styleName="buttonUnSelected";
 				endButton.styleName="buttonUnSelected";
 				transitionButton.styleName="buttonUnSelected";
 			}
