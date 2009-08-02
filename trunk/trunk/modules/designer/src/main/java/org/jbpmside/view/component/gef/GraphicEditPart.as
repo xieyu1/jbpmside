@@ -30,7 +30,7 @@ package org.jbpmside.view.component.gef
 		public function initToolsManager():void{
 			nodeToolsManager=NodeToolsManager.getInstance();
 			nodeToolsManager.registerTool(ToolsManager.CREATE_CONNECTION);
-			nodeToolsManager.registerTool(ToolsManager.SELECT_COMPONENT);
+			nodeToolsManager.registerTool(ToolsManager.MOVE_NODE);
 
 			connectionToolsManager=ConnectionToolsManager.getInstance();				
 			connectionToolsManager.registerTool(ToolsManager.SELECT_COMPONENT);
