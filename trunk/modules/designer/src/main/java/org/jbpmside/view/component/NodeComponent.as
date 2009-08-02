@@ -8,6 +8,8 @@ package org.jbpmside.view.component
 	
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
+	import org.jbpmside.model.TheModel;
+	import org.jbpmside.event.CustomEvent;
 	
 	import mx.collections.ArrayCollection;
 	import mx.styles.StyleManager;
@@ -40,6 +42,10 @@ package org.jbpmside.view.component
 		public function NodeComponent()
 		{
 			super();
+		}
+		
+		public override function isNodeComponent():Boolean{
+			return true;
 		}
 		
 		public override function addEventListeners():void{
@@ -137,7 +143,23 @@ package org.jbpmside.view.component
 		
 		public override function mouseClickHandler(event:MouseEvent):void{
 			event.stopPropagation();
-			ProcessEditor.getEditor().graphicViewer.tool.mouseClick(event,0,0);
+			this.tool.mouseClick(event,0,0);
+//			if(isConnectSelect()){
+//				var connectEvent:CustomEvent=new CustomEvent(TheModel.ADD_CONNECTION,this);
+//				theModel.dispatchEvent(connectEvent);
+//			}else{
+//				selected();
+//			}
+		}
+		
+		private function isConnectSelect():Boolean{
+			if(theModel.selectedMode==TheModel.SELECTED_TRANSITION){
+				var selectedComponent:ShapeComponent=canvas.selectedComponent;
+				if(selectedComponent!=null&&(selectedComponent is NodeComponent)&&!isSelected){
+					return true;
+				}
+			}
+			return false;
 		}
 		
 		public  function getNodeIconUrl():String{
@@ -179,12 +201,12 @@ package org.jbpmside.view.component
 		public override function destory():void{
 			for(var i:int=0;i<_arriveConnections.length;i++){
 				var connection:ConnectionComponent=_arriveConnections[i] as ConnectionComponent;
-				this.canvas.removeConnection(connection);
+				this.canvas.removeConnectionComponent(connection);
 				connection.destory();
 			}
 			for(var j:int=0;j<_leaveConnections.length;j++){
 				var connection1:ConnectionComponent=_leaveConnections[j] as ConnectionComponent;
-				this.canvas.removeConnection(connection1);
+				this.canvas.removeConnectionComponent(connection1);
 				connection1.destory();
 			}
 		}

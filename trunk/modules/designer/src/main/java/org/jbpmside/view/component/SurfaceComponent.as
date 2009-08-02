@@ -24,6 +24,7 @@ package org.jbpmside.view.component
 	import org.jbpmside.util.CloneUtil;
 	import org.jbpmside.view.component.gef.GraphicViewer;
 	import org.jbpmside.view.component.gef.IEditPart;
+	import org.jbpmside.view.component.gef.command.CommandService;
 
 	public class SurfaceComponent extends GraphicViewer
 	{
@@ -93,7 +94,7 @@ package org.jbpmside.view.component
 			if(_selectedComponent){
 				this._selectedComponent.unSelected();
 			}
-			
+			this._selectedComponent=null;
 		}
 
 		override public function getModelChildren():ArrayCollection
@@ -175,7 +176,7 @@ package org.jbpmside.view.component
 						var connectionEditPart:ConnectionComponent=ProcessEditor.getEditor().editPartFactory.createEditPart(connectionModel) as ConnectionComponent;
 						connectionEditPart.model = connectionModel;
 						connectionEditPart.fromNode=nodePart;
-						connectionEditPart.toNode=this.getNodeEditPartByName(connectionModel.toNode);
+						connectionEditPart.toNode=this.getNodeEditPartByName(connectionModel.toNode.name);
 						connectionEditPart.target=this;
 						this.graphicsCollection.addItem(connectionEditPart);
 						this._links.addItem(connectionEditPart);
@@ -262,7 +263,6 @@ package org.jbpmside.view.component
 			var compX:Number=(event.stageX - this.x) / this.scaleX;
 			var compY:Number=(event.stageY - this.y) / this.scaleY;
 			this.tool.mouseClick(event, compX, compY);
-			this.toolDone();
 		}
 
 		public function keyDownEventHandler(customEvent:CustomEvent):void
@@ -324,12 +324,18 @@ package org.jbpmside.view.component
 					if (event.ctrlKey)
 						pasteComponent(customEvent);
 					break;
+					
+				case 90: // Z
+				case 122: // z
+					if (event.ctrlKey)
+						undo(customEvent);
+					break;
 			}
 		}
 
 		public function onNodeCollectionChanged(event:CustomEvent):void
 		{
-			this.refreshChildren();
+//			this.refreshChildren();
 		}
 
 		private function changeShowGrid(event:CustomEvent):void
@@ -409,8 +415,8 @@ package org.jbpmside.view.component
 				if (_selectedComponent is NodeComponent)
 				{
 					theModel.copyOrCutComponent=CloneUtil.CloneNodeComponent(_selectedComponent as NodeComponent);
-					removeNode(_selectedComponent as NodeComponent);
-					_selectedComponent.destory();
+					removeNodeComponent(_selectedComponent as NodeComponent);
+//					_selectedComponent.destory();
 					_selectedComponent=null;
 				}
 			}
@@ -422,13 +428,13 @@ package org.jbpmside.view.component
 			{
 				if (_selectedComponent is NodeComponent)
 				{
-					removeNode(_selectedComponent as NodeComponent);
+					removeNodeComponent(_selectedComponent as NodeComponent);
 				}
 				else
 				{
-					removeConnection(_selectedComponent as ConnectionComponent);
+					removeConnectionComponent(_selectedComponent as ConnectionComponent);
 				}
-				_selectedComponent.destory();
+//				_selectedComponent.destory();
 				_selectedComponent=null;
 				theModel.copyOrCutComponent=null;
 			}
@@ -453,6 +459,11 @@ package org.jbpmside.view.component
 //				}
 //			}
 		}
+		
+		private function undo(event:CustomEvent):void
+		{
+			CommandService.getInstance().undo();
+		}
 
 		//####################################################
 		//	getter/setter
@@ -471,17 +482,35 @@ package org.jbpmside.view.component
 		{
 			return this._selectedComponent;
 		}
+		
+		public function addNodeComponent(node:NodeComponent):void{
+			node.target = this;
+			this.graphicsCollection.addItem(node);
+			this._nodes.addItem(node);
+			node.canvas=this;
+			daoFactory.toolBarDAO.changeSelectedMode(TheModel.SELECTED_NONE);	
+		}
+		
+		public function addConnectionComponent(connection:ConnectionComponent):void{
+			connection.target = this;
+			this.graphicsCollection.addItem(connection);
+			this._links.addItem(connection);
+			connection.canvas=this;
+			daoFactory.toolBarDAO.changeSelectedMode(TheModel.SELECTED_NONE);	
+		}
 
-		public function removeNode(node:NodeComponent):void
+		public function removeNodeComponent(node:NodeComponent):void
 		{
 			this._nodes.removeItemAt(this._nodes.getItemIndex(node));
 			removeChild(node);
+			node.destory();
 		}
 
-		public function removeConnection(connection:ConnectionComponent):void
+		public function removeConnectionComponent(connection:ConnectionComponent):void
 		{
 			this._links.removeItemAt(this._links.getItemIndex(connection));
 			removeChild(connection);
+			connection.destory();
 		}
 
 	}

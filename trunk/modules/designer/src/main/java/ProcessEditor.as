@@ -53,7 +53,6 @@ package
 			_contentProcess.addNode(taskNode);
 			var transition2:ConnectionModel = new ConnectionModel();
 			transition2.name = "to end";
-			transition2.toNode = "end";
 			taskNode.addSourceTransition(transition2);
 			endNode.addTargetTransition(transition2);
 			
@@ -64,7 +63,6 @@ package
 			_contentProcess.addNode(startNode);
 			var transition1:ConnectionModel = new ConnectionModel();
 			transition1.name = "to task";
-			transition1.toNode = "task";
 			startNode.addSourceTransition(transition1);
 			taskNode.addTargetTransition(transition1);
 			

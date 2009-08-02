@@ -11,60 +11,94 @@ package org.jbpmside.view.component.command
 	import org.jbpmside.model.StartNode;
 	import org.jbpmside.model.TaskNode;
 	import org.jbpmside.model.TheModel;
+	import org.jbpmside.view.component.NodeComponent;
+	import org.jbpmside.view.component.SurfaceComponent;
+	import org.jbpmside.view.component.node.EndComponent;
+	import org.jbpmside.view.component.node.ForkComponent;
+	import org.jbpmside.view.component.node.JoinComponent;
+	import org.jbpmside.view.component.node.StartComponent;
+	import org.jbpmside.view.component.node.TaskComponent;
 
 
 	public class CreateNodeCommand extends AutoUndoCommand
 	{
-		private var createNode:NodeModel;
+		private var createNodeModel:NodeModel;
+		private var createNodeComponent:NodeComponent;
 		
 		private static var uniqueNum:int = 0;
 
 		public function CreateNodeCommand(type:int, x:int, y:int)
 		{
 			super();
-			createNode = getNodeModel(type,x,y);
-
+			initNode(type,x,y);
+		}
+		
+		override public function canUndo():Boolean
+		{
+			return true;
 		}
 
 		override public function perform():Boolean
 		{
-			var processModel:ProcessModel = this.editor.graphicViewer.model as ProcessModel;
-			processModel.addNode(createNode);
-
+			//画板增加节点组件
+			var surfaceComponent:SurfaceComponent = this.editor.graphicViewer as SurfaceComponent;
+			surfaceComponent.addNodeComponent(createNodeComponent);
+			
+			//模型增加节点
+			var processModel:ProcessModel = surfaceComponent.model as ProcessModel;
+			processModel.addNode(createNodeModel);
 			return true;
 		}
+		
+		override public function undo():void
+		{
+			//画板删除节点组件
+			var surfaceComponent:SurfaceComponent = this.editor.graphicViewer as SurfaceComponent;
+			surfaceComponent.removeNodeComponent(createNodeComponent);
+			
+			//模型删除节点
+			var processModel:ProcessModel = surfaceComponent.model as ProcessModel;
+			processModel.removeNode(createNodeModel);
+		}
 
-		private function getNodeModel(type:int, x:int, y:int):NodeModel
+		private function initNode(type:int, x:int, y:int):void
 		{
 			var selectedMode:int=type;
-			var nodeModel:NodeModel;
 			if (selectedMode == TheModel.SELECTED_START_NODE)
 			{
-				nodeModel=new StartNode();
+				createNodeModel=new StartNode();
+				createNodeComponent=new StartComponent();
 			}
 			else if (selectedMode == TheModel.SELECTED_TASK_NODE)
 			{
-				nodeModel=new TaskNode();
+				createNodeModel=new TaskNode();
+				createNodeComponent=new TaskComponent();
 			}
 			else if (selectedMode == TheModel.SELECTED_FORK_NODE)
 			{
-				nodeModel=new ForkNode();
+				createNodeModel=new ForkNode();
+				createNodeComponent=new ForkComponent();
 			}
 			else if (selectedMode == TheModel.SELECTED_JOIN_NODE)
 			{
-				nodeModel=new JoinNode();
+				createNodeModel=new JoinNode();
+				createNodeComponent=new JoinComponent();
 			}
 			else if (selectedMode == TheModel.SELECTED_END_NODE)
 			{
-				nodeModel=new EndNode();
+				createNodeModel=new EndNode();
+				createNodeComponent=new EndComponent();
 			}
 			
-			nodeModel.x = x;
-			nodeModel.y = y;
-			nodeModel.name = "new node"+ uniqueNum;
-			uniqueNum ++;
+			createNodeModel.x = x;
+			createNodeModel.y = y;
+			createNodeModel.name = "new node"+ uniqueNum;
 			
-			return nodeModel;
+			createNodeComponent.model=createNodeModel;
+			createNodeComponent.x=x;
+			createNodeComponent.y=y;
+			createNodeComponent.name=createNodeModel.name;
+			uniqueNum ++;
 		}
 
 	}

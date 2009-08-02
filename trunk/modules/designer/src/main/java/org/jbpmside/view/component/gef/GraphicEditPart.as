@@ -1,6 +1,7 @@
 package org.jbpmside.view.component.gef
 /**
  * @author liuch 2009-6-1
+ * ronghao modified
  */
 {
 	import com.degrafa.GeometryGroup;
@@ -8,19 +9,45 @@ package org.jbpmside.view.component.gef
 	import mx.collections.ArrayCollection;
 	
 	import org.jbpmside.model.NodeModel;
-	import org.jbpmside.view.component.role.SelectionTool;
+	import org.jbpmside.view.component.role.manager.NodeToolsManager;
+	import org.jbpmside.view.component.role.manager.ConnectionToolsManager;
 
 	public class GraphicEditPart extends GeometryGroup implements IEditPart
 	{
 		private var _model:Object;
 		
-		private var currentTool:Tool;
-		private var defaultTool:Tool=new SelectionTool();
+		private var nodeToolsManager:ToolsManager;
+		private var connectionToolsManager:ToolsManager;
 
 		public function GraphicEditPart()
 		{
 			super();
+			//初始化原生事件处理管理器
+			initToolsManager();
 			createFigure();
+		}
+		
+		public function initToolsManager():void{
+			nodeToolsManager=NodeToolsManager.getInstance();
+			nodeToolsManager.registerTool(ToolsManager.CREATE_CONNECTION);
+			nodeToolsManager.registerTool(ToolsManager.SELECT_COMPONENT);
+
+			connectionToolsManager=ConnectionToolsManager.getInstance();				
+			connectionToolsManager.registerTool(ToolsManager.SELECT_COMPONENT);
+		}
+		
+		public function get tool():Tool
+		{
+			if(isNodeComponent()){
+				return nodeToolsManager.getCurrentTool();
+			}else{
+				return connectionToolsManager.getCurrentTool();
+			}			
+		}
+		
+		//区分节点组件和连接线组件
+		public function isNodeComponent():Boolean{
+			return false;
 		}
 
 		public function createFigure():void

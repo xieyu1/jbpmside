@@ -67,7 +67,7 @@ package org.jbpmside.view.component.gef.command
 		public function canUndo():Boolean {
 			if (undoable.length == 0)
 				return false;
-			return (undoable.getItemAt(0) as Command).canUndo();
+			return (undoable[0] as Command).canUndo();
 		}
 
 		/**

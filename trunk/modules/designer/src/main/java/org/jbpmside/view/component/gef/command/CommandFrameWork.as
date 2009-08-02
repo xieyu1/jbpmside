@@ -3,7 +3,7 @@ package org.jbpmside.view.component.gef.command
  * @author liuch 2009-6-1
  */
 {
-	public class CommandFrameWork implements ICommandFramework
+	public class CommandFrameWork
 	{
 		private var commandStack:CommandStack;
 		public function CommandFrameWork(commandStack:CommandStack)

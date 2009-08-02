@@ -11,25 +11,25 @@ package org.jbpmside.view.component.role
 	import org.jbpmside.view.component.SurfaceComponent;
 	import org.jbpmside.view.component.command.CreateConnectionCommand;
 	import org.jbpmside.view.component.gef.command.Command;
+	import org.jbpmside.view.component.gef.command.CommandService;
 
 	public class ConnectionTool extends AbstractTool
 	{
 
 		public function ConnectionTool()
 		{
-			//TODO: implement function
 			super();
 		}
 
 		override public function mouseClick(event:MouseEvent, x:int, y:int):void
 		{
+			
 			if (isConnectSelect(event))
 			{
-				var fromNode:NodeModel=(SurfaceComponent(this.editor.graphicViewer).selectedComponent as NodeComponent).model as NodeModel;
-				var toNode:NodeModel=(event.currentTarget as NodeComponent).model as NodeModel;
-				var cmd:Command=new CreateConnectionCommand(fromNode, toNode);
-				cmd.perform();
-
+				var fromNodeComponent:NodeComponent=SurfaceComponent(this.editor.graphicViewer).selectedComponent as NodeComponent;
+				var toNodeComponent:NodeComponent=event.currentTarget as NodeComponent;
+				var cmd:Command=new CreateConnectionCommand(fromNodeComponent, toNodeComponent);
+				CommandService.getInstance().execute(cmd);
 			}
 			else
 			{

@@ -32,6 +32,7 @@ package org.jbpmside.model
 		
 		public function removeNode(node:NodeModel):void{
 			_nodeCollection.removeItemAt(_nodeCollection.getItemIndex(node));
+			node.destory();
 		}
 		
 		private function onNodeCollectionChange(event:CollectionEvent):void{
