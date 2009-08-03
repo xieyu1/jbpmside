@@ -7,6 +7,9 @@ package org.jbpmside.view.component.role
 	import flash.events.MouseEvent;
 	
 	import org.jbpmside.view.component.NodeComponent;
+	import org.jbpmside.view.component.command.MoveNodeCommand;
+	import org.jbpmside.view.component.gef.command.Command;
+	import org.jbpmside.view.component.gef.command.CommandService;
 	
 	public class NodeMoveTool extends SelectionTool
 	{
@@ -25,6 +28,8 @@ package org.jbpmside.view.component.role
 			var nodeComponent:NodeComponent=event.currentTarget as NodeComponent;
 			nodeComponent.stopDrag();
 			nodeComponent.removeEventListener(MouseEvent.MOUSE_MOVE, nodeMoveHandler);
+			var cmd:Command=new MoveNodeCommand(nodeComponent);
+			CommandService.getInstance().execute(cmd);
 		}
 		
 		private function nodeMoveHandler(event:MouseEvent):void{
