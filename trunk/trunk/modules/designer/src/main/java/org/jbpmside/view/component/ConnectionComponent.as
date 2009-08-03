@@ -40,7 +40,6 @@ package org.jbpmside.view.component
 		
 		public function set fromNode(_fromNode:NodeComponent):void{
 			this._fromNode = _fromNode;
-			fromNode.addLeaveConnection(this);
 		}
 		
 		public function get fromNode():NodeComponent{
@@ -49,7 +48,6 @@ package org.jbpmside.view.component
 		
 		public function set toNode(_toNode:NodeComponent):void{
 			this._toNode = _toNode;
-			toNode.addArriveConnection(this);
 		}
 		
 		public function get toNode():NodeComponent{

@@ -182,12 +182,10 @@ package org.jbpmside.view.component
 			for(var i:int=0;i<_arriveConnections.length;i++){
 				var connection:ConnectionComponent=_arriveConnections[i] as ConnectionComponent;
 				this.canvas.removeConnectionComponent(connection);
-				connection.destory();
 			}
 			for(var j:int=0;j<_leaveConnections.length;j++){
 				var connection1:ConnectionComponent=_leaveConnections[j] as ConnectionComponent;
 				this.canvas.removeConnectionComponent(connection1);
-				connection1.destory();
 			}
 		}
 		
@@ -215,13 +213,22 @@ package org.jbpmside.view.component
 			return _bottomPoint;
 		}
 		
+		public function get arriveConnections():ArrayCollection{
+			return _arriveConnections;
+		}
+		
+		public function get leaveConnections():ArrayCollection{
+			return _leaveConnections;
+		}
 		
 		public function addArriveConnection(connection:ConnectionComponent):void{
 			this._arriveConnections.addItem(connection);
+			connection.toNode=this;
 		}
 		
 		public function addLeaveConnection(connection:ConnectionComponent):void{
 			this._leaveConnections.addItem(connection);
+			connection.fromNode=this;
 		}
 		
 		public function removeArriveConnection(connection:ConnectionComponent):void{

@@ -5,7 +5,9 @@ package org.jbpmside.view.component.role
 {
 	import flash.events.MouseEvent;
 	
-	import org.jbpmside.model.NodeModel;
+	import mx.collections.ArrayCollection;
+	
+	import org.jbpmside.view.component.ConnectionComponent;
 	import org.jbpmside.view.component.NodeComponent;
 	import org.jbpmside.view.component.ShapeComponent;
 	import org.jbpmside.view.component.SurfaceComponent;
@@ -28,8 +30,13 @@ package org.jbpmside.view.component.role
 			{
 				var fromNodeComponent:NodeComponent=SurfaceComponent(this.editor.graphicViewer).selectedComponent as NodeComponent;
 				var toNodeComponent:NodeComponent=event.currentTarget as NodeComponent;
-				var cmd:Command=new CreateConnectionCommand(fromNodeComponent, toNodeComponent);
-				CommandService.getInstance().execute(cmd);
+				if(!hasConnectionBetweenNodes(fromNodeComponent,toNodeComponent)&&
+						!hasConnectionBetweenNodes(toNodeComponent,fromNodeComponent)){
+					var cmd:Command=new CreateConnectionCommand(fromNodeComponent, toNodeComponent);
+					CommandService.getInstance().execute(cmd);
+				}else{
+					selected(event);
+				}
 			}
 			else
 			{
@@ -45,6 +52,19 @@ package org.jbpmside.view.component.role
 			if (selectedComponent != null && (selectedComponent is NodeComponent) && !toNode.isSelected)
 			{
 				return true;
+			}
+			return false;
+		}
+		
+		//判断两个节点组件之间是否已有连接线
+		private function hasConnectionBetweenNodes(fromNodeComponent:NodeComponent,toNodeComponent:NodeComponent):Boolean{
+			var leaveConnections:ArrayCollection=fromNodeComponent.leaveConnections;
+			var arriveConnections:ArrayCollection=toNodeComponent.arriveConnections;
+			for(var i:int=0;i<leaveConnections.length;i++){
+				var connection:ConnectionComponent=leaveConnections[i] as ConnectionComponent;
+				if(arriveConnections.contains(connection)){
+					return true;
+				}
 			}
 			return false;
 		}
