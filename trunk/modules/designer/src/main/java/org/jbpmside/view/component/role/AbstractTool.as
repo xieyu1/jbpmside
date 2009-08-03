@@ -11,12 +11,12 @@ package org.jbpmside.view.component.role
 	
 	import org.jbpmside.view.component.gef.IGraphicalEditor;
 	import org.jbpmside.view.component.gef.Tool;
-	
+	import org.jbpmside.model.TheModel;
 
 	public class AbstractTool implements Tool
 	{
 
-
+		public var theModel:TheModel=TheModel.getInstance();
 		private var _type:int;
 		
 		public function AbstractTool()

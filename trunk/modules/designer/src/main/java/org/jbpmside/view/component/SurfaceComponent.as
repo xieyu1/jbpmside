@@ -67,10 +67,10 @@ package org.jbpmside.view.component
 			theModel.addEventListener(TheModel.CHANGE_SHOW_GRID_EVENT, changeShowGrid);
 			theModel.addEventListener(TheModel.CHANGE_ZOOM_EVENT, changeScale);
 			//copy\cut\paste\delete
-			theModel.addEventListener(TheModel.COPY_EVENT, copyComponent);
-			theModel.addEventListener(TheModel.CUT_EVENT, cutComponent);
-			theModel.addEventListener(TheModel.PASTE_EVENT, pasteComponent);
-			theModel.addEventListener(TheModel.DELETE_EVENT, deleteComponent);
+//			theModel.addEventListener(TheModel.COPY_EVENT, copyComponent);
+//			theModel.addEventListener(TheModel.CUT_EVENT, cutComponent);
+//			theModel.addEventListener(TheModel.PASTE_EVENT, pasteComponent);
+//			theModel.addEventListener(TheModel.DELETE_EVENT, deleteComponent);
 //			addEventListener(FlexEvent.INITIALIZE, init);
 		}
 
@@ -175,8 +175,8 @@ package org.jbpmside.view.component
 						}
 						var connectionEditPart:ConnectionComponent=ProcessEditor.getEditor().editPartFactory.createEditPart(connectionModel) as ConnectionComponent;
 						connectionEditPart.model = connectionModel;
-						connectionEditPart.fromNode=nodePart;
-						connectionEditPart.toNode=this.getNodeEditPartByName(connectionModel.toNode.name);
+						nodePart.addLeaveConnection(connectionEditPart);
+						this.getNodeEditPartByName(connectionModel.toNode.name).addArriveConnection(connectionEditPart);
 						connectionEditPart.target=this;
 						this.graphicsCollection.addItem(connectionEditPart);
 						this._links.addItem(connectionEditPart);
@@ -268,69 +268,7 @@ package org.jbpmside.view.component
 		public function keyDownEventHandler(customEvent:CustomEvent):void
 		{
 			var event:KeyboardEvent=customEvent.data as KeyboardEvent;
-			var canMove:Boolean=_selectedComponent && _selectedComponent is NodeComponent && !_selectedComponent.isEditable;
-			switch (event.keyCode)
-			{
-				case Keyboard.DELETE:
-					deleteComponent(customEvent);
-					break;
-
-				case Keyboard.RIGHT:
-					if (canMove)
-					{
-						_selectedComponent.x++;
-						(_selectedComponent as NodeComponent).updateConnectionPositions();
-					}
-					break;
-				case Keyboard.LEFT:
-					if (canMove)
-					{
-						_selectedComponent.x--;
-						(_selectedComponent as NodeComponent).updateConnectionPositions();
-					}
-					break;
-				case Keyboard.UP:
-					if (canMove)
-					{
-						_selectedComponent.y--;
-						(_selectedComponent as NodeComponent).updateConnectionPositions();
-					}
-					break;
-				case Keyboard.DOWN:
-					if (canMove)
-					{
-						_selectedComponent.y++;
-						(_selectedComponent as NodeComponent).updateConnectionPositions();
-					}
-					break;
-			}
-//                
-			switch (event.charCode)
-			{
-				case 67: // C
-				case 99: // c
-					if (event.ctrlKey)
-						copyComponent(customEvent);
-					break;
-
-				case 88: // X
-				case 120: // x
-					if (event.ctrlKey)
-						cutComponent(customEvent);
-					break;
-
-				case 86: // V
-				case 118: // v
-					if (event.ctrlKey)
-						pasteComponent(customEvent);
-					break;
-					
-				case 90: // Z
-				case 122: // z
-					if (event.ctrlKey)
-						undo(customEvent);
-					break;
-			}
+			this.tool.keyDown(event,0);
 		}
 
 		public function onNodeCollectionChanged(event:CustomEvent):void
@@ -389,80 +327,6 @@ package org.jbpmside.view.component
 			}
 
 			_lineGroup.draw(null, null);
-		}
-
-		//####################################################
-		//	copy\cut\paste\delete
-		//####################################################	
-
-		private function copyComponent(event:CustomEvent):void
-		{
-			theModel.isCut=false;
-			if (_selectedComponent != null)
-			{
-				if (_selectedComponent is NodeComponent)
-				{
-					theModel.copyOrCutComponent=CloneUtil.CloneNodeComponent(_selectedComponent as NodeComponent);
-				}
-			}
-		}
-
-		private function cutComponent(event:CustomEvent):void
-		{
-			theModel.isCut=true;
-			if (_selectedComponent != null)
-			{
-				if (_selectedComponent is NodeComponent)
-				{
-					theModel.copyOrCutComponent=CloneUtil.CloneNodeComponent(_selectedComponent as NodeComponent);
-					removeNodeComponent(_selectedComponent as NodeComponent);
-//					_selectedComponent.destory();
-					_selectedComponent=null;
-				}
-			}
-		}
-
-		private function deleteComponent(event:CustomEvent):void
-		{
-			if (_selectedComponent != null)
-			{
-				if (_selectedComponent is NodeComponent)
-				{
-					removeNodeComponent(_selectedComponent as NodeComponent);
-				}
-				else
-				{
-					removeConnectionComponent(_selectedComponent as ConnectionComponent);
-				}
-//				_selectedComponent.destory();
-				_selectedComponent=null;
-				theModel.copyOrCutComponent=null;
-			}
-		}
-
-		private function pasteComponent(event:CustomEvent):void
-		{
-//			var copyOrCutComponent:ShapeComponent=theModel.copyOrCutComponent;
-//			if (copyOrCutComponent != null)
-//			{
-//				if (theModel.isCut)
-//				{
-//					theModel.copyOrCutComponent=null;
-//				}
-//				if (copyOrCutComponent is NodeComponent)
-//				{
-//					var pasteComponent:NodeComponent=CloneUtil.CloneNodeComponent(copyOrCutComponent as NodeComponent);
-//					addNode(pasteComponent, pasteComponent.x + 10, pasteComponent.y + 10);
-//					copyOrCutComponent.x=pasteComponent.x;
-//					copyOrCutComponent.y=pasteComponent.y;
-//					pasteComponent.selected();
-//				}
-//			}
-		}
-		
-		private function undo(event:CustomEvent):void
-		{
-			CommandService.getInstance().undo();
 		}
 
 		//####################################################

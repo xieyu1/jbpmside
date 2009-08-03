@@ -35,8 +35,8 @@ package org.jbpmside.view.component.command
 		override public function perform():Boolean
 		{			
 			connectionComponent=new ConnectionComponent();
-			connectionComponent.fromNode=fromNodeComponent;
-			connectionComponent.toNode=toNodeComponent;
+			fromNodeComponent.addLeaveConnection(connectionComponent);
+			toNodeComponent.addArriveConnection(connectionComponent);
 			var surfaceComponent:SurfaceComponent = this.editor.graphicViewer as SurfaceComponent;
 			surfaceComponent.addConnectionComponent(connectionComponent);
 			surfaceComponent.clearSelection();
