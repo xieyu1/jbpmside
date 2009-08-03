@@ -5,12 +5,15 @@ package org.jbpmside.view.component.role.manager
 {
 	import org.jbpmside.view.component.gef.Tool;
 	import org.jbpmside.model.TheModel;
+	import org.jbpmside.view.component.gef.ToolsManager;
 	
 	public class NodeToolsManager extends AbstractToolsManager
 	{
 		public function NodeToolsManager()
 		{
 			super();
+			this.registerTool(ToolsManager.CREATE_CONNECTION);
+			this.registerTool(ToolsManager.SELECT_NODE);
 		}
 		
 		public override function getCurrentToolBackup():Tool{
@@ -18,7 +21,7 @@ package org.jbpmside.view.component.role.manager
 			if(barSelectedMode== TheModel.SELECTED_TRANSITION){
 				return connectionTool;
 			}
-			return nodeMoveTool;
+			return selectNodeTool;
 		}
 		
 		//####################################################

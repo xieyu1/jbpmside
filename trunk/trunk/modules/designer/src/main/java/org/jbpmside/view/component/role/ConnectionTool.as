@@ -13,7 +13,7 @@ package org.jbpmside.view.component.role
 	import org.jbpmside.view.component.gef.command.Command;
 	import org.jbpmside.view.component.gef.command.CommandService;
 
-	public class ConnectionTool extends AbstractTool
+	public class ConnectionTool extends NodeMoveTool
 	{
 
 		public function ConnectionTool()

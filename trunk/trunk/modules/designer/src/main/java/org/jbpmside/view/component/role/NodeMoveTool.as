@@ -11,7 +11,7 @@ package org.jbpmside.view.component.role
 	import org.jbpmside.view.component.gef.command.Command;
 	import org.jbpmside.view.component.gef.command.CommandService;
 	
-	public class NodeMoveTool extends SelectionTool
+	public class NodeMoveTool extends AbstractTool
 	{
 		public function NodeMoveTool()
 		{

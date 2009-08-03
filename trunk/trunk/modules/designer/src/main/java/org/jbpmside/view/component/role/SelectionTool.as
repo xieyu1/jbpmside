@@ -14,7 +14,6 @@ package org.jbpmside.view.component.role
 
 		public function SelectionTool()
 		{
-			//TODO: implement function
 			super();
 		}
 

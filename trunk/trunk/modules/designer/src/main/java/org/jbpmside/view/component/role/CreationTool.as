@@ -11,7 +11,7 @@ package org.jbpmside.view.component.role
 	import org.jbpmside.view.component.gef.command.Command;
 	import org.jbpmside.view.component.gef.command.CommandService;
 
-	public class CreationTool extends AbstractTool
+	public class CreationTool extends CopyCutPasteDeleteTool
 	{
 
 		public function CreationTool()

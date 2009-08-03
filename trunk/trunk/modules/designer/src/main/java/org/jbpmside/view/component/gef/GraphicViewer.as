@@ -19,8 +19,6 @@ package org.jbpmside.view.component.gef
 		public function GraphicViewer()
 		{
 			super();
-			toolsManager.registerTool(ToolsManager.CREATE_NODE);
-			toolsManager.registerTool(ToolsManager.SELECT_COMPONENT);
 		}
 
 		public function createControl():void

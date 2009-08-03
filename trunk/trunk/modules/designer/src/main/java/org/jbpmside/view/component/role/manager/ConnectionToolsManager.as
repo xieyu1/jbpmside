@@ -4,12 +4,14 @@ package org.jbpmside.view.component.role.manager
  */
 {
 	import org.jbpmside.view.component.gef.Tool;
+	import org.jbpmside.view.component.gef.ToolsManager;
 	
 	public class ConnectionToolsManager extends AbstractToolsManager
 	{
 		public function ConnectionToolsManager()
 		{
 			super();
+			this.registerTool(ToolsManager.SELECT_CONNECTION);
 		}
 		
 		public override function getCurrentToolBackup():Tool{
