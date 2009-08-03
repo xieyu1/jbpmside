@@ -10,10 +10,15 @@ package org.jbpmside.view.component.gef
 		//####################################################
 		//	tools constants
 		//####################################################	
-		public static const SELECT_COMPONENT:int=0;
-		public static const CREATE_NODE:int=1;
-		public static const CREATE_CONNECTION:int=2;
-		public static const MOVE_NODE:int=3;
+		//处理连接线组件原生事件的Tool
+		public static const SELECT_CONNECTION:int=1;
+		//处理节点组件原生事件的Tool
+		public static const SELECT_NODE:int=2;
+		public static const CREATE_CONNECTION:int=3;
+		//处理面板组件原生事件的Tool
+		public static const CREATE_NODE:int=4;
+		public static const SELECT_SURFACE:int=5;
+		
 		
 		public function registerTool(toolKey:int):void{
 			

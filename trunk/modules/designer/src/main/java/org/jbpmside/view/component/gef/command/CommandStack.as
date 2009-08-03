@@ -99,7 +99,9 @@ package org.jbpmside.view.component.gef.command
 				command.perform();
 				if (getUndoLimit() > 0) {
 					while (undoable.length >= getUndoLimit()) {
-						undoable.remove(0);
+						undoable.reverse();
+						undoable.pop();
+						undoable.reverse();
 						if (saveLocation > -1)
 							saveLocation--;
 					}

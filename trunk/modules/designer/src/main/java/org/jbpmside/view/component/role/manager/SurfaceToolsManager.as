@@ -2,12 +2,15 @@ package org.jbpmside.view.component.role.manager
 {
 	import org.jbpmside.model.TheModel;
 	import org.jbpmside.view.component.gef.Tool;
+	import org.jbpmside.view.component.gef.ToolsManager;
 	
 	public class SurfaceToolsManager extends AbstractToolsManager
 	{
 		public function SurfaceToolsManager()
 		{
 			super();
+			this.registerTool(ToolsManager.CREATE_NODE);
+			this.registerTool(ToolsManager.SELECT_SURFACE);
 		}
 		
 		public override function getCurrentToolBackup():Tool{
@@ -16,7 +19,7 @@ package org.jbpmside.view.component.role.manager
 				createTool.type=barSelectedMode;
 				return createTool;
 			}
-			return selectTool;
+			return selectSurfaceTool;
 		}
 		
 		//####################################################

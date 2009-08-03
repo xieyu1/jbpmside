@@ -10,17 +10,22 @@ package org.jbpmside.view.component.role.manager
 	import org.jbpmside.view.component.role.AbstractTool;
 	import org.jbpmside.view.component.role.ConnectionTool;
 	import org.jbpmside.view.component.role.CreationTool;
-	import org.jbpmside.view.component.role.NodeMoveTool;
+	import org.jbpmside.view.component.role.NodeSelectionTool;
 	import org.jbpmside.view.component.role.SelectionTool;
+	import org.jbpmside.view.component.role.SurfaceSelectionTool;
 	
 	public class AbstractToolsManager extends ToolsManager
 	{
 		public var theModel:TheModel=TheModel.getInstance();
+				
+		public var selectTool:Tool;//处理点击选中事件
+		
+		public var selectNodeTool:Tool;//处理节点移动和选中事件
+		public var connectionTool:Tool;//处理创建连接线的事件
 		
 		public var createTool:Tool;//处理创建节点组件的事件
-		public var selectTool:Tool;//处理点击选中事件
-		public var nodeMoveTool:Tool;//处理节点移动和选中事件
-		public var connectionTool:Tool;//处理创建连接线的事件
+		public var selectSurfaceTool:Tool; //处理节点和连接线的复制/剪切/删除的键盘事件
+		
 		private var emptyTool:Tool=new AbstractTool();
 		
 		public function AbstractToolsManager()
@@ -29,14 +34,16 @@ package org.jbpmside.view.component.role.manager
 		}
 		
 		public override function registerTool(toolKey:int):void{
-			if(toolKey==ToolsManager.SELECT_COMPONENT){
+			if(toolKey==ToolsManager.SELECT_CONNECTION){
 				selectTool=new SelectionTool();
-			}else if(toolKey==ToolsManager.CREATE_NODE){
-				createTool=new CreationTool();
 			}else if(toolKey==ToolsManager.CREATE_CONNECTION){
 				connectionTool=new ConnectionTool();
-			}else if(toolKey==ToolsManager.MOVE_NODE){
-				nodeMoveTool=new NodeMoveTool();
+			}else if(toolKey==ToolsManager.SELECT_NODE){
+				selectNodeTool=new NodeSelectionTool();
+			}else if(toolKey==ToolsManager.CREATE_NODE){
+				createTool=new CreationTool();
+			}else if(toolKey==ToolsManager.SELECT_SURFACE){
+				selectSurfaceTool=new SurfaceSelectionTool();
 			}
 		}
 		

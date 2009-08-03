@@ -16,24 +16,13 @@ package org.jbpmside.view.component.gef
 	{
 		private var _model:Object;
 		
-		private var nodeToolsManager:ToolsManager;
-		private var connectionToolsManager:ToolsManager;
+		private var nodeToolsManager:ToolsManager=NodeToolsManager.getInstance();
+		private var connectionToolsManager:ToolsManager=ConnectionToolsManager.getInstance();
 
 		public function GraphicEditPart()
 		{
 			super();
-			//初始化原生事件处理管理器
-			initToolsManager();
 			createFigure();
-		}
-		
-		public function initToolsManager():void{
-			nodeToolsManager=NodeToolsManager.getInstance();
-			nodeToolsManager.registerTool(ToolsManager.CREATE_CONNECTION);
-			nodeToolsManager.registerTool(ToolsManager.MOVE_NODE);
-
-			connectionToolsManager=ConnectionToolsManager.getInstance();				
-			connectionToolsManager.registerTool(ToolsManager.SELECT_COMPONENT);
 		}
 		
 		public function get tool():Tool
