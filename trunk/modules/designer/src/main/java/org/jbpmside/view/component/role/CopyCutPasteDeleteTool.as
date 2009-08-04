@@ -3,12 +3,18 @@ package org.jbpmside.view.component.role
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	
-	import org.jbpmside.view.component.NodeComponent;
+	import org.jbpmside.model.NodeModel;
+	import org.jbpmside.util.CloneUtil;
 	import org.jbpmside.view.component.ConnectionComponent;
+	import org.jbpmside.view.component.NodeComponent;
 	import org.jbpmside.view.component.ShapeComponent;
 	import org.jbpmside.view.component.SurfaceComponent;
+	import org.jbpmside.view.component.command.CutNodeCommand;
+	import org.jbpmside.view.component.command.PasteNodeCommand;
+	import org.jbpmside.view.component.command.DeleteConnectionCommand;
+	import org.jbpmside.view.component.command.DeleteNodeCommand;
+	import org.jbpmside.view.component.gef.command.Command;
 	import org.jbpmside.view.component.gef.command.CommandService;
-	import org.jbpmside.util.CloneUtil;
 	
 	public class CopyCutPasteDeleteTool extends AbstractTool
 	{
@@ -21,40 +27,40 @@ package org.jbpmside.view.component.role
 		{
 			var surfaceComponent:SurfaceComponent=this.editor.graphicViewer as SurfaceComponent;
 			var selectedComponent:ShapeComponent=surfaceComponent.selectedComponent;
-			var canMove:Boolean=selectedComponent && selectedComponent is NodeComponent && !selectedComponent.isEditable;
+			var canMove:Boolean=selectedComponent && selectedComponent is NodeComponent;
 			switch (event.keyCode)
 			{
 				case Keyboard.DELETE:
 					deleteComponent(selectedComponent);
 					break;
-				case Keyboard.RIGHT:
-					if (canMove)
-					{
-						selectedComponent.x++;
-						(selectedComponent as NodeComponent).updateConnectionPositions();
-					}
-					break;
-				case Keyboard.LEFT:
-					if (canMove)
-					{
-						selectedComponent.x--;
-						(selectedComponent as NodeComponent).updateConnectionPositions();
-					}
-					break;
-				case Keyboard.UP:
-					if (canMove)
-					{
-						selectedComponent.y--;
-						(selectedComponent as NodeComponent).updateConnectionPositions();
-					}
-					break;
-				case Keyboard.DOWN:
-					if (canMove)
-					{
-						selectedComponent.y++;
-						(selectedComponent as NodeComponent).updateConnectionPositions();
-					}
-					break;
+//				case Keyboard.RIGHT:
+//					if (canMove)
+//					{
+//						selectedComponent.x++;
+//						(selectedComponent as NodeComponent).updateConnectionPositions();
+//					}
+//					break;
+//				case Keyboard.LEFT:
+//					if (canMove)
+//					{
+//						selectedComponent.x--;
+//						(selectedComponent as NodeComponent).updateConnectionPositions();
+//					}
+//					break;
+//				case Keyboard.UP:
+//					if (canMove)
+//					{
+//						selectedComponent.y--;
+//						(selectedComponent as NodeComponent).updateConnectionPositions();
+//					}
+//					break;
+//				case Keyboard.DOWN:
+//					if (canMove)
+//					{
+//						selectedComponent.y++;
+//						(selectedComponent as NodeComponent).updateConnectionPositions();
+//					}
+//					break;
 			}              
 			switch (event.charCode)
 			{
@@ -73,7 +79,7 @@ package org.jbpmside.view.component.role
 				case 86: // V
 				case 118: // v
 					if (event.ctrlKey)
-						pasteComponent(selectedComponent);
+						pasteComponent();
 					break;
 					
 				case 90: // Z
@@ -88,61 +94,51 @@ package org.jbpmside.view.component.role
 		//	copy\cut\paste\delete
 		//####################################################	
 		
-		private function copyComponent(selectedComponent:ShapeComponent):void{
+		public function copyComponent(selectedComponent:ShapeComponent):void{
 			theModel.isCut=false;
 			if (selectedComponent is NodeComponent)
 			{
-				theModel.copyOrCutComponent=CloneUtil.CloneNodeComponent(selectedComponent as NodeComponent);
+				theModel.copyOrCutModel=CloneUtil.CloneNodeModel(selectedComponent.model as NodeModel);
 			}
 		}
 		
-		private function cutComponent(selectedComponent:ShapeComponent):void{
-			theModel.isCut=true;
+		public function cutComponent(selectedComponent:ShapeComponent):void{
 			if (selectedComponent is NodeComponent)
 			{
-				var surfaceComponent:SurfaceComponent=this.editor.graphicViewer as SurfaceComponent;
-				theModel.copyOrCutComponent=CloneUtil.CloneNodeComponent(selectedComponent as NodeComponent);
-				surfaceComponent.removeNodeComponent(selectedComponent as NodeComponent);
-				selectedComponent.destory();
-				surfaceComponent.clearSelection();
+				var cmd:Command=new CutNodeCommand(selectedComponent as NodeComponent);
+				CommandService.getInstance().execute(cmd);
 			}
 		}
 		
-		private function pasteComponent(selectedComponent:ShapeComponent):void{
-			//			var copyOrCutComponent:ShapeComponent=theModel.copyOrCutComponent;
-//			if (copyOrCutComponent != null)
-//			{
-//				if (theModel.isCut)
-//				{
-//					theModel.copyOrCutComponent=null;
-//				}
-//				if (copyOrCutComponent is NodeComponent)
-//				{
-//					var pasteComponent:NodeComponent=CloneUtil.CloneNodeComponent(copyOrCutComponent as NodeComponent);
-//					addNode(pasteComponent, pasteComponent.x + 10, pasteComponent.y + 10);
-//					copyOrCutComponent.x=pasteComponent.x;
-//					copyOrCutComponent.y=pasteComponent.y;
-//					pasteComponent.selected();
-//				}
-//			}
+		public function pasteComponent():void{
+			var copyOrCutModel:NodeModel=theModel.copyOrCutModel;
+			if (copyOrCutModel != null)
+			{
+				if (theModel.isCut)
+				{
+					theModel.copyOrCutModel=null;
+				}
+
+				var cmd:Command=new PasteNodeCommand(copyOrCutModel);
+				CommandService.getInstance().execute(cmd);
+			}
 		}
 		
-		private function deleteComponent(selectedComponent:ShapeComponent):void{
-			var surfaceComponent:SurfaceComponent=this.editor.graphicViewer as SurfaceComponent;
+		public function deleteComponent(selectedComponent:ShapeComponent):void{
+			var cmd:Command;
 			if (selectedComponent is NodeComponent)
 			{
-				surfaceComponent.removeNodeComponent(selectedComponent as NodeComponent);
+				cmd=new DeleteNodeCommand(selectedComponent as NodeComponent);
 			}
-			else
+			else if (selectedComponent is ConnectionComponent)
 			{
-				surfaceComponent.removeConnectionComponent(selectedComponent as ConnectionComponent);
+				cmd=new DeleteConnectionCommand(selectedComponent as ConnectionComponent);
 			}
-			selectedComponent.destory();
-			surfaceComponent.clearSelection();
-			theModel.copyOrCutComponent=null;
+			CommandService.getInstance().execute(cmd);
+			theModel.copyOrCutModel=null;
 		}
 		
-		private function undo():void{
+		public function undo():void{
 			CommandService.getInstance().undo();
 		}
 	}

@@ -162,8 +162,7 @@ package org.jbpmside.view.component
           	labelField.height=18;
           	labelField.width=80;
           	labelField.x=_controlPoint.centerX-labelField.width/2;
-          	labelField.y=_controlPoint.centerY-labelField.height;
-          	labelName="connection name";			
+          	labelField.y=_controlPoint.centerY-labelField.height;		
 		}
 		
 		public override function gotoSelectedView():void{			
@@ -188,6 +187,7 @@ package org.jbpmside.view.component
 		
 		//被删除时做一些清理工作
 		public override function destory():void{
+			super.destory();
 			_toNode.removeArriveConnection(this);
 			_fromNode.removeLeaveConnection(this);
 		}

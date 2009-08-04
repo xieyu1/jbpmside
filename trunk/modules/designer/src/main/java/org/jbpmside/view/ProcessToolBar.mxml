@@ -354,7 +354,7 @@
 		<mx:Button width="32"
 				   height="32"
 				   icon="{pasteIcon}"
-				   enabled="{model.copyOrCutComponent!=null}"
+				   enabled="{model.copyOrCutModel!=null}"
 				   toolTip="Paste"
 				   click="paste()"
 				   id="pasteButton"/>

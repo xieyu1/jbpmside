@@ -1,31 +1,24 @@
 package org.jbpmside.util
+/**
+ * @author ronghao 2009-8-4
+ */
 {
-	import org.jbpmside.view.component.NodeComponent;
-	import org.jbpmside.view.component.node.EndComponent;
-	import org.jbpmside.view.component.node.ForkComponent;
-	import org.jbpmside.view.component.node.JoinComponent;
-	import org.jbpmside.view.component.node.StartComponent;
-	import org.jbpmside.view.component.node.TaskComponent;
+	import org.jbpmside.model.NodeModel;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
 	
 	public class CloneUtil
 	{
-		public static function CloneNodeComponent(source:NodeComponent):NodeComponent{
-			var cloneNodeComponent:NodeComponent;
-			if(source is StartComponent){
-				cloneNodeComponent=new StartComponent();	
-			}else if(source is TaskComponent){
-				cloneNodeComponent=new TaskComponent();	
-			}else if(source is ForkComponent){
-				cloneNodeComponent=new ForkComponent();	
-			}else if(source is JoinComponent){
-				cloneNodeComponent=new JoinComponent();	
-			}else{
-				cloneNodeComponent=new EndComponent();	
-			}
-			cloneNodeComponent.x=source.x;
-			cloneNodeComponent.y=source.y;
-			cloneNodeComponent.labelName=source.labelField.text;
-			return cloneNodeComponent;
+		
+		public static function CloneNodeModel(source:NodeModel):NodeModel{
+			var className:String=getQualifiedClassName(source);
+			var ClassReference:Class = getDefinitionByName(className) as Class;
+			var cloneNode:NodeModel = new ClassReference() as NodeModel;
+			//未来还是需要根据不同的节点分别copy属性
+			cloneNode.x=source.x;
+			cloneNode.y=source.y;
+			cloneNode.name=source.name;
+			return cloneNode;
 		}
 
 	}
