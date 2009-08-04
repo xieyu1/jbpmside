@@ -10,7 +10,6 @@ package org.jbpmside.view.component
 	
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
-	import flash.ui.Keyboard;
 	
 	import mx.collections.ArrayCollection;
 	import mx.core.Application;
@@ -21,10 +20,10 @@ package org.jbpmside.view.component
 	import org.jbpmside.model.NodeModel;
 	import org.jbpmside.model.ProcessModel;
 	import org.jbpmside.model.TheModel;
-	import org.jbpmside.util.CloneUtil;
 	import org.jbpmside.view.component.gef.GraphicViewer;
 	import org.jbpmside.view.component.gef.IEditPart;
-	import org.jbpmside.view.component.gef.command.CommandService;
+	
+	import org.jbpmside.view.component.role.CopyCutPasteDeleteTool;
 
 	public class SurfaceComponent extends GraphicViewer
 	{
@@ -67,10 +66,10 @@ package org.jbpmside.view.component
 			theModel.addEventListener(TheModel.CHANGE_SHOW_GRID_EVENT, changeShowGrid);
 			theModel.addEventListener(TheModel.CHANGE_ZOOM_EVENT, changeScale);
 			//copy\cut\paste\delete
-//			theModel.addEventListener(TheModel.COPY_EVENT, copyComponent);
-//			theModel.addEventListener(TheModel.CUT_EVENT, cutComponent);
-//			theModel.addEventListener(TheModel.PASTE_EVENT, pasteComponent);
-//			theModel.addEventListener(TheModel.DELETE_EVENT, deleteComponent);
+			theModel.addEventListener(TheModel.COPY_EVENT, copyComponent);
+			theModel.addEventListener(TheModel.CUT_EVENT, cutComponent);
+			theModel.addEventListener(TheModel.PASTE_EVENT, pasteComponent);
+			theModel.addEventListener(TheModel.DELETE_EVENT, deleteComponent);
 //			addEventListener(FlexEvent.INITIALIZE, init);
 		}
 
@@ -146,7 +145,6 @@ package org.jbpmside.view.component
 					nodeEditPart.model=nodeModel;
 					nodeEditPart.x=nodeModel.x;
 					nodeEditPart.y=nodeModel.y;
-					nodeEditPart.labelName=nodeModel.name;
 					this.graphicsCollection.addItem(nodeEditPart);
 					this._nodes.addItem(nodeEditPart);
 					nodeEditPart.canvas=this;
@@ -268,7 +266,27 @@ package org.jbpmside.view.component
 		public function keyDownEventHandler(customEvent:CustomEvent):void
 		{
 			var event:KeyboardEvent=customEvent.data as KeyboardEvent;
+			
 			this.tool.keyDown(event,0);
+		}
+		
+		public function copyComponent(customEvent:CustomEvent):void{
+			if(selectedComponent!=null)
+				(this.tool as CopyCutPasteDeleteTool).copyComponent(selectedComponent);
+		}
+		
+		public function cutComponent(customEvent:CustomEvent):void{
+			if(selectedComponent!=null)
+				(this.tool as CopyCutPasteDeleteTool).cutComponent(selectedComponent);
+		}
+		
+		public function pasteComponent(customEvent:CustomEvent):void{
+			(this.tool as CopyCutPasteDeleteTool).pasteComponent();
+		}
+		
+		public function deleteComponent(customEvent:CustomEvent):void{
+			if(selectedComponent!=null)
+				(this.tool as CopyCutPasteDeleteTool).deleteComponent(selectedComponent);
 		}
 
 		public function onNodeCollectionChanged(event:CustomEvent):void

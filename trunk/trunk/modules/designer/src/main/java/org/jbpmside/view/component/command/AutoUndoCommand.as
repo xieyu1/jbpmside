@@ -5,9 +5,12 @@ package org.jbpmside.view.component.command
 {
 	import org.jbpmside.view.component.gef.IGraphicalEditor;
 	import org.jbpmside.view.component.gef.command.Command;
+	import org.jbpmside.model.TheModel;
 	
 	public class AutoUndoCommand implements Command
 	{
+		public var theModel:TheModel=TheModel.getInstance();
+		
 		public function AutoUndoCommand()
 		{
 			//TODO: implement function

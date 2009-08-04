@@ -11,11 +11,12 @@ package org.jbpmside.view.component.gef
 	import org.jbpmside.model.NodeModel;
 	import org.jbpmside.view.component.role.manager.NodeToolsManager;
 	import org.jbpmside.view.component.role.manager.ConnectionToolsManager;
+	import org.jbpmside.model.CommonObject;
 
 	public class GraphicEditPart extends GeometryGroup implements IEditPart
 	{
 		private var _model:Object;
-		
+		public var _labelName:String="";
 		private var nodeToolsManager:ToolsManager=NodeToolsManager.getInstance();
 		private var connectionToolsManager:ToolsManager=ConnectionToolsManager.getInstance();
 
@@ -52,6 +53,8 @@ package org.jbpmside.view.component.gef
 		public function set model(_model:Object):void
 		{
 			this._model=_model;
+			if(_model!=null)
+				setLabelName((_model as CommonObject).name);
 		}
 
 		public function getModelChildren():ArrayCollection
@@ -71,7 +74,18 @@ package org.jbpmside.view.component.gef
 			return nodeModel.targetTransitions;
 		}
 
-
+		//被删除时做一些清理工作
+		public function destory():void{
+			this.model=null;
+		}
+		
+		public function get labelName():String{
+			return _labelName;
+		}
+		
+		public function setLabelName(labelName:String):void{
+			this._labelName=labelName;
+		}
 
 	}
 }

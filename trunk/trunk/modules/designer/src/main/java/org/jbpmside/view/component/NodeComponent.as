@@ -162,8 +162,7 @@ package org.jbpmside.view.component
           	labelField.x=_defaultRectangle.width/2-40;
           	labelField.y=-_defaultRectangle.height+5;
           	labelField.height=18;
-          	labelField.width=60;
-          	labelName="node name";			
+          	labelField.width=60;		
 		}
 		
 		public function updateConnectionPositions():void{
@@ -179,6 +178,7 @@ package org.jbpmside.view.component
 		
 		//被删除时做一些清理工作
 		public override function destory():void{
+			super.destory();
 			for(var i:int=0;i<_arriveConnections.length;i++){
 				var connection:ConnectionComponent=_arriveConnections[i] as ConnectionComponent;
 				this.canvas.removeConnectionComponent(connection);

@@ -14,7 +14,7 @@ package org.jbpmside.model
 		public var showGrid:Boolean=true;
 		public var alignToGrid:Boolean=false;
 		public var zoomRatio:Number=1;
-		public var copyOrCutComponent:ShapeComponent;
+		public var copyOrCutModel:NodeModel;
 		public var isCut:Boolean=false;
 		
 		//####################################################

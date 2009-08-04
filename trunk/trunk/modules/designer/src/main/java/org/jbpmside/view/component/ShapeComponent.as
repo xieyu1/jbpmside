@@ -8,6 +8,7 @@ package org.jbpmside.view.component
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	
+	import org.jbpmside.model.CommonObject;
 	import org.jbpmside.model.TheModel;
 	import org.jbpmside.util.IdGenerator;
 	import org.jbpmside.view.component.gef.GraphicEditPart;
@@ -30,9 +31,6 @@ package org.jbpmside.view.component
 		//	属性
 		//####################################################
 		public var isSelected:Boolean=false;
-		public var isEditable:Boolean=false;
-		[Bindable]	
-		private var _labelName:String="";
 		
 		public function ShapeComponent()
 		{
@@ -57,7 +55,6 @@ package org.jbpmside.view.component
             addEventListener(MouseEvent.CLICK, mouseClickHandler);
             addEventListener(MouseEvent.MOUSE_OVER, mouseOverHandler);
             addEventListener(MouseEvent.MOUSE_OUT, mouseOutHandler);
-            labelField.addEventListener(MouseEvent.CLICK, mouseDbClickHandler);
 		}
 		
 		/**
@@ -88,7 +85,6 @@ package org.jbpmside.view.component
 		public function mouseDbClickHandler(event:MouseEvent):void{
 			event.stopPropagation();
 			selected();
-			editable();
 		}
 		
 		public function selected():void{
@@ -99,7 +95,6 @@ package org.jbpmside.view.component
 		
 		public function unSelected():void{
 			isSelected=false;
-			unEditable();
 			gotoUnSelectedView();
 		}
 		
@@ -118,24 +113,7 @@ package org.jbpmside.view.component
 		//非选中状态
 		public function gotoUnSelectedView():void{
 		}
-		
-		public function editable():void{
-			isEditable=true;
-			labelField.border=true;
-			labelField.type=TextFieldType.INPUT;
-		}
-		
-		public function unEditable():void{
-			isEditable=false;
-			labelField.border=false;
-			labelField.type=TextFieldType.DYNAMIC;
-		}
-		
-		//被删除时做一些清理工作
-		public function destory():void{
-			
-		}
-		
+				
 		//####################################################
 		//	getter/setter
 		//####################################################	
@@ -148,12 +126,8 @@ package org.jbpmside.view.component
 			this._canvas=canvas;
 		}
 		
-		public function get labelName():String{
-			return _labelName;
-		}
-		
-		public function set labelName(labelName:String):void{
-			this._labelName=labelName;
+		public override function setLabelName(labelName:String):void{
+			super.setLabelName(labelName);
 			labelField.text=labelName;
 		}
 

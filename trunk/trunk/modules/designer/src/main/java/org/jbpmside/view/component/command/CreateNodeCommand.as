@@ -20,49 +20,16 @@ package org.jbpmside.view.component.command
 	import org.jbpmside.view.component.node.TaskComponent;
 
 
-	public class CreateNodeCommand extends AutoUndoCommand
+	public class CreateNodeCommand extends CreateNodeBackUpCommand
 	{
-		private var createNodeModel:NodeModel;
-		private var createNodeComponent:NodeComponent;
 		
-		private static var uniqueNum:int = 0;
-
 		public function CreateNodeCommand(type:int, x:int, y:int)
 		{
 			super();
 			initNode(type,x,y);
 		}
-		
-		override public function canUndo():Boolean
-		{
-			return true;
-		}
 
-		override public function perform():Boolean
-		{
-			//画板增加节点组件
-			var surfaceComponent:SurfaceComponent = this.editor.graphicViewer as SurfaceComponent;
-			surfaceComponent.addNodeComponent(createNodeComponent);
-			createNodeComponent.selected();
-			
-			//模型增加节点
-			var processModel:ProcessModel = surfaceComponent.model as ProcessModel;
-			processModel.addNode(createNodeModel);
-			return true;
-		}
-		
-		override public function undo():void
-		{
-			//画板删除节点组件
-			var surfaceComponent:SurfaceComponent = this.editor.graphicViewer as SurfaceComponent;
-			surfaceComponent.removeNodeComponent(createNodeComponent);
-			
-			//模型删除节点
-			var processModel:ProcessModel = surfaceComponent.model as ProcessModel;
-			processModel.removeNode(createNodeModel);
-		}
-
-		private function initNode(type:int, x:int, y:int):void
+		public function initNode(type:int, x:int, y:int):void
 		{
 			var selectedMode:int=type;
 			if (selectedMode == TheModel.SELECTED_START_NODE)
