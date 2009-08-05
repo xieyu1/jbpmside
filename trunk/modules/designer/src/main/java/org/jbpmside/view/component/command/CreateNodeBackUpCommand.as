@@ -38,7 +38,7 @@ package org.jbpmside.view.component.command
 			//画板增加节点组件
 			var surfaceComponent:SurfaceComponent = this.editor.graphicViewer as SurfaceComponent;
 			surfaceComponent.addNodeComponent(createNodeComponent);
-			createNodeComponent.selected();
+			surfaceComponent.clearSelection();
 			
 			//模型增加节点
 			var processModel:ProcessModel = surfaceComponent.model as ProcessModel;
