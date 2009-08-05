@@ -378,7 +378,6 @@ package org.jbpmside.view.component
 			this.graphicsCollection.addItem(connection);
 			this._links.addItem(connection);
 			connection.canvas=this;
-			daoFactory.toolBarDAO.changeSelectedMode(TheModel.SELECTED_NONE);	
 		}
 
 		public function removeNodeComponent(node:NodeComponent):void
