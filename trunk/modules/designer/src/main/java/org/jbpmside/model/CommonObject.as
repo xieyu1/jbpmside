@@ -11,13 +11,18 @@ package org.jbpmside.model
 		
 		private var _name:String;
 		
-		private var _id:String;
+		private var _id:String; //it is not jBPM4 property
+		
+		private var _description:String;
 		
 		public function CommonObject()
 		{
-			//TODO: implement function
 		}
 		
+		//####################################################
+		//	getter/setter
+		//####################################################	
+				
 		public function get name():String{
 			return _name;
 		}
@@ -32,6 +37,14 @@ package org.jbpmside.model
 		
 		public function set id(_id:String):void{
 			this._id = _id;
+		}
+		
+		public function get description():String{
+			return _description;
+		}
+		
+		public function set description(_description:String):void{
+			this._description = _description;
 		}
 
 	}
