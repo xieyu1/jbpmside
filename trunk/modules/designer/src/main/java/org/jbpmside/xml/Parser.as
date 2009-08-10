@@ -3,7 +3,8 @@ package org.jbpmside.xml
  * @author ronghao
  */
 {
-	import org.jbpmside.model.ProcessModel;
+	import org.jbpmside.model.common.DefaultContainer;
+	import org.jbpmside.model.jpdl4.ProcessDefinition;
 	
 	public class Parser
 	{
@@ -29,15 +30,26 @@ package org.jbpmside.xml
 		}
 		
 		public function parseDocument(xml:XML,parse:Parse):void{
-			var processModel:ProcessModel=new ProcessModel();
-			parse.setProcessModel(processModel);
+			var processDefinition:ProcessDefinition=new ProcessDefinition();
+			parse.setProcessDefinition(processDefinition);
 			try{
 				var name:String=xml.@name;
-				processModel.name=name;
+				processDefinition.setName(name);
+				
+				var key:String=xml.@key;
+				processDefinition.setKey(key);
+				
+				trace(xml.name());
+				
+				
 			}catch(e:ReferenceError){
 				
 			}
 		}
+		
+		private function parseActivities(xml:XML,parse:Parse,nodeContainer:DefaultContainer):void{
+//			xml.
+		} 
 		
 		public function getBinding(elementXml:XML,category:String):Binding{
 			return bindings.getBinding(elementXml,category);

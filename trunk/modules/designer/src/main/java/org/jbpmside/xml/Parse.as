@@ -3,15 +3,15 @@ package org.jbpmside.xml
  * @author ronghao
  */
 {
-	import org.jbpmside.model.CommonObject;
-	import org.jbpmside.model.ProcessModel;
+	import org.jbpmside.model.common.Flow;
+	import org.jbpmside.model.common.Element;
 	
 	public class Parse
 	{
 		private var parser:Parser;
 		private var xml:XML;
-		private var processModel:ProcessModel;
-		private var currentModel:CommonObject;
+		private var processDefinition:Flow;
+		private var currentModel:Element;
 		
 		public function Parse(parser:Parser)
 		{
@@ -46,19 +46,19 @@ package org.jbpmside.xml
 			return this.xml;
 		}
 		
-		public function setProcessModel(processModel:ProcessModel):void{
-			this.processModel=processModel;
+		public function setProcessDefinition(processDefinition:Flow):void{
+			this.processDefinition=processDefinition;
 		}
 		
-		public function getProcessModel():ProcessModel{
-			return this.processModel;
+		public function getProcessDefinition():Flow{
+			return this.processDefinition;
 		}
 		
-		public function setCurrentModel(currentModel:CommonObject):void{
+		public function setCurrentModel(currentModel:Element):void{
 			this.currentModel=currentModel;
 		}
 		
-		public function getCurrentModel():CommonObject{
+		public function getCurrentModel():Element{
 			return this.currentModel;
 		}
 
