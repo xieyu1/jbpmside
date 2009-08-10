@@ -5,13 +5,13 @@ package org.jbpmside.xml
 {
 	import flexunit.framework.TestCase;
 	
-	import org.jbpmside.model.ProcessModel;
+	import org.jbpmside.model.jpdl4.ProcessDefinition;
 	
 	public class JpdlParseTestCase extends TestCase
 	{
-		public function parse(xml:String):ProcessModel{
+		public function parse(xml:String):ProcessDefinition{
 			var parser:Parser=new Parser();
-			return parser.createParse().setString(xml).execute().getProcessModel();
+			return parser.createParse().setString(xml).execute().getProcessDefinition() as ProcessDefinition;
 		}
 	}
 }
