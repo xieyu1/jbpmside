@@ -78,6 +78,16 @@ package org.jbpmside.model.jpdl4
 			return this.swimlanes;
 		}
 		
+		public function getSwimlane(name:String):Swimlane
+		{
+			for each(var swimlane:Swimlane in swimlanes){
+				if(swimlane.getName()==name){
+					return swimlane;
+				}
+			}
+			return null;
+		}
+		
 		public function addSwimlane(swimlane:Swimlane):void{
 			this.swimlanes.addItem(swimlane);
 		}
