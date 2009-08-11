@@ -9,10 +9,11 @@ package org.jbpmside.model.jpdl4
 		public static const CANDIDATE_USERS:String="candidate-users";
 		public static const CANDIDATE_GROUPS:String="candidate-groups";
 		public static const SWIMLANE:String="swimlane";
+		public static const NONE:String="none";
         
-        private var type:String;
-        private var expression:String;
-        private var expressionLanguage:String;
+        private var type:String=NONE;
+        private var expression:String='';
+        private var expressionLanguage:String='';
         
         public function getType():String{
         	return type;

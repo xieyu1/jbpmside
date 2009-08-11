@@ -4,7 +4,10 @@ package org.jbpmside.xml
  */
 {
 	import org.jbpmside.model.common.DefaultContainer;
+	import org.jbpmside.model.jpdl4.Activity;
+	import org.jbpmside.model.jpdl4.Assignment;
 	import org.jbpmside.model.jpdl4.ProcessDefinition;
+	import org.jbpmside.model.jpdl4.Swimlane;
 	
 	public class Parser
 	{
@@ -33,13 +36,9 @@ package org.jbpmside.xml
 			var processDefinition:ProcessDefinition=new ProcessDefinition();
 			parse.setProcessDefinition(processDefinition);
 			try{
-				var name:String=xml.@name;
-				processDefinition.setName(name);
+				parseProcessDefinition(xml,processDefinition);
 				
-				var key:String=xml.@key;
-				processDefinition.setKey(key);
-				
-				trace(xml.name());
+				parseActivities(xml,parse,processDefinition);
 				
 				
 			}catch(e:ReferenceError){
@@ -47,8 +46,67 @@ package org.jbpmside.xml
 			}
 		}
 		
+		private function parseProcessDefinition(xml:XML,processDefinition:ProcessDefinition):void{
+			var name:String=xml.@name;
+			processDefinition.setName(name);
+			
+			var key:String=xml.@key;
+			processDefinition.setKey(key);
+			
+			var version:String=xml.@version;
+			processDefinition.setVersion(version);
+			
+			var packageName:String=xml.attribute('package');
+			processDefinition.setPackageName(packageName);
+			
+			var description:String=xml.description.text();
+			processDefinition.setDescription(description);
+			
+			parseSwimlanes(xml,processDefinition);
+		} 
+		
+		private function parseSwimlanes(xml:XML,processDefinition:ProcessDefinition):void{
+			var elementList:XMLList=xml.swimlane;
+			for each(var element:XML in elementList){
+				var name:String=element.@name;
+				var swimlane:Swimlane=new Swimlane();
+				swimlane.setName(name);
+				parseAssignmentAttributes(element,swimlane);
+				processDefinition.addSwimlane(swimlane);
+			}
+		} 
+		
+		private function parseAssignmentAttributes(xml:XML,swimlane:Swimlane):void{
+			var assignment:Assignment=new Assignment();
+			var assignee:String=xml.@assignee;
+			var candidateUsers:String=xml.attribute('candidate-users');
+			var candidateGroups:String=xml.attribute('candidate-groups');
+			if(assignee!=''){
+				assignment.setExpression(assignee);
+				assignment.setType(Assignment.ASSIGNEE);
+				assignment.setExpressionLanguage(xml.attribute('assignee-lang'));
+			}else if(candidateUsers!=''){
+				assignment.setExpression(candidateUsers);
+				assignment.setType(Assignment.CANDIDATE_USERS);
+				assignment.setExpressionLanguage(xml.attribute('candidate-users-lang'));
+			}else if(candidateGroups!=''){
+				assignment.setExpression(candidateGroups);
+				assignment.setType(Assignment.CANDIDATE_GROUPS);
+				assignment.setExpressionLanguage(xml.attribute('candidate-groups-lang'));
+			}
+			swimlane.setAssignment(assignment);
+		} 
+		
 		private function parseActivities(xml:XML,parse:Parse,nodeContainer:DefaultContainer):void{
-//			xml.
+			var elementList:XMLList=xml.elements("*");
+			for each(var element:XML in elementList){
+				var tagName:String=element.name();
+				if(tagName=="on"||tagName=="timer"||tagName=="swimlane"||tagName=="description"){
+					continue;
+				}
+				var binding:Binding=getBinding(element,Parser.CATEGORY_ACTIVITY);
+				var activity:Activity=binding.parse(element,parse,this) as Activity;
+			}
 		} 
 		
 		public function getBinding(elementXml:XML,category:String):Binding{

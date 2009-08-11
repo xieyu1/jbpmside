@@ -17,7 +17,7 @@ package org.jbpmside.xml
 				bindings=eventListenerBindings;
 			}
 			for each(var binding:Binding in bindings){
-				if(binding.matches(elementXml.name)){
+				if(binding.matches(elementXml.name())){
 					return binding;
 				}
 			}
