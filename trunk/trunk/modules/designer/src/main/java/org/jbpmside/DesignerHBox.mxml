@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="initCollections();" xmlns:code="http://code.google.com/p/flexlib/">
+	<mx:Script>
+        <![CDATA[
+
+            import mx.events.MenuEvent;
+            import mx.controls.Alert;
+            import mx.collections.*;
+
+            [Bindable]
+            public var menuBarCollection:XMLListCollection;
+    
+            private var menubarXML:XMLList =
+                <>
+                    <menuitem label="Menu1" data="top">
+                        <menuitem label="MenuItem 1-A" data="1A"/>
+                        <menuitem label="MenuItem 1-B" data="1B"/>
+                    </menuitem>
+                    <menuitem label="Menu2" data="top">
+                        <menuitem label="MenuItem 2-A" type="check"  data="2A"/>
+                        <menuitem type="separator"/>
+                        <menuitem label="MenuItem 2-B" >
+                            <menuitem label="SubMenuItem 3-A" type="radio"
+                                groupName="one" data="3A"/>
+                            <menuitem label="SubMenuItem 3-B" type="radio"
+                                groupName="one" data="3B"/>
+                        </menuitem>
+                    </menuitem>
+                </>;
+
+            // Event handler to initialize the MenuBar control.
+            private function initCollections():void {
+                menuBarCollection = new XMLListCollection(menubarXML);
+            }
+
+            // Event handler for the MenuBar control's itemClick event.
+            private function menuHandler(event:MenuEvent):void  {
+                // Don't open the Alert for a menu bar item that 
+                // opens a popup submenu.
+                if (event.item.@data != "top") {
+                    Alert.show("Label: " + event.item.@label + "\n" + 
+                        "Data: " + event.item.@data, "Clicked menu item");
+                }        
+            }
+         ]]>
+    </mx:Script>
+
+    <mx:XMLList id="treeData">
+	    <node label="Mail Box">
+	        <node label="Inbox">
+	            <node label="Marketing"/>
+	            <node label="Product Management"/>
+	            <node label="Personal"/>
+	        </node>
+	        <node label="Outbox">
+	            <node label="Professional"/>
+	            <node label="Personal"/>
+	        </node>
+	        <node label="Spam"/>
+	        <node label="Sent"/>
+		</node>	
+    </mx:XMLList>
+        
+    <mx:VBox width="100%" paddingBottom="0">
+	    <mx:MenuBar width="100%" labelField="@label" itemClick="menuHandler(event);"  dataProvider="{menuBarCollection}" />
+    </mx:VBox>
+	<mx:VBox width="100%">
+		<mx:LinkButton label="Button with Icon"/>
+	</mx:VBox>
+	<mx:HDividedBox width="100%" height="100%">
+		<mx:VBox width="20%" height="100%">
+			<mx:Panel title="流程分类" width="100%" height="100%">
+	            <mx:Tree  width="100%" height="100%" labelField="@label" showRoot="false" dataProvider="{treeData}"/>
+			</mx:Panel>
+		</mx:VBox>
+		<mx:VBox width="80%" height="100%">
+			<code:SuperTabNavigator width="100%" height="100%">
+				<mx:HBox label="使用说明">
+					
+				</mx:HBox>
+				<mx:HBox label="发文">
+					
+				</mx:HBox>
+			</code:SuperTabNavigator>
+		</mx:VBox>
+				
+	</mx:HDividedBox>
+</mx:VBox>
