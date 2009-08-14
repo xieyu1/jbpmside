@@ -5,10 +5,10 @@
 	
 	<mx:Script> 
 		<![CDATA[
+			import org.jbpmside.common.ButtonIcon;
 			import mx.controls.Tree;
 			import flexlib.events.SuperTabEvent;
 			import mx.modules.IModuleInfo;
-			import com.ultrapower.somc.workspace.helpers.EmbeddedIcons;
 			import mx.controls.Alert;
 			import mx.containers.VBox;
 			import mx.modules.Module;
@@ -20,7 +20,7 @@
 			public var module:IModuleInfo;
 			private var nodeName:String;
 			private function init():void{
-				StyleManager.loadStyleDeclarations("assets/maincss.swf");
+				
 			}
 			private function loadModel(e:Event):void{
 				nodeName = Tree(e.currentTarget).selectedItem.@label;
@@ -62,7 +62,7 @@
 				vbox.setStyle("closable",true);
 				vbox.setStyle("font-family","arial");
 				vbox.setStyle("font-size","12");
-				vbox.icon=EmbeddedIcons.iconNode;
+				vbox.icon=ButtonIcon.addBtn;
 				vbox.addChild(inst);
 				mainPanel.addChild(vbox);
 				mainPanel.selectedIndex=mainPanel.numChildren-1;//选择新增页签
