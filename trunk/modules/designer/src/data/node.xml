@@ -1,0 +1,7 @@
+<root label="root">
+	<module label="11">
+		<node label="22" uri="22.swf"/>
+		<node label="33" uri="33.swf"/>
+		<node label="44" uri="44.swf"/>
+	</module>		
+</root>

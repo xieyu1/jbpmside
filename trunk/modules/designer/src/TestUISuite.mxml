@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	xmlns:workspace="com.ultrapower.somc.workspace.*" 
+	xmlns:code="http://code.google.com/p/flexlib/" creationComplete="init()">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Tree;
+			import flexlib.events.SuperTabEvent;
+			import mx.modules.IModuleInfo;
+			import com.ultrapower.somc.workspace.helpers.EmbeddedIcons;
+			import mx.controls.Alert;
+			import mx.containers.VBox;
+			import mx.modules.Module;
+			import mx.events.ModuleEvent;
+			import mx.modules.ModuleManager;
+			
+			private var uri:String;
+			private var nodeBus:Dictionary = new Dictionary();
+			public var module:IModuleInfo;
+			private var nodeName:String;
+			private function init():void{
+				StyleManager.loadStyleDeclarations("assets/maincss.swf");
+			}
+			private function loadModel(e:Event):void{
+				nodeName = Tree(e.currentTarget).selectedItem.@label;
+				uri = Tree(e.currentTarget).selectedItem.@uri;
+				if(uri==null){//非功能节点的排除
+					return;
+				}
+				//以获得的数据为基准，加载模块到右侧
+				addTab(nodeName,uri,mainPanel);
+			}
+			
+			private function addTab(lbl:String,uri:String,nav:SuperTabNavigator):void{
+				try{
+					var vbox:VBox = nodeBus[lbl];
+					if(vbox!=null){//有两种可能：已经关闭了；还开着
+						if(nav.getChildByName(vbox.name) == null){
+							nav.addChild(vbox);//补充现有实例到nav中
+						}
+						nav.selectedChild = vbox;
+						return ;
+					}
+					//构建模块:界面，非程序
+					module = ModuleManager.getModule(uri);
+					module.addEventListener(ModuleEvent.READY,modEventHandler);
+					module.addEventListener(ModuleEvent.ERROR,errorHandler);
+					module.load();//加载
+				}catch(e:Error){
+					//trace("-->"+e.message);
+					Alert.show(e.message,"模块加载错误");
+				}
+				//1-构建vbox,构建module
+			}
+			
+			private function modEventHandler(e:ModuleEvent):void {
+				//1-添加到界面上
+				var inst:Module = (e.module.factory.create() as Module);
+				var vbox:VBox = new VBox();
+				vbox.label = nodeName;
+				vbox.setStyle("closable",true);
+				vbox.setStyle("font-family","arial");
+				vbox.setStyle("font-size","12");
+				vbox.icon=EmbeddedIcons.iconNode;
+				vbox.addChild(inst);
+				mainPanel.addChild(vbox);
+				mainPanel.selectedIndex=mainPanel.numChildren-1;//选择新增页签
+				mainPanel.addEventListener(
+					SuperTabEvent.TAB_CLOSE,
+					function(event:SuperTabEvent):void{
+						//如果有必要就在关闭页签时，处理掉缓存的module实例，释放内存(前提是：1-module可被浏览器有效的缓存；2-客户端硬件设备条件有限)
+					}
+				);
+				//2-保持到内存中
+				nodeBus[vbox.label]=vbox;//缓存
+			}
+			
+			private function errorHandler(e:ModuleEvent):void{
+				Alert.show(e.errorText,"模块加载错误");
+			}
+		]]>
+	</mx:Script>
+	<mx:HDividedBox width="100%" height="100%">
+		<mx:Tree width="20%" height="100%" dataProvider="{node}" showRoot="false" labelField="@label" iconField="@icon" click="loadModel(event)"/>
+		<code:SuperTabNavigator width="80%" height="100%" id="mainPanel"/>
+	</mx:HDividedBox>
+	<mx:XML id="node" source="data/node.xml"/>
+</mx:Application>
