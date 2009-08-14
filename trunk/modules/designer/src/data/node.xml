@@ -1,8 +1,3 @@
 <root label="root">
-	<module label="11">
-		<node label="22" uri="22.swf"/>
-		<node label="33" uri="33.swf"/>
-		<node label="44" uri="44.swf"/>
-	</module>		
-	<node label="55" uri="55.swf"/>
+	<node code="designerExplorer" label="流程管理" uri="org/jbpmside/explorer/modules/DesignerExplorerModule.swf"/>
 </root>
