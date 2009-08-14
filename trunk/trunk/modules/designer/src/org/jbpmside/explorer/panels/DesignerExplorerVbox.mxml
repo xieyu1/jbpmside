@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+	流程管理,设计器总入口
+	
+	创建时间：2009年08月14日
+	
+	@author yptqqqq@gmail.com	
+-->
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="initCollections();" xmlns:code="http://code.google.com/p/flexlib/">
 	<mx:Script>
         <![CDATA[
