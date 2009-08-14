@@ -10,7 +10,11 @@
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>
-<applications/>
-<modules/>
+<applications>
+<application path="TestUISuite.mxml"/>
+</applications>
+<modules>
+<module application="src/TestUISuite.mxml" destPath="org/jbpmside/explorer/modules/DesignerExplorerModule.swf" optimize="true" sourcePath="src/org/jbpmside/explorer/modules/DesignerExplorerModule.mxml"/>
+</modules>
 <buildCSSFiles/>
 </actionScriptProperties>
