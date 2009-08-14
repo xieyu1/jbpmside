@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+	测试开发使用
+	
+	创建时间：2009年08月14日
+	
+	@author yptqqqq@gmail.com		
+-->
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
 	xmlns:workspace="com.ultrapower.somc.workspace.*" 
 	xmlns:code="http://code.google.com/p/flexlib/" creationComplete="init()">
