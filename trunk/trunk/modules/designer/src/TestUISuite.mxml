@@ -3,7 +3,7 @@
 	xmlns:workspace="com.ultrapower.somc.workspace.*" 
 	xmlns:code="http://code.google.com/p/flexlib/" creationComplete="init()">
 	
-	<mx:Script>
+	<mx:Script> 
 		<![CDATA[
 			import mx.controls.Tree;
 			import flexlib.events.SuperTabEvent;
