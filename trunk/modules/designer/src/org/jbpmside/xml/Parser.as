@@ -4,10 +4,13 @@ package org.jbpmside.xml
  */
 {
 	import org.jbpmside.model.common.DefaultContainer;
+	import org.jbpmside.model.common.EventListener;
+	import org.jbpmside.model.common.EventListenerContainer;
 	import org.jbpmside.model.jpdl4.Activity;
 	import org.jbpmside.model.jpdl4.Assignment;
 	import org.jbpmside.model.jpdl4.ProcessDefinition;
 	import org.jbpmside.model.jpdl4.Swimlane;
+	import org.jbpmside.model.jpdl4.Timer;
 	
 	public class Parser
 	{
@@ -63,6 +66,10 @@ package org.jbpmside.xml
 			processDefinition.setDescription(description);
 			
 			parseSwimlanes(xml,processDefinition);
+			
+			parseTimers(xml,processDefinition);
+			
+			parseEvents(xml,processDefinition);
 		} 
 		
 		private function parseSwimlanes(xml:XML,processDefinition:ProcessDefinition):void{
@@ -73,6 +80,45 @@ package org.jbpmside.xml
 				swimlane.setName(name);
 				parseAssignmentAttributes(element,swimlane);
 				processDefinition.addSwimlane(swimlane);
+			}
+		} 
+		
+		private function parseEvents(xml:XML,processDefinition:ProcessDefinition):void{
+			var elementList:XMLList=xml.on;
+			for each(var element:XML in elementList){
+				var eventType:String=element.@event;
+				var duedate:String=element.timer.@duedate;
+				var repeat:String=element.timer.@repeat;
+				var event:EventListenerContainer=new EventListenerContainer();
+				event.setEventType(eventType);
+				event.setDueDate(duedate);
+				event.setRepeat(repeat);
+				parseEventListeners(element,event);
+				processDefinition.addEventListenerContainer(event);
+			}
+		} 
+		
+		private function parseEventListeners(xml:XML,container:EventListenerContainer):void{
+			var elementList:XMLList=xml.child("event-listener");
+			for each(var element:XML in elementList){
+				var className:String=element.attribute("class");
+				var listener:EventListener=new EventListener();
+				listener.setClassName(className);
+				container.addEventListener(listener);
+			}
+		} 
+		
+		private function parseTimers(xml:XML,processDefinition:ProcessDefinition):void{
+			var elementList:XMLList=xml.timer;
+			for each(var element:XML in elementList){
+				var duedate:String=element.@duedate;
+				var repeat:String=element.@repeat;
+				var duedatetime:String=element.@duedatetime;
+				var timer:Timer=new Timer();
+				timer.setDueDate(duedate);
+				timer.setRepeat(repeat);
+				timer.setDueDateTime(duedatetime);
+				processDefinition.addTimer(timer);
 			}
 		} 
 		
