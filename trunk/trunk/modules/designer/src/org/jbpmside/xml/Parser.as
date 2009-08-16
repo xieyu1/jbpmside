@@ -3,6 +3,8 @@ package org.jbpmside.xml
  * @author ronghao
  */
 {
+	import mx.collections.ArrayCollection;
+	
 	import org.jbpmside.model.common.DefaultContainer;
 	import org.jbpmside.model.common.EventListener;
 	import org.jbpmside.model.common.EventListenerContainer;
@@ -11,6 +13,7 @@ package org.jbpmside.xml
 	import org.jbpmside.model.jpdl4.ProcessDefinition;
 	import org.jbpmside.model.jpdl4.Swimlane;
 	import org.jbpmside.model.jpdl4.Timer;
+	import org.jbpmside.model.jpdl4.Transition;
 	
 	public class Parser
 	{
@@ -43,7 +46,7 @@ package org.jbpmside.xml
 				
 				parseActivities(xml,parse,processDefinition);
 				
-				
+				resolveTransitionDestinations(parse,processDefinition);
 			}catch(e:ReferenceError){
 				
 			}
@@ -154,6 +157,18 @@ package org.jbpmside.xml
 				var activity:Activity=binding.parse(element,parse,this) as Activity;
 			}
 		} 
+		
+		private function resolveTransitionDestinations(parse:Parse,processDefinition:ProcessDefinition):void{
+			var transitions:ArrayCollection=parse.getUnresolvedTransitions();
+			for each(var t:Transition in transitions){
+				var toname:String=t.toName;
+				if(toname==""){
+					continue;
+				}
+				var activity:Activity=processDefinition.getNode(toname) as Activity;
+				activity.addIncomingConnection(t);
+			}
+		}
 		
 		public function getBinding(elementXml:XML,category:String):Binding{
 			return bindings.getBinding(elementXml,category);

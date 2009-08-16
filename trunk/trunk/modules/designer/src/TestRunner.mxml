@@ -9,6 +9,7 @@
 			import flexunit.framework.TestSuite;
 			
 			import org.jbpmside.xml.ProcessParsingTest;
+			import org.jbpmside.xml.StartParsingTest;
 			
 			// Create the test suite and run the tests
 			private function onCreationComplete():void
@@ -22,6 +23,7 @@
   				var testSuite:TestSuite = new TestSuite();
   				
   				testSuite.addTestSuite( ProcessParsingTest );
+  				testSuite.addTestSuite( StartParsingTest );
   				
   				return testSuite;
   			}	

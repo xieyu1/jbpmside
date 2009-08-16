@@ -4,17 +4,6 @@ package org.jbpmside.model.common
 
 	public class DefaultFlow extends DefaultContainer implements Flow
 	{
-		private var name:String;
-		
-		public function setName(name:String):void
-		{
-			this.name=name;
-		}
-		
-		public function getName():String
-		{
-			return name;
-		}
 		
 		public function setVersion(version:String):void
 		{

@@ -4,20 +4,9 @@ package org.jbpmside.model.common
 
 	public class DefaultNode extends DefaultContainer implements Node
 	{
-		private var name:String;
 		private var container:Container;
 		private var incomingConnections:ArrayCollection=new ArrayCollection();
 		private var outgoingConnections:ArrayCollection=new ArrayCollection();
-		
-		public function setName(name:String):void
-		{
-			this.name=name;
-		}
-		
-		public function getName():String
-		{
-			return name;
-		}
 		
 		public function setNodeContainer(container:Container):void
 		{

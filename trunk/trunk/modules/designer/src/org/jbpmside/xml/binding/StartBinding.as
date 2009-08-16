@@ -13,13 +13,10 @@ package org.jbpmside.xml.binding
 			super("start");
 		}
 		
-		public override function parse(elementXml:XML,parse:Parse,parser:Parser):Object{
+		public override function parseActivity(elementXml:XML,parse:Parse,parser:Parser):Activity{
 			var processDefinition:ProcessDefinition=parse.getProcessDefinition() as ProcessDefinition;
 			var startActivity:Activity=new StartActivity();
-			var name:String=elementXml.@name;
-			startActivity.setName(name);
-			processDefinition.addNode(startActivity);
-			processDefinition.setInitial(startActivity);
+			processDefinition.setInitial(startActivity);			
 			return startActivity;
 		}
 
