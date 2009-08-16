@@ -4,6 +4,6 @@ package org.jbpmside.model.jpdl4
 
 	public class Transition extends DefaultConnection
 	{
-		
+		public var toName:String;
 	}
 }

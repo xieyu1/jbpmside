@@ -3,6 +3,7 @@ package org.jbpmside.xml
 	import mx.collections.ArrayCollection;
 	
 	import org.jbpmside.xml.binding.StartBinding;
+	import org.jbpmside.xml.binding.StateBinding;
 	
 	public class Bindings
 	{
@@ -36,6 +37,7 @@ package org.jbpmside.xml
 		private function initActivityBindings():void{
 			this.activityBindings=new ArrayCollection();
 			addActivityBinding(new StartBinding());
+			addActivityBinding(new StateBinding());
 		}
 		
 		private function addActivityBinding(binding:Binding):void{

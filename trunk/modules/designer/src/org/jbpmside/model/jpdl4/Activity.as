@@ -4,6 +4,9 @@ package org.jbpmside.model.jpdl4
 
 	public class Activity extends DefaultNode
 	{
-		
+		public var x:int;
+		public var y:int;
+		public var width:int;
+		public var height:int;
 	}
 }

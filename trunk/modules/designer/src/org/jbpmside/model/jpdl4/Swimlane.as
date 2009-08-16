@@ -4,16 +4,7 @@ package org.jbpmside.model.jpdl4
 
 	public class Swimlane extends DefaultElement
 	{
-		private var name:String;
 		private var assignment:Assignment;
-		
-		public function getName():String{
-        	return name;
-        }
-        
-        public function setName(name:String):void{
-        	this.name=name;
-        }
         
         public function getAssignment():Assignment{
         	return assignment;

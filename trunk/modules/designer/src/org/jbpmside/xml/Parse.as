@@ -3,8 +3,11 @@ package org.jbpmside.xml
  * @author ronghao
  */
 {
-	import org.jbpmside.model.common.Flow;
+	import mx.collections.ArrayCollection;
+	
 	import org.jbpmside.model.common.Element;
+	import org.jbpmside.model.common.Flow;
+	import org.jbpmside.model.jpdl4.Transition;
 	
 	public class Parse
 	{
@@ -12,6 +15,7 @@ package org.jbpmside.xml
 		private var xml:XML;
 		private var processDefinition:Flow;
 		private var currentModel:Element;
+		private var transitions:ArrayCollection=new ArrayCollection();
 		
 		public function Parse(parser:Parser)
 		{
@@ -60,6 +64,14 @@ package org.jbpmside.xml
 		
 		public function getCurrentModel():Element{
 			return this.currentModel;
+		}
+		
+		public function getUnresolvedTransitions():ArrayCollection{
+			return this.transitions;
+		}
+		
+		public function addUnresolvedTransition(transition:Transition):void{
+			this.transitions.addItem(transition);
 		}
 
 	}
