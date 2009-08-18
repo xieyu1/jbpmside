@@ -95,7 +95,7 @@
 	    <mx:MenuBar width="100%" labelField="@label" itemClick="menuHandler(event);"  dataProvider="{menuBarCollection}" />
     </mx:VBox>
 	<mx:VBox width="100%">
-		<mx:LinkButton label="Button with Icon"/>
+		<mx:LinkButton label="添加" icon="{ButtonIcon.addBtn}"/>
 	</mx:VBox>
 	<mx:HDividedBox width="100%" height="100%">
 		<mx:VBox width="20%" height="100%">
