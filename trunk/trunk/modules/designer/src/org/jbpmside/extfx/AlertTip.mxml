@@ -1,0 +1,121 @@
+<!--
+	AlertTip.mxml
+	由Canvas为主要容器，
+	包含一个Text组件,用于显示信息
+--> 
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:filters="flash.filters.*"
+	width="220" height="120"
+	horizontalScrollPolicy="off" verticalScrollPolicy="off"
+	showEffect="{show}"
+	hideEffect="{hide}"
+	visible = "false"
+	add="visible=false;"
+	creationComplete="creatComplete();"> 
+	<mx:Style>
+	    .AlertTip{
+			backgroundColor: #A2BAE7;
+			backgroundAlpha: 0.6;
+			borderStyle: "solid";
+			borderColor: #113333;
+			cornerRadius: 4;
+			dropShadowColor: #000000;
+			dropShadowEnabled: true;
+			shadowDirection: "center";
+			shadowDistance: 1;
+			color: #0099FF;
+			textAlign: "center";
+			fontSize: 12;
+			fontWeight: "bold"
+		}
+	</mx:Style>
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import mx.core.IFlexDisplayObject;
+			import mx.effects.easing.*;
+			import flash.utils.setTimeout;
+			import mx.managers.PopUpManager;
+			[Bindable]
+			public var msg:String;//提示信息，可以支持html
+			public var delay:uint;
+			public var init:Object ={width:220, height:120, style:"AlertTip"};//
+			/**
+			 * 创建窗体结束，显示并开始计时
+			 */
+			private function creatComplete():void{
+				parseInitValue();
+				visible=true;
+				var tmp:Number = setTimeout(unshow, delay);
+			}
+			/**
+			 * 提示显示方法
+			 * message:提示信息
+			 * delay:可显示的时间
+			 * modal:背景变灰
+			 * initValue:初始化数值
+			 * parent:父级
+			 */
+			public static function pop(message:String="", delay:int=1000, modal:Boolean=false, initValue:Object=null, parent:Sprite=null):void{
+				if (!parent){
+					parent = Sprite(Application.application);
+				} 
+				var alert:IFlexDisplayObject = PopUpManager.createPopUp(parent,AlertTip, modal);
+				AlertTip(alert).msg = message;
+				AlertTip(alert).delay = delay;
+				if(initValue!=null){
+					AlertTip(alert).init = initValue;	
+				}
+				PopUpManager.centerPopUp(alert);
+			}
+			/**
+			 * 分析属性值
+			 */
+			private function parseInitValue():void{
+				if(init == null){
+					return ;
+				}
+				if(init.hasOwnProperty("width")) this.width = init.width;
+				if(init.hasOwnProperty("height")) this.height = init.height;
+				if(init.hasOwnProperty("style")){
+					this.styleName = init.style;
+				}else{
+					this.styleName = "AlertTip";
+				}
+			}
+			/**
+			 * 计时结束，消失
+			 */
+			private function unshow():void{
+				visible = false;
+			}
+			/**
+			 * 移除窗体容器
+			 */
+			private function removePopup():void{
+				PopUpManager.removePopUp(this);
+			}
+			/**
+			 * 消失效果结束
+			 */
+			private function endEffect():void{
+				removePopup();
+			}
+		]]> 
+	</mx:Script> 
+	<!-- 显示及消失效果 --> 
+	<mx:Parallel id="show" duration="500"> 
+		<mx:Blur blurXFrom="100" blurYFrom="100" blurXTo="0" blurYTo="0"/> 
+		<mx:Fade/> 
+	</mx:Parallel> 
+	<mx:Parallel id="hide" duration="500" effectEnd="endEffect();"> 
+		<mx:Blur blurXFrom="0" blurYFrom="0" blurXTo="100" blurYTo="100"/> 
+		<mx:Fade/> 
+	</mx:Parallel>
+	<mx:Text id="msg_txt" verticalCenter="0" left="10" right="10" htmlText="{msg}" selectable="false"> 
+		<mx:filters> 
+			<!-- 滤镜用于位图化文字 --> 
+			<filters:BlurFilter blurX="0" blurY="0" /> 
+		</mx:filters> 
+	</mx:Text> 
+</mx:Canvas>

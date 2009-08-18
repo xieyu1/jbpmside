@@ -155,8 +155,13 @@ package org.jbpmside.util
   		[Embed(source="../../../assets/icons/hide.png")]
   		public static const hideBtn:Class;
   		
-  		//关闭
-  		[Embed(source="../../../assets/icons/stop.png")]
-  		public static const closeIcon:Class;
+		[Embed(source="../../../assets/icons/verticalSize.gif")]
+		public static const VERTICAL_SIZE:Class;
+		[Embed(source="../../../assets/icons/horizontalSize.gif")]
+		public static const HORIZONTAL_SIZE:Class;
+		[Embed(source="../../../assets/icons/leftObliqueSize.gif")]
+		public static const LEFT_OBLIQUE_SIZE:Class;
+		[Embed(source="../../../assets/icons/rightObliqueSize.gif")]
+		public static const RIGHT_OBLIQUE_SIZE:Class;   		
 	}
 }
