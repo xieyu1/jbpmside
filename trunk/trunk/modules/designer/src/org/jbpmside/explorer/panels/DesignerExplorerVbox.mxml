@@ -9,6 +9,7 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init();" xmlns:code="http://code.google.com/p/flexlib/">
 	<mx:Script>
         <![CDATA[
+        	import org.jbpmside.util.ButtonIcon;
         	import org.jbpmside.extfx.ExtHttpService;
 
             import mx.events.MenuEvent;
@@ -56,6 +57,29 @@
 					    }
 				});
 			}
+			private function loadProcessDef():void{
+				//1.点击左边流程定义节点
+				var processNode:Object = processTree.selectedItem;
+				//确定点击的是树的流程定义节点
+				if(processNode == null || processNode.type=="1") return;
+				//查询流程定义对应的流程版本  step 1.如果已打开对应的页签则转换到那个页签上 2.如果未打开则从后台加载
+				var processDesignPanelHBox:DisplayObject = processExplorer.getChildByName(processNode.id);
+				if(processDesignPanelHBox !=null){
+					processExplorer.selectedChild=HBox(processDesignPanelHBox); return ;
+				}else{
+						var tempHBox:HBox=new HBox();
+						tempHBox.percentWidth=100.0;
+						tempHBox.percentHeight=100.0;
+						tempHBox.label=processNode.name;
+						tempHBox.icon=ButtonIcon.flexAppBtn;				
+						tempHBox.name=processNode.id;
+						processExplorer.addChild(tempHBox);
+						processExplorer.selectedChild=tempHBox;
+				}
+				
+				
+								
+			}
             // Event handler for the MenuBar control's itemClick event.
             private function menuHandler(event:MenuEvent):void  {
                 // Don't open the Alert for a menu bar item that 
@@ -76,17 +100,14 @@
 	<mx:HDividedBox width="100%" height="100%">
 		<mx:VBox width="20%" height="100%">
 			<mx:Panel title="流程分类" width="100%" height="100%">
-	            <mx:Tree id="processTree" dataProvider="{processTreeDP}" labelField="name" showRoot="false" width="100%" height="100%"/>
+	            <mx:Tree id="processTree" dataProvider="{processTreeDP}" click="loadProcessDef()" labelField="name" showRoot="false" width="100%" height="100%"/>
 			</mx:Panel>
 		</mx:VBox>
 		<mx:VBox width="80%" height="100%">
-			<code:SuperTabNavigator width="100%" height="100%">
-				<mx:HBox label="使用说明">
-					
-				</mx:HBox>
-				<mx:HBox label="发文">
-					
-				</mx:HBox>
+			<code:SuperTabNavigator id="processExplorer" width="100%" height="100%">
+		        	<mx:HBox id="defaultTab" label="使用说明">
+						<mx:Label text="jbpmside流程设计器使用说明!" color="0x00ff00"/>
+					</mx:HBox>
 			</code:SuperTabNavigator>
 		</mx:VBox>
 				
