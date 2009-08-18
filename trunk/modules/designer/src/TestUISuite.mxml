@@ -5,7 +5,7 @@
 	<mx:Script>   
 		<![CDATA[
 			import mx.containers.VBox;
-			import org.jbpmside.common.ButtonIcon; 
+			import org.jbpmside.util.ButtonIcon; 
 		    import mx.controls.Tree;
 			import mx.modules.IModuleInfo; 
 			import mx.controls.Alert;
