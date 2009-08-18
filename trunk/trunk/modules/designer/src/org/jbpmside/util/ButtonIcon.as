@@ -2,7 +2,7 @@
  * 按钮图片集合
  * yptqqq
  */
-package org.jbpmside.common
+package org.jbpmside.util
 {
 	/**
 	 * 添加：addBtn ---->add.png
