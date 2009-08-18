@@ -155,6 +155,10 @@ package org.jbpmside.util
   		[Embed(source="../../../assets/icons/hide.png")]
   		public static const hideBtn:Class;
   		
+  		//tab应用
+  		[Embed(source="../../../assets/icons/flex-app.png")]
+  		public static const flexAppBtn:Class;
+  		  		
 		[Embed(source="../../../assets/icons/verticalSize.gif")]
 		public static const VERTICAL_SIZE:Class;
 		[Embed(source="../../../assets/icons/horizontalSize.gif")]

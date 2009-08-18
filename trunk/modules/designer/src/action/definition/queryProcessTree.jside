@@ -1,10 +1,10 @@
 ﻿{"result":
-    {"categoryId":"1","name":"流程分类","children":[
-         {"categoryId":"11","name":"公文管理","children":[
-             {"processId":"1","name":"发文流程"},
-             {"processId":"2","name":"收文流程"}
+    {"id":"1","name":"流程分类","type":"1","children":[
+         {"id":"11","name":"公文管理","type":"1","children":[
+             {"id":"1","name":"发文流程","type":"2"},
+             {"id":"2","name":"收文流程","type":"2"}
          ]},
-         {"categoryId":"12","name":"安全工单"}    
+         {"id":"12","name":"安全工单","type":"1"}    
      ]}
 ,
 "stat":"success"
