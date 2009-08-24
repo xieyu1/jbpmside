@@ -10,8 +10,6 @@ App.init = function() {
     App.viewProcessDefinition = App.createViewProcessDefinition();
     App.processDefinitions.store.load();
     App.uploadNewProcessDefinition = App.createUploadNewProcessDefinition();
-    App.jpdl = App.createJpdl();
-
     //App.chart = App.createColumnChart();
 
     App.centerTabPanel = {
@@ -27,8 +25,7 @@ App.init = function() {
             html: App.locale['welcome.content']
         },
             App.viewProcessDefinition,
-            App.uploadNewProcessDefinition,
-            App.jpdl
+            App.uploadNewProcessDefinition
         ]
     };
 
