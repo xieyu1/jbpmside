@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.zip.ZipInputStream;
+
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -95,13 +97,20 @@ public class JbpmTemplate {
                                 .list();
     }
 
-    public void deploy(String name, InputStream inputStream) {
+    public void deployXml(String name, InputStream inputStream) {
         RepositoryService repositoryService = processEngine
             .getRepositoryService();
-
         repositoryService.createDeployment()
                          .addResourceFromInputStream(name, inputStream)
                          .deploy();
+    }
+
+    public void deployZip(InputStream inputStream) {
+        RepositoryService repositoryService = processEngine
+            .getRepositoryService();
+        repositoryService.createDeployment()
+                         .addResourcesFromZipInputStream(new ZipInputStream(
+                inputStream)).deploy();
     }
 
     public void deployXml(String xml) {

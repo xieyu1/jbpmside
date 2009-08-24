@@ -149,9 +149,15 @@ public class JbpmServlet extends HttpServlet {
                 String name = item.getName();
                 long size = item.getSize();
 
+                String type = request.getParameter("type");
+
                 if ((name != null) && !name.equals("") && (size != 0)) {
-                    jbpmTemplate.deploy("process.jpdl.xml",
-                        item.getInputStream());
+                    if (type.equals("xml")) {
+                        jbpmTemplate.deployXml("process.jpdl.xml",
+                            item.getInputStream());
+                    } else if (type.equals("zip")) {
+                        jbpmTemplate.deployZip(item.getInputStream());
+                    }
                 }
             }
         }

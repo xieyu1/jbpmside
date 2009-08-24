@@ -62,6 +62,27 @@
             }
         }]
     }, {
+	title: App.locale['emulational.title'],
+	iconCls: 'metricsAndStats',
+	layout: 'fit',
+	items: [{
+	    xtype: 'treepanel',
+	    rootVisible: false,
+	    root: new Ext.tree.AsyncTreeNode({
+		expanded: true,
+		children: [{
+		    id: 'OperationEmulational',
+		    text: App.locale['operationEmulational.title'],
+		    iconCls: 'metricsAndStats',
+		    leaf: true
+		}]
+	    }),
+	    loader: new Ext.tree.TreeLoader(),
+	    listeners: {
+		'click': App.clickNode
+	    }
+	}]
+    },{
         title: App.locale['metricsAndStats.title'],
         iconCls: 'metricsAndStats',
         layout: 'fit',
