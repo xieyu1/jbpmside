@@ -28,6 +28,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.jbpmside.console.gui.geom.Line;
 import org.jbpmside.console.gui.geom.LineDrawer;
 import org.jbpmside.console.gui.geom.Rect;
+import org.jbpmside.console.gui.bean.NodeBean;
+import org.jbpmside.console.gui.bean.TransitionBean;
+import org.jbpmside.console.gui.geom.Rect;
+import org.jbpmside.console.gui.support.JbpmTemplate;
 
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -40,9 +44,6 @@ import org.jbpm.api.ProcessEngine;
 import org.jbpm.api.ProcessInstanceQuery;
 import org.jbpm.api.RepositoryService;
 import org.jbpm.api.model.OpenExecution;
-import org.jbpmside.console.gui.bean.NodeBean;
-import org.jbpmside.console.gui.bean.TransitionBean;
-import org.jbpmside.console.gui.support.JbpmTemplate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,11 +130,11 @@ public class JpdlImageServlet extends HttpServlet {
     public InputStream getXmlByProcessDefinition(
         HttpServletRequest request) {
         String id = getProcessDefinitionId(request);
+        System.out.println("id is : " + id);
 
         if (id != null) {
             return this.getJbpmTemplate()
-                       .getResourceFromProcessDefinition(id,
-                "process.jpdl.xml");
+                       .getResourceFromProcessDefinition(id);
         } else {
             return null;
         }
@@ -147,11 +148,10 @@ public class JpdlImageServlet extends HttpServlet {
      */
     public InputStream getXmlByProcessInstance(HttpServletRequest request) {
         String id = getProcessInstanceId(request);
+        System.out.println("piId: " + id);
 
         if (id != null) {
-            return this.getJbpmTemplate()
-                       .getResourceFromProcessInstance(id,
-                "process.jpdl.xml");
+            return this.getJbpmTemplate().getResourceFromProcessInstance(id);
         } else {
             return null;
         }
@@ -167,8 +167,12 @@ public class JpdlImageServlet extends HttpServlet {
         InputStream inputStream = null;
         inputStream = getXmlByProcessDefinition(request);
 
+        System.out.println("inputStream: " + inputStream);
+
         if (inputStream == null) {
             inputStream = getXmlByProcessInstance(request);
+
+            System.out.println("inputStream1: " + inputStream);
         }
 
         return inputStream;
@@ -213,7 +217,7 @@ public class JpdlImageServlet extends HttpServlet {
     public Map<String, NodeBean> getNodeMap(HttpServletRequest request)
         throws IOException, DocumentException {
         byte[] bytes = getBytes(request);
-        Element root = DocumentHelper.parseText(new String(bytes))
+        Element root = DocumentHelper.parseText(new String(bytes, "UTF-8"))
                                      .getRootElement();
         Map<String, NodeBean> nodeMap = new LinkedHashMap<String, NodeBean>();
 

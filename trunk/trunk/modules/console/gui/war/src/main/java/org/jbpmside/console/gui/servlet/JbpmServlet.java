@@ -15,10 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
+import org.jbpmside.console.gui.support.JbpmTemplate;
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
-import org.jbpmside.console.gui.support.JbpmTemplate;
 
 import org.jbpm.api.ProcessDefinition;
 import org.jbpm.api.ProcessEngine;
@@ -36,7 +35,11 @@ import org.springframework.context.ApplicationContext;
 
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-
+/**
+ * ´¦Àí²Ù×÷.
+ *
+ * @author Lingo,Kayzhan
+ */
 public class JbpmServlet extends HttpServlet {
     private JbpmTemplate jbpmTemplate;
 
@@ -148,13 +151,13 @@ public class JbpmServlet extends HttpServlet {
             if (!item.isFormField()) {
                 String name = item.getName();
                 long size = item.getSize();
+                System.out.println("filename: " + name);
 
                 String type = request.getParameter("type");
 
                 if ((name != null) && !name.equals("") && (size != 0)) {
                     if (type.equals("xml")) {
-                        jbpmTemplate.deployXml("process.jpdl.xml",
-                            item.getInputStream());
+                        jbpmTemplate.deployXml(name, item.getInputStream());
                     } else if (type.equals("zip")) {
                         jbpmTemplate.deployZip(item.getInputStream());
                     }
@@ -678,12 +681,13 @@ public class JbpmServlet extends HttpServlet {
         StringBuffer buff = new StringBuffer(
                 "<script type='text/javascript' src='scripts/replay.js'></script>"
                 + "<img style='position:absolute;left:0px;top:0px;' src='JpdlImage?id=");
-        buff.append(processDefinition.getDeploymentId())
+        buff.append(processDefinition.getId())
             .append("'><div style='position:absolute;left:")
             .append(ac.getX()).append("px;top:").append(ac.getY())
             .append("px;width:").append(ac.getWidth()).append("px;height:")
             .append(ac.getHeight())
-            .append("px;border:1px solid red;'></div>");
+            .append("px;border:1px solid red;background-color:green;")
+            .append("filter:Alpha(opacity=50);opacity:0.5;'></div>");
         buff.append("<script type='text/javascript'>")
             .append("var array = [");
 
