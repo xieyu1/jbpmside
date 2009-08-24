@@ -6,14 +6,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.zip.ZipInputStream;
-
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.ZipInputStream;
 
 import javax.sql.DataSource;
 
@@ -54,7 +53,11 @@ import org.jbpm.pvm.internal.model.ProcessDefinitionImpl;
 import org.jbpm.pvm.internal.model.Transition;
 import org.jbpm.pvm.internal.task.OpenTask;
 
-
+/**
+ * 封装的template.
+ *
+ * @author Lingo,Kayzhan
+ */
 public class JbpmTemplate {
     private ProcessEngine processEngine;
     private DataSource dataSource;
@@ -337,16 +340,26 @@ public class JbpmTemplate {
         taskService.assignTask(dbid, null);
     }
 
-    public InputStream getResourceFromProcessDefinition(String id,
-        String name) {
+    public InputStream getResourceFromProcessDefinition(String id) {
         RepositoryService repositoryService = processEngine
             .getRepositoryService();
+        ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
+                                                .processDefinitionId(id)
+                                                .uniqueResult();
 
-        return repositoryService.getResourceAsStream(id, name);
+        if (pd != null) {
+            String processName = pd.getName() + ".jpdl.xml";
+
+            System.out.println("processName0:  " + processName);
+
+            return repositoryService.getResourceAsStream(pd.getDeploymentId(),
+                processName);
+        } else {
+            return null;
+        }
     }
 
-    public InputStream getResourceFromProcessInstance(String id,
-        String name) {
+    public InputStream getResourceFromProcessInstance(String id) {
         RepositoryService repositoryService = processEngine
             .getRepositoryService();
         ExecutionService executionService = processEngine
@@ -359,9 +372,11 @@ public class JbpmTemplate {
         Execution processInstance = (Execution) query.uniqueResult();
         ProcessDefinition pd = ((ExecutionImpl) processInstance)
             .getProcessDefinition();
+        String processName = pd.getName() + ".jpdl.xml";
+        System.out.println("processName:  " + processName);
 
         return repositoryService.getResourceAsStream(pd.getDeploymentId(),
-            name);
+            processName);
     }
 
     public List<User> getUsers() {
