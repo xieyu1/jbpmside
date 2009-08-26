@@ -4,6 +4,7 @@ package org.jbpmside.xml
 	
 	import org.jbpmside.xml.binding.StartBinding;
 	import org.jbpmside.xml.binding.StateBinding;
+	import org.jbpmside.xml.binding.TaskBinding;
 	
 	public class Bindings
 	{
@@ -38,6 +39,7 @@ package org.jbpmside.xml
 			this.activityBindings=new ArrayCollection();
 			addActivityBinding(new StartBinding());
 			addActivityBinding(new StateBinding());
+			addActivityBinding(new TaskBinding());
 		}
 		
 		private function addActivityBinding(binding:Binding):void{
