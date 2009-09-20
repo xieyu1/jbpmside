@@ -28,12 +28,12 @@ package org.jbpmside.view.component.role
 			
 			if (isConnectSelect(event))
 			{
-				var fromNodeComponent:NodeComponent=SurfaceComponent(this.editor.graphicViewer).selectedComponent as NodeComponent;
+				var fromNodeComponent:NodeComponent=this.graphicViewer.selectedComponent as NodeComponent;
 				var toNodeComponent:NodeComponent=event.currentTarget as NodeComponent;
 				if(!hasConnectionBetweenNodes(fromNodeComponent,toNodeComponent)&&
 						!hasConnectionBetweenNodes(toNodeComponent,fromNodeComponent)){
 					var cmd:Command=new CreateConnectionCommand(fromNodeComponent, toNodeComponent);
-					CommandService.getInstance().execute(cmd);
+					commandService.execute(cmd);
 				}else{
 					selected(event);
 				}
@@ -47,7 +47,7 @@ package org.jbpmside.view.component.role
 
 		private function isConnectSelect(event:MouseEvent):Boolean
 		{
-			var selectedComponent:ShapeComponent=SurfaceComponent(this.editor.graphicViewer).selectedComponent;
+			var selectedComponent:ShapeComponent=this.graphicViewer.selectedComponent;
 			var toNode:NodeComponent=event.currentTarget as NodeComponent;
 			if (selectedComponent != null && (selectedComponent is NodeComponent) && !toNode.isSelected)
 			{

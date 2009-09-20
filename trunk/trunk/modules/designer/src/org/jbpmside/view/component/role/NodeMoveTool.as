@@ -29,7 +29,7 @@ package org.jbpmside.view.component.role
 			nodeComponent.stopDrag();
 			nodeComponent.removeEventListener(MouseEvent.MOUSE_MOVE, nodeMoveHandler);
 			var cmd:Command=new MoveNodeCommand(nodeComponent);
-			CommandService.getInstance().execute(cmd);
+			commandService.execute(cmd);
 		}
 		
 		private function nodeMoveHandler(event:MouseEvent):void{

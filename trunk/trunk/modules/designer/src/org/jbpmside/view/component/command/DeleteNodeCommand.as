@@ -61,11 +61,6 @@ package org.jbpmside.view.component.command
 			}			
 		}
 		
-		override public function canUndo():Boolean
-		{
-			return true;
-		}
-		
 		override public function perform():Boolean
 		{
 			//画板删除节点组件

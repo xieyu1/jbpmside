@@ -7,7 +7,7 @@ package org.jbpmside.view.component.gef
 	
 	import mx.collections.ArrayCollection;
 	
-	import org.jbpmside.view.component.role.SelectionTool;
+	import org.jbpmside.view.component.gef.command.CommandService;
 	import org.jbpmside.view.component.role.manager.SurfaceToolsManager;
 
 	public class GraphicViewer extends Surface implements IEditPart
@@ -15,6 +15,8 @@ package org.jbpmside.view.component.gef
 		protected var _model:Object;
 		
 		private var toolsManager:ToolsManager=SurfaceToolsManager.getInstance();
+		
+		private var _commandService:CommandService=new CommandService();
 
 		public function GraphicViewer()
 		{
@@ -63,6 +65,14 @@ package org.jbpmside.view.component.gef
 		
 		public function clearSelection():void{
 			
+		}
+		
+		public function destory():void{
+			model=null;
+		}
+		
+		public function get commandService():CommandService{
+			return this._commandService;
 		}
 
 	}

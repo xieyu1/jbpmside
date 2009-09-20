@@ -13,7 +13,7 @@ package org.jbpmside.view.component.role
 		
 		override public function mouseClick(e:MouseEvent, x:int, y:int):void
 		{
-			this.editor.graphicViewer.clearSelection();
+			this.graphicViewer.clearSelection();
 		}
 
 	}

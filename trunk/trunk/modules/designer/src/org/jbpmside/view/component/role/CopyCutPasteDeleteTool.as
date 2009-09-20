@@ -25,7 +25,7 @@ package org.jbpmside.view.component.role
 		
 		public override function keyDown(event:KeyboardEvent, key:int):void
 		{
-			var surfaceComponent:SurfaceComponent=this.editor.graphicViewer as SurfaceComponent;
+			var surfaceComponent:SurfaceComponent=this.graphicViewer;
 			var selectedComponent:ShapeComponent=surfaceComponent.selectedComponent;
 			var canMove:Boolean=selectedComponent && selectedComponent is NodeComponent;
 			switch (event.keyCode)
@@ -87,6 +87,12 @@ package org.jbpmside.view.component.role
 					if (event.ctrlKey)
 						undo();
 					break;
+					
+				case 89: // Y
+				case 121: // y
+					if (event.ctrlKey)
+						redo();
+					break;
 			}
 		}
 		
@@ -106,7 +112,7 @@ package org.jbpmside.view.component.role
 			if (selectedComponent is NodeComponent)
 			{
 				var cmd:Command=new CutNodeCommand(selectedComponent as NodeComponent);
-				CommandService.getInstance().execute(cmd);
+				commandService.execute(cmd);
 			}
 		}
 		
@@ -120,7 +126,7 @@ package org.jbpmside.view.component.role
 				}
 
 				var cmd:Command=new PasteNodeCommand(copyOrCutModel);
-				CommandService.getInstance().execute(cmd);
+				commandService.execute(cmd);
 			}
 		}
 		
@@ -134,12 +140,16 @@ package org.jbpmside.view.component.role
 			{
 				cmd=new DeleteConnectionCommand(selectedComponent as ConnectionComponent);
 			}
-			CommandService.getInstance().execute(cmd);
+			commandService.execute(cmd);
 			theModel.copyOrCutModel=null;
 		}
 		
 		public function undo():void{
-			CommandService.getInstance().undo();
+			commandService.undo();
+		}
+		
+		public function redo():void{
+			commandService.redo();
 		}
 	}
 }

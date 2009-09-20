@@ -27,11 +27,6 @@ package org.jbpmside.view.component.command
 		{
 			super();
 		}
-				
-		override public function canUndo():Boolean
-		{
-			return true;
-		}
 
 		override public function perform():Boolean
 		{

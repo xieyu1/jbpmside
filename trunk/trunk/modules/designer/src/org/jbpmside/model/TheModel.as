@@ -42,7 +42,13 @@ package org.jbpmside.model
 		public static const CUT_EVENT:String="cutEvent";
 		public static const PASTE_EVENT:String="pasteEvent";
 		public static const NODE_COLLECTION_CHANGE_EVENT:String="node collection change event";
-
+		
+		//####################################################
+		//	menu constants
+		//####################################################
+		public static const NEW_PROCESS:String="newProcess";
+		public static const CLOSE_PROCESS:String="closeProcess";
+		public static const CLOSE_ALL_PROCESSES:String="closeAllProcesses";
 
 		//####################################################
 		//	shared utility methods

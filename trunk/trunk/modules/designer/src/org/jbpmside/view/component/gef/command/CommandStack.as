@@ -58,7 +58,9 @@ package org.jbpmside.view.component.gef.command
 		 * @return <code>true</code> if it is appropriate to call {@link #redo()}.
 		 */
 		public function canRedo():Boolean {
-			return !redoable.isEmpty();
+			if (redoable.length == 0)
+				return false;
+			return (redoable[0] as Command).canRedo();
 		}
 
 		/**
@@ -203,7 +205,7 @@ package org.jbpmside.view.component.gef.command
 			//Assert.isTrue(canRedo())
 			if (!canRedo())
 				return;
-		 var command:Command = redoable.pop() as Command;
+		 	var command:Command = redoable.pop() as Command;
 			try {
 				command.redo();
 				undoable.push(command);

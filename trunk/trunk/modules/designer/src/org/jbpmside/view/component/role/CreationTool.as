@@ -22,7 +22,7 @@ package org.jbpmside.view.component.role
 		override public function mouseClick(e:MouseEvent, x:int, y:int):void
 		{
 			var cmd:Command=new CreateNodeCommand(type, x, y);
-			CommandService.getInstance().execute(cmd);
+			commandService.execute(cmd);
 		}
 
 	}
