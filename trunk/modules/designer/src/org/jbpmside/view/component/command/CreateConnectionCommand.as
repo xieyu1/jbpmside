@@ -27,11 +27,6 @@ package org.jbpmside.view.component.command
 			this.toNode=toNodeComponent.model as NodeModel;
 		}
 		
-		override public function canUndo():Boolean
-		{
-			return true;
-		}
-
 		override public function perform():Boolean
 		{			
 			connectionComponent=new ConnectionComponent();

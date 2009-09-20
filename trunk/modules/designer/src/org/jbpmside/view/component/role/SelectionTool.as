@@ -23,7 +23,7 @@ package org.jbpmside.view.component.role
 				selected(e);
 			}
 			else{
-				this.editor.graphicViewer.clearSelection();
+				this.graphicViewer.clearSelection();
 			}
 
 		}

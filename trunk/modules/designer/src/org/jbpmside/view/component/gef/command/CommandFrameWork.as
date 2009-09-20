@@ -21,5 +21,10 @@ package org.jbpmside.view.component.gef.command
 			commandStack.undo();
 		}
 		
+		public function redo():void
+		{
+			commandStack.redo();
+		}
+		
 	}
 }

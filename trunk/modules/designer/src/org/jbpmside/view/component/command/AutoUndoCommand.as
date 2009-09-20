@@ -31,7 +31,7 @@ package org.jbpmside.view.component.command
 		public function canUndo():Boolean
 		{
 			//TODO: implement function
-			return false;
+			return true;
 		}
 		
 		public function canRedo():Boolean

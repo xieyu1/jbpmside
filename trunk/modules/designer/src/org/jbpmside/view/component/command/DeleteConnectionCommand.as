@@ -28,11 +28,6 @@ package org.jbpmside.view.component.command
 			this.toNode=this.toNodeComponent.model as NodeModel;
 		}
 		
-		override public function canUndo():Boolean
-		{
-			return true;
-		}
-		
 		override public function undo():void
 		{			
 			fromNodeComponent.addLeaveConnection(connectionComponent);

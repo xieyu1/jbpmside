@@ -22,9 +22,9 @@ package org.jbpmside.view.component.command
 			this.prior_y=nodeModel.y;
 		}
 		
-		override public function canUndo():Boolean
+		override public function canRedo():Boolean
 		{
-			return true;
+			return false;
 		}
 		
 		override public function perform():Boolean
@@ -39,8 +39,23 @@ package org.jbpmside.view.component.command
 			nodeModel.x=prior_x;
 			nodeModel.y=prior_y;
 			
-			nodeComponent.x=prior_x;
-			nodeComponent.y=prior_y;
+			this.prior_x=nodeComponent.x;
+			this.prior_y=nodeComponent.y;
+			
+			nodeComponent.x=nodeModel.x;
+			nodeComponent.y=nodeModel.y;
+			nodeComponent.updateConnectionPositions();			
+		}
+		
+		override public function redo():void{
+			nodeModel.x=prior_x;
+			nodeModel.y=prior_y;
+			
+			this.prior_x=nodeComponent.x;
+			this.prior_y=nodeComponent.y;
+			
+			nodeComponent.x=nodeModel.x;
+			nodeComponent.y=nodeModel.y;
 			nodeComponent.updateConnectionPositions();			
 		}
 

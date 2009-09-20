@@ -17,6 +17,12 @@ package org.jbpmside.view.component.gef.command
 				_commandFrameWork.undo();
 		}
 		
+		public function redo():void
+		{
+			if(_commandStack.canRedo())
+				_commandFrameWork.redo();
+		}
+		
 		//####################################################
 		//	singleton
 		//####################################################	
@@ -25,15 +31,6 @@ package org.jbpmside.view.component.gef.command
 			_commandStack=new CommandStack();
 			_commandStack.setUndoLimit(10);
 			_commandFrameWork=new CommandFrameWork(_commandStack);
-		}
-		
-		private static var _instance:CommandService
-		
-		public static function getInstance():CommandService{
-			if( !_instance ){
-				_instance = new CommandService();
-			}
-			return _instance;
 		}
 
 	}

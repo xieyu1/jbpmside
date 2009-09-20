@@ -62,15 +62,8 @@ package org.jbpmside.view.component
 		{
 			addEventListener(MouseEvent.CLICK, mouseClickHandler);
 
-			theModel.addEventListener(TheModel.KEYBOARD_EVENT, keyDownEventHandler);
 			theModel.addEventListener(TheModel.CHANGE_SHOW_GRID_EVENT, changeShowGrid);
 			theModel.addEventListener(TheModel.CHANGE_ZOOM_EVENT, changeScale);
-			//copy\cut\paste\delete
-			theModel.addEventListener(TheModel.COPY_EVENT, copyComponent);
-			theModel.addEventListener(TheModel.CUT_EVENT, cutComponent);
-			theModel.addEventListener(TheModel.PASTE_EVENT, pasteComponent);
-			theModel.addEventListener(TheModel.DELETE_EVENT, deleteComponent);
-//			addEventListener(FlexEvent.INITIALIZE, init);
 		}
 
 		override public function createControl():void
@@ -378,6 +371,14 @@ package org.jbpmside.view.component
 			this.graphicsCollection.addItem(connection);
 			this._links.addItem(connection);
 			connection.canvas=this;
+		}
+		
+		public override function destory():void{
+			super.destory();
+			for(var i:int=0;i<_nodes.length;i++){
+				var node:NodeComponent=_nodes[i] as NodeComponent;
+				removeNodeComponent(node);
+			}
 		}
 
 		public function removeNodeComponent(node:NodeComponent):void

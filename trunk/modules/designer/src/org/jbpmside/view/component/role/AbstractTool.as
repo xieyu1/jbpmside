@@ -9,9 +9,11 @@ package org.jbpmside.view.component.role
 	
 	import mx.events.DragEvent;
 	
+	import org.jbpmside.model.TheModel;
+	import org.jbpmside.view.component.SurfaceComponent;
 	import org.jbpmside.view.component.gef.IGraphicalEditor;
 	import org.jbpmside.view.component.gef.Tool;
-	import org.jbpmside.model.TheModel;
+	import org.jbpmside.view.component.gef.command.CommandService;
 
 	public class AbstractTool implements Tool
 	{
@@ -117,6 +119,14 @@ package org.jbpmside.view.component.role
 		
 		public function get editor():IGraphicalEditor{
 			return ProcessEditor.getEditor();
+		}
+		
+		public function get graphicViewer():SurfaceComponent{
+			return SurfaceComponent(this.editor.graphicViewer);
+		}
+		
+		public function get commandService():CommandService{
+			return graphicViewer.commandService;
 		}
 
 	}
