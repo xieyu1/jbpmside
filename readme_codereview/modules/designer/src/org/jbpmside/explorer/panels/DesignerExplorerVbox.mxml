@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	流程管理,设计器总入口
+	
+	创建时间：2009年08月14日
+	
+	@author yptqqqq@gmail.com	
+-->
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init();" xmlns:code="http://code.google.com/p/flexlib/">
+	<mx:Script>
+        <![CDATA[
+        	import org.jbpmside.util.ButtonIcon;
+        	import org.jbpmside.extfx.ExtHttpService;
+
+            import mx.events.MenuEvent;
+            import mx.controls.Alert;
+            import mx.collections.*;
+			
+			
+            [Bindable]private var processTreeDP:Object;
+            
+            [Bindable]
+            public var menuBarCollection:XMLListCollection;
+    		
+            private var menubarXML:XMLList =
+                <>
+                    <menuitem label="Menu1" data="top">
+                        <menuitem label="MenuItem 1-A" data="1A"/>
+                        <menuitem label="MenuItem 1-B" data="1B"/>
+                    </menuitem>
+                    <menuitem label="Menu2" data="top">
+                        <menuitem label="MenuItem 2-A" type="check"  data="2A"/>
+                        <menuitem type="separator"/>
+                        <menuitem label="MenuItem 2-B" >
+                            <menuitem label="SubMenuItem 3-A" type="radio"
+                                groupName="one" data="3A"/>
+                            <menuitem label="SubMenuItem 3-B" type="radio"
+                                groupName="one" data="3B"/>
+                        </menuitem>
+                    </menuitem>
+                </>;
+
+            //初始化数据
+            private function init():void {
+            	loadProcessTree();		//加载左边流程分类树
+                menuBarCollection = new XMLListCollection(menubarXML);
+            	
+            }
+			private function loadProcessTree():void{
+				ExtHttpService.reqObject ({
+				    	url:"action/definition/queryProcessTree.jside",
+				    	method: "POST",
+				    	result:function(result:Object):void{
+					        processTreeDP = result.result;
+					        processTree.validateNow();
+					        processTree.expandChildrenOf(processTree.dataProvider[0],true);				       
+					    }
+				});
+			}
+			private function loadProcessDef():void{
+				//1.点击左边流程定义节点
+				var processNode:Object = processTree.selectedItem;
+				//确定点击的是树的流程定义节点
+				if(processNode == null || processNode.type=="1") return;
+				//查询流程定义对应的流程版本  step 1.如果已打开对应的页签则转换到那个页签上 2.如果未打开则从后台加载
+				var processDesignPanelHBox:DisplayObject = processExplorer.getChildByName(processNode.id);
+				if(processDesignPanelHBox !=null){
+					processExplorer.selectedChild=HBox(processDesignPanelHBox); return ;
+				}else{
+						var tempHBox:HBox=new HBox();
+						tempHBox.percentWidth=100.0;
+						tempHBox.percentHeight=100.0;
+						tempHBox.label=processNode.name;
+						tempHBox.icon=ButtonIcon.flexAppBtn;				
+						tempHBox.name=processNode.id;
+						processExplorer.addChild(tempHBox);
+						processExplorer.selectedChild=tempHBox;
+				}
+				
+				
+								
+			}
+            // Event handler for the MenuBar control's itemClick event.
+            private function menuHandler(event:MenuEvent):void  {
+                // Don't open the Alert for a menu bar item that 
+                // opens a popup submenu.
+                if (event.item.@data != "top") {
+                    Alert.show("Label: " + event.item.@label + "\n" + 
+                        "Data: " + event.item.@data, "Clicked menu item");
+                }        
+            }
+         ]]>
+    </mx:Script>
+    <mx:VBox width="100%" paddingBottom="0">
+	    <mx:MenuBar width="100%" labelField="@label" itemClick="menuHandler(event);"  dataProvider="{menuBarCollection}" />
+    </mx:VBox>
+	<mx:VBox width="100%">
+		<mx:LinkButton label="添加" icon="{ButtonIcon.addBtn}"/>
+	</mx:VBox>
+	<mx:HDividedBox width="100%" height="100%">
+		<mx:VBox width="20%" height="100%">
+			<mx:Panel title="流程分类" width="100%" height="100%">
+	            <mx:Tree id="processTree" dataProvider="{processTreeDP}" click="loadProcessDef()" labelField="name" showRoot="false" width="100%" height="100%"/>
+			</mx:Panel>
+		</mx:VBox>
+		<mx:VBox width="80%" height="100%">
+			<code:SuperTabNavigator id="processExplorer" width="100%" height="100%">
+		        	<mx:HBox id="defaultTab" label="使用说明">
+						<mx:Label text="jbpmside流程设计器使用说明!" color="0x00ff00"/>
+					</mx:HBox>
+			</code:SuperTabNavigator>
+		</mx:VBox>
+				
+	</mx:HDividedBox>
+</mx:VBox>
