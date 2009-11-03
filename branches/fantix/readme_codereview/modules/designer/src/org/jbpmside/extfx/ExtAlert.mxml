@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	应当支持提示类型的设定
+	错误：关闭，详细情况(图标)
+	普通提示：确定，取消，详细情况(图标)
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+	width="400" height="200" title="{titleText}"  currentState="hide">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import mx.events.CloseEvent;
+			//
+			public static const OK:uint = 0;//确认
+			public static const CANCEL:uint = 1;//取消
+			public static const REPORT:uint = 2;//报告错误
+			[Bindable]public var simpleMsg:String;
+			[Bindable]public var detailMsg:String;
+			[Bindable]public var titleText:String;
+			
+			private function init():void{//初始化函数
+				
+			}
+			private function onDetail():void{
+				if(this.currentState == "show"){
+					this.currentState = "hide";
+				}else if(this.currentState == "hide"){
+					this.currentState = "show";
+				}
+			}
+			private function onClose(type:String):void{
+				var closeEvent:CloseEvent = new CloseEvent(CloseEvent.CLOSE);
+				if("ok" == type){
+					closeEvent.detail = ExtAlert.OK;
+				}else if("cancel" == type){
+					closeEvent.detail = ExtAlert.CANCEL;
+				}
+				PopUpManager.removePopUp(this);
+				dispatchEvent(closeEvent);
+			}
+			public static function show(text:String="",title:String="提示",detail:String="",parent:Sprite=null,closeHandler:Function=null):ExtAlert{
+				if (!parent){
+					parent = Sprite(Application.application);
+				}
+				var alert:ExtAlert = new ExtAlert();
+				alert.simpleMsg = text;
+				alert.titleText = title;
+				alert.detailMsg = detail;
+
+        		if (closeHandler != null){
+            		alert.addEventListener(CloseEvent.CLOSE, closeHandler);
+          		}
+          		PopUpManager.addPopUp(alert, parent, true);
+          		PopUpManager.centerPopUp(alert);
+				return alert;   
+			}
+		]]>
+	</mx:Script>
+	<mx:VBox label="worm" width="100%" height="100%">
+		<mx:HBox width="100%" id="mainHB">
+			<mx:Image width="20%" horizontalAlign="center"/>
+			<mx:TextArea editable="false" width="80%" height="100%" text="{simpleMsg}" borderSides="none"/>
+		</mx:HBox>
+		<mx:TextArea width="100%" height="100%" id="detailTA" text="{detailMsg}" editable="false" borderSides="none"/>
+		<mx:HBox width="100%" horizontalAlign="center">
+			<mx:LinkButton label="关闭" click="onClose('ok')"/>
+			<mx:LinkButton label="详细" id="detailBtn" click="onDetail()"/>
+		</mx:HBox>
+	</mx:VBox>
+	<mx:states>
+		<mx:State name="show">
+			<mx:SetProperty target="{detailTA}" name="height" value="80%"/>
+			<mx:SetProperty target="{mainHB}" name="height" value="100%"/>
+			<mx:SetProperty target="{detailBtn}" name="label" value="隐藏"/>
+		</mx:State>
+		<mx:State name="hide">
+			<mx:SetProperty target="{detailTA}" name="height" value="0"/>
+			<mx:SetProperty target="{mainHB}" name="height" value="100%"/>
+			<mx:SetProperty target="{detailBtn}" name="label" value="详细"/>
+		</mx:State>
+	</mx:states>
+	<mx:transitions>
+		<mx:Transition fromState="*" toState="*">
+			<mx:Resize target="{mainHB}"/>
+		</mx:Transition>
+	</mx:transitions>
+</mx:TitleWindow>

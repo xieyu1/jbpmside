@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:component="org.jbpmside.view.component.*" 
+	width="100%" height="100%" icon="{tabIcon}">
+	<mx:Script>
+		<![CDATA[
+			[Bindable]
+			[Embed(source="./assets/tab_icon.png")]
+			private var tabIcon:Class;
+			
+			public function setSavedStatus():void{
+				this.label="*"+this.label;
+			}
+			
+			public function setUnSavedStatus():void{
+				var firstChar:String=label.charAt(0);
+				if("*"==firstChar){
+					label=label.substring(1,label.length);
+				}
+			}
+		]]>
+	</mx:Script>
+	<component:SurfaceComponent id="surface"/>
+</mx:Canvas>
