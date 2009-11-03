@@ -1,1 +1,0 @@
-java -cp hsqldb.jar org.hsqldb.Server  -database.0 jbpmsidedb -dbname.0 jbpmsidedb 
