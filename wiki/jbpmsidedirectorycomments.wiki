@@ -1,10 +1,11 @@
+#summary jBPM-side 目录结构说明
 #labels Featured,Phase-Design,Phase-Implementation
-jbpmside目录结构说明 
 
-jbpmside1.0 目录结构
+= jBPM-side 1.0 目录结构 =
 
- 1.jbpmside总体目录结构
-||*目录*  || *描述 *||  
+== jBPM-side 总体目录结构 ==
+
+||*目录 *  || *描述 *||  
 ||bin || 执行命令目录，此目录下：appserver，其中appserver放置应用服务器（tomcat5.5.20） ||
 ||conf || 放置jbpmside运行所需要的配置文件 ||
 ||db ||内存数据库及其它数据库的脚本文件 ||
