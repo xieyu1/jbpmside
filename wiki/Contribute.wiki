@@ -1,4 +1,4 @@
-#summary 如何贡献
+#summary 如何为项目贡献力量
 #labels contribute
 
 = 贡献 =
