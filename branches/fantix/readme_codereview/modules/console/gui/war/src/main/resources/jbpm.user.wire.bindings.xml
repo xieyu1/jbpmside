@@ -1,4 +1,0 @@
-<wire-bindings>
-  <binding class="org.jbpmside.console.gui.job.SpringTransactionBinding" />
-  <binding class="org.jbpmside.console.gui.job.SpringHibernateSessionInterceptorBinding" />
-</wire-bindings>
