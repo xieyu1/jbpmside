@@ -1,5 +1,5 @@
 #labels committer,Featured,contribution
-非常高兴大家对这个项目感兴趣，很多人问怎么加入这个项目，~~其实第一步可以做的就是马上加入我们的usergroup：[http://groups.google.com/group/jbpmside]，这个group没有任何的限制，任何人都可以加入，然后积极参与这个group的讨论和回复，然后我们会根据我们的committer的规定来审批大家的加入。~~（说明：这两句话已经挪到 [Contribution 贡献] 页了）
+非常高兴大家对这个项目感兴趣，很多人问怎么加入这个项目，~~其实第一步可以做的就是马上加入我们的usergroup：[http://groups.google.com/group/jbpmside]，这个group没有任何的限制，任何人都可以加入，然后积极参与这个group的讨论和回复，然后我们会根据我们的committer的规定来审批大家的加入。~~（说明：这两句话已经挪到 [Contribute 贡献] 页了）
 
 = [讨论草稿] 如何成为 jBPM-side 的 Committer =
 
