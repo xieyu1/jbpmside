@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollableMenuBar xmlns="flexlib.controls.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="init()"
+	labelField="@label"	
+	itemClick="menuHandler(event);"
+	>
+	
+	<mx:Script>
+		<![CDATA[
+			import org.jbpmside.event.CustomEvent;
+			import org.jbpmside.model.TheModel;
+			import mx.controls.Alert;
+			import mx.events.MenuEvent;
+			import mx.core.ScrollPolicy;
+			
+			[Bindable]
+			public var model:TheModel=TheModel.getInstance();
+            
+            private var menubarXML:XMLList =
+                <>
+                    <menuitem label="File" data="top">
+                        <menuitem label="New" data="newProcess"/>
+                        <menuitem label="Open File..." enabled="false" data="1B"/>
+                        <menuitem type="separator" /> 
+                        <menuitem label="Save" enabled="false" data="1B"/>
+                        <menuitem label="Save As..." enabled="false" data="1B"/>
+                        <menuitem type="separator" /> 
+                        <menuitem label="Close" data="close"/>
+                        <menuitem label="Close All" data="closeAll"/>
+                        <menuitem type="separator" /> 
+                        <menuitem label="Exit" enabled="false" data="1B"/>
+                    </menuitem>
+                    <menuitem label="Edit" data="top">
+                        <menuitem label="Undo"  enabled="false" data="2A"/>
+                        <menuitem label="Redo"  enabled="false" data="2A"/>
+                        <menuitem type="separator" /> 
+                        <menuitem label="Cut"  enabled="false" data="2A"/>
+                        <menuitem label="Copy"  enabled="false" data="2A"/>
+                        <menuitem label="Paste"  enabled="false" data="2A"/>
+                        <menuitem label="Delete"  enabled="false" data="2A"/>
+                    </menuitem>
+                     <menuitem label="View" data="top">
+                        <menuitem label="Zoom In" enabled="false" data="2A"/>
+                        <menuitem label="Zoom In" enabled="false" data="2A"/>
+                        <menuitem label="Zoom Reset" enabled="false" data="2A"/>
+                        <menuitem type="separator" />
+                        <menuitem label="Show Grid" enabled="false" type="check" data="2A"/>
+                    </menuitem>
+                    <menuitem label="Help" data="top">
+                        <menuitem label="About us" enabled="false" data="2A"/>
+                    </menuitem>
+                </>;
+                
+           private function init():void {
+                this.verticalScrollPolicy=ScrollPolicy.AUTO;
+                this.arrowScrollPolicy=ScrollPolicy.AUTO;
+                this.dataProvider=menubarXML;
+//                menubarXML[3].menuitem[0].@enabled=false;
+           }
+           
+           private function menuHandler(event:MenuEvent):void  {
+                // Don't open the Alert for a menu bar item that 
+                // opens a popup submenu.
+                if (event.item.@data == "newProcess") {
+                    newProcess();
+                }else if (event.item.@data == "close") {
+                    close();
+                } else if (event.item.@data == "closeAll") {
+                    closeAll();
+                } else{
+                	
+                }        
+            }
+            
+          	private function newProcess():void
+			{
+				model.dispatchEvent(new CustomEvent(TheModel.NEW_PROCESS));
+			}
+
+			private function close():void
+			{
+				model.dispatchEvent(new CustomEvent(TheModel.CLOSE_PROCESS));
+			}
+
+			private function closeAll():void
+			{
+				model.dispatchEvent(new CustomEvent(TheModel.CLOSE_ALL_PROCESSES));
+			}
+		]]>
+	</mx:Script>
+</ScrollableMenuBar>
