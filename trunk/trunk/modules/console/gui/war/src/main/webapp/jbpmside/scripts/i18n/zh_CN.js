@@ -1,7 +1,5 @@
 
 App.locale = {
-    'welcome.title': '欢迎',
-    'welcome.content': '<h3>欢迎访问</h3><p>opug, www.family168.com</p>',
     'processManagement.title': '流程管理',
     'viewDefinitions.title': '浏览流程定义',
     'viewDefinitions.id': '流程ID',
