@@ -19,11 +19,7 @@ App.init = function() {
         xtype: 'tabpanel',
         layoutOnTabChange: true,
         enableTabScroll: true,
-        items: [{
-            title: App.locale['welcome.title'],
-            iconCls: 'welcome',
-            html: App.locale['welcome.content']
-        },
+        items: [
             App.viewProcessDefinition,
             App.uploadNewProcessDefinition
         ]
@@ -33,7 +29,7 @@ App.init = function() {
         layout: 'border',
         items: [{
             region: 'north',
-            height: 40,
+            height: 50,
             contentEl: 'nav_area'
         },{
             region: 'south',
